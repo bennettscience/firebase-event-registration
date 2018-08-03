@@ -1,0 +1,7 @@
+{
+  "name": "Web App",
+  "short_name": "Web App",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait"
+}

@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "courses": {
+      ".read": "auth != null",
+      "$courseId": {
+        ".write": "auth != null",
+        "members": {
+          "$uid": {
+            ".validate": "root.child('courses').child($courseId).child('code').val() == newData.child('code').val()"            
+          }
+        }
+      }
+    },
+    "users": {
+      "$userId": {
+        "regs": {
+          ".read": "auth != null && auth.uid == $userId",
+          ".write": "auth != null && auth.uid == $userId"
+        }
+      }
+    }
+  }
+}

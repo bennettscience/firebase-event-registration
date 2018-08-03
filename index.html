@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <title>Elkhart PD | Login</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+  <!-- Materialize Stylesheets-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  <!-- App Styling -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+  <link rel="stylesheet" href="styles/main.min.css">
+</head>
+
+<body>
+  <div id="sidebar-wrap">
+    <ul id="slide-out" class="side-nav fixed">
+      <li>
+        <div class="user-view">
+          <div class="background">
+            <img src="https://c1.staticflickr.com/9/8579/15899932525_cce383f209_b.jpg">
+          </div>
+          <div id="user-pic" class="circle"></div>
+          <div id="string-name" class="white-text name"></div>
+          <div id="user-email" class="white-text email"></div>
+          <button id="sign-in-button" class="waves-effect waves-light btn blue">
+            Google Sign In
+          </button>
+          <button id="sign-out-button" class="waves-effect waves-light btn blue">
+            Sign out
+          </button>
+        </div>
+      </li>
+      <li>
+        <a id="date" class="sort btn-flat">Sort by Date</a>
+        <a id="title" class="sort btn-flat">Sort by Title</a>
+        <!-- <p>Sort By</p>
+        <form id="sortForm" action="#">
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+          <p>
+            <input name="sortType" type="radio" id="date" value="date" />
+            <label for="date">Date</label>
+          </p>
+          <p>
+            <input name="sortType" type="radio" id="title" value="title" />
+            <label for="title">Title</label>
+          </p> -->
+          <a id="collection" class="btn-flat waves-effect waves-light">Your courses <span class="badge blue white-text" id="user-courses-badge"></span></a>
+      </li>
+      <li id="user-input" class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <!-- <li>
+            <a class="collapsible-header">Your Courses<i class="material-icons">arrow_drop_down</i><span class="badge blue white-text" id="user-courses-badge"></span></a>
+            <div class="collapsible-body">
+              <div id="userCourseList-content">
+                <ul class="collection" id="collection"></ul>
+              </div>
+            </div>
+          </li> -->
+          <li> <!-- Danielson Filter START -->
+            <a class="collapsible-header">Danielson Filters<i class="material-icons">arrow_drop_down</i></a>
+            <div class="collapsible-body" id="dan-filters">
+              <form name="filter-form" id="filter-form" action="" method="">
+                <input name='filterStatus' type='checkbox' value='1a' id='1a' class='filled-in' /><label for='1a'>1a Demonstrating Knowledge of Content and Pedagogy</label>
+                <input name='filterStatus' type='checkbox' value='1b' id='1b' class='filled-in' /><label for='1b'>1b Demonstrating Knowledge of Students</label>
+                <input name='filterStatus' type='checkbox' value='1c' id='1c' class='filled-in' /><label for='1c'>1c Setting Instructional Outcomes</label>
+                <input name='filterStatus' type='checkbox' value='1d' id='1d' class='filled-in' /><label for='1d'>1d Demonstrating Knowledge of Resources</label>
+                <input name='filterStatus' type='checkbox' value='1e' id='1e' class='filled-in' /><label for='1e'>1e Designing Coherent Instruction</label>
+                <input name='filterStatus' type='checkbox' value='1f' id='1f' class='filled-in' /><label for='1f'>1f Designing Student Assessments</label>
+                <input name='filterStatus' type='checkbox' value='2a' id='2a' class='filled-in' /><label for='2a'>2a Creating an Environment of Respect and Report</label>
+                <input name='filterStatus' type='checkbox' value='2b' id='2b' class='filled-in' /><label for='2b'>2b Establishing a culture for Learning</label>
+                <input name='filterStatus' type='checkbox' value='2c' id='2c' class='filled-in' /><label for='2c'>2c Managing Classroom Procedures</label>
+                <input name='filterStatus' type='checkbox' value='2d' id='2d' class='filled-in' /><label for='2d'>2d Managing Student Behavior</label>
+                <input name='filterStatus' type='checkbox' value='2e' id='2e' class='filled-in' /><label for='2e'>2e Organizing Physical Space</label>
+                <input name='filterStatus' type='checkbox' value='3a' id='3a' class='filled-in' /><label for='3a'>3a Communicating with Students</label>
+                <input name='filterStatus' type='checkbox' value='3b' id='3b' class='filled-in' /><label for='3b'>3b Using Questioning and Discussion Techniques</label>
+                <input name='filterStatus' type='checkbox' value='3c' id='3c' class='filled-in' /><label for='3c'>3c Engaging Students in Learning</label>
+                <input name='filterStatus' type='checkbox' value='3d' id='3d' class='filled-in' /><label for='3d'>3d Using Assessment in Instruction</label>
+                <input name='filterStatus' type='checkbox' value='3e' id='3e' class='filled-in' /><label for='3e'>3e Demonstrating Flexibility and Responsiveness</label>
+                <input name='filterStatus' type='checkbox' value='4a' id='4a' class='filled-in' /><label for='4a'>4a Reflecting on Teaching</label>
+                <input name='filterStatus' type='checkbox' value='4b' id='4b' class='filled-in' /><label for='4b'>4b Maintaining Accurate Records</label>
+                <input name='filterStatus' type='checkbox' value='4c' id='4c' class='filled-in' /><label for='4c'>4c Communicating with Families</label>
+                <input name='filterStatus' type='checkbox' value='4d' id='4d' class='filled-in' /><label for='4d'>4d Participating in the Professional Community</label>
+                <input name='filterStatus' type='checkbox' value='4e' id='4e' class='filled-in' /><label for='4e'>4e Growing and Developing Professionally</label>
+                <input name='filterStatus' type='checkbox' value='4f' id='4f' class='filled-in' /><label for='4f'>4f Showing Professionalism</label>
+              </form>
+            </div>
+          </li>
+
+          <li>
+            <button class="btn btn-large  waves-effect waves-light blue" type="submit" id="mobile-submit" name="action">Submit
+              <i class="material-icons right">send</i>
+            </button>
+          </ul>
+        </li>
+      </ul> <!-- End sidebar nav -->
+    </div>
+    <div id="search-wrap">
+      <nav class="blue">
+        <div class="nav-wrapper">
+          <form >
+            <div class="input-field blue">
+              <input id="search" type="search" placeholder="Search by title..." required />
+              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons" id="search-clear">close</i>
+            </div>
+            <ul id="nav-mobile" class="right hide-on-med-and-down"></ul>
+          </form>
+        </div>
+      </nav>
+    </div>
+    </div> <!-- /#sidebar-wrap -->
+    <div id="wrap">
+      <main>
+        <div id="login-splash">
+          <img src='https://newscdn.weigelbroadcasting.com/79qZX-1527177142-109961-blog-elkhartschoolslogo.jpg' />
+          <p>Please log in with your ECS Google account on the left</p>
+        </div>
+        <form id="course-form" action="#">
+          <input hidden type="text" name="name" value="" />
+          <input hidden type="text" name="userName" value="" />
+          <input hidden type="text" name="email" value="" />
+
+           <div id="allCourses"></div>
+           <button class="btn btn-large waves-effect waves-light blue" type="submit" id="submit" name="action">Submit
+             <i class="material-icons right">send</i>
+           </button>
+        </form>
+        <div class="fixed-action-btn">
+           <a class="button-collapse btn-floating btn-large red" href="#" data-activates="slide-out" id="slide-out">
+             <i class="material-icons">menu</i>
+           </a>
+         </div>
+        </main> <!-- /main #content-wrap -->
+    </div>  <!-- /#wrap -->
+    <div id="user-courses-wrap" class="hidden">
+      <span id="hide-user-courses">close<i class="material-icons">close</i></span>
+      <div id="user-courses">
+        <div id="user-courses-head"></div>
+        <div id="user-courses-list"></div>
+      </div>
+    </div>
+    <script src="/__/firebase/4.1.3/firebase.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="scripts/filters.js"></script>
+    <script src="scripts/main.js"></script>
+  </body>
+  </html>

@@ -1,0 +1,400 @@
+/**
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// $default-font:
+// $default-color:
+
+$col-count: 12
+$gutter-width: 15px
+
+$sidebar-width: (($col-count + $gutter-width) / $col-count) * 3
+
+html, body
+  font-family: 'Roboto', 'Helvetica', sans-serif
+  margin: 0
+  padding: 0
+
+#wrap
+  display: grid
+  grid-template-columns: repeat(12, [col-start] 1fr [col-end])
+  grid-template-rows: 65px 1fr
+  grid-gap: 15px
+  margin: 0 15px
+
+#sidebar-wrap
+  display: block
+  position: fixed
+  z-index: 1000
+  height: 100%
+
+  #slide-out
+    position: relative
+
+  .sort
+    text-align: center
+
+    a
+      display: inline-block
+      width: 30%
+
+  .side-nav
+
+    .cancel
+      cursor: pointer
+
+    #filter-form
+      padding-left: 10px
+      padding-top: 3px
+
+      label
+        vertical-align: middle
+        float: none
+
+    .user-view
+      padding: 32px
+
+    #user-pic
+      display: block
+      position: relative
+      height: auto
+      width: auto
+
+      img, i
+        width: 128px
+        height: 128px
+        margin: 0 auto
+
+      i
+        display: block
+        text-align: center
+
+    #string-name, #user-email
+      text-align: center
+
+    #sign-out-button, #sign-in-button
+      display: block
+      width: 80%
+      margin: 0 auto
+
+#search-wrap
+  grid-column: 1 / col-end 12
+  grid-row: 1
+  position: relative
+
+nav
+  position: fixed
+  z-index: 999
+
+  form
+    margin-left: 300px
+
+  .input-field
+    margin: 0 0 0 -15px
+
+  .input-field label i
+    padding-left: 15px
+    background: transparent
+
+.nav-wrapper .input-field input[type="search"]
+  font-size: 32px
+  line-height: 32px
+
+#user-courses-wrap
+  display: block
+  position: fixed
+  margin: 0
+  padding: 0
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: rgba(0,0,0,0.85)
+  overflow-y: hidden
+  z-index: 1000
+
+  #hide-user-courses
+    cursor: pointer
+    display: inline-block
+    position: absolute
+    right: 10px
+    top: 10px
+    color: white
+
+    i
+      vertical-align: middle
+      margin-left: 5px
+
+#user-courses
+  display: block
+  position: relative
+  width: 90%
+  height: 90%
+  border-radius: 2px
+  background-color: white
+  margin: 40px auto 0
+  padding: 10px
+
+  #user-courses-list .collection-item
+    margin: 5px 0
+
+  #user-courses-list .cancel i
+    margin-left: 5px
+    vertical-align: middle
+
+main
+  grid-column: col-start 4 / col-end 12
+  grid-row: 2
+  margin-left: -15px
+
+  #login-splash
+    font-size: 28px
+    font-family: sans-serif
+    grid-column: 2 / span 10
+    grid-row: 1
+    text-align: center
+
+  #allCourses
+    display: flex
+    flex-direction: row
+    flex-wrap: wrap
+    justify-content: flex-start
+    margin-left: -15px
+
+    .class-container
+      flex-grow: 1
+      border: 1px solid #f3f3f3
+      box-sizing: border-box
+      margin: 7.5px 0 7.5px 15px
+
+      .code .prefix
+        vertical-align: middle
+
+      .code input
+        height: 1.5em
+        padding: 5px 0 5px 5px
+
+        .prefix
+          vertical-align: middle
+
+    h2
+      position: relative
+
+.active
+  background-color: rgba(0,0,0,0.05)
+
+.fixed-action-btn
+  display: none
+
+#mobile-submit
+  display: none
+
+/* Typography */
+h1, h2, h3, p
+  display: block
+
+.hidden
+  display: none !important
+
+input[type="checkbox"]:not(:checked)+label, input[type="checkbox"]:checked+label
+  pointer-events: auto
+  float: left
+  top: 0.35em
+
+.class-container
+  margin: 10px
+  flex-grow: 1
+  border: 1px solid #f3f3f3
+
+.card.large
+
+  .content
+    max-height: 60%
+
+  .card-image
+    max-height: 40%
+
+#submit
+  position: fixed
+  bottom: 50px
+  right: 50px
+  z-index: 100
+
+.input-field label
+  transform: none
+  -webkit-transform: none
+  -moz-transform: none
+  background: transparent !important
+
+input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-default):focus:not([readonly])+label, input[type=password]:not(.browser-default):focus:not([readonly])+label, input[type=email]:not(.browser-default):focus:not([readonly])+label, input[type=url]:not(.browser-default):focus:not([readonly])+label, input[type=time]:not(.browser-default):focus:not([readonly])+label, input[type=date]:not(.browser-default):focus:not([readonly])+label, input[type=datetime]:not(.browser-default):focus:not([readonly])+label, input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label, input[type=tel]:not(.browser-default):focus:not([readonly])+label, input[type=number]:not(.browser-default):focus:not([readonly])+label, input[type=search]:not(.browser-default):focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label
+  opacity: 0
+  background: transparent
+  transition: 0.3s ease all
+
+.input-field input[type="search"] ~ .mdi-navigation-close, .input-field input[type="search"] ~ .material-icons
+  right: 3rem
+
+#userCourseList-content
+  position: relative
+  width: 100%
+  margin: 0 auto
+  padding: 5px
+
+
+.user-class-container
+  text-align: left
+  line-height: 1.2rem
+  width: 90%
+  margin: 5px auto
+  padding: 10px
+  background: rgba(200,200,200,0.6)
+
+
+.mdl-layout__header-row span
+  margin-left: 15px
+  margin-top: 17px
+
+.mdl-grid
+  max-width: 1024px
+  margin: auto
+
+.mdl-layout__content
+  margin-top: 10px
+
+.mdl-layout__header-row
+  padding: 0
+  margin: 0 auto
+
+.mdl-card__supporting-text
+  width: auto
+  height: 100%
+  padding-top: 0
+  padding-bottom: 0
+
+.message-container .pic
+  background-image: url('/images/profile_placeholder.png')
+  background-repeat: no-repeat
+  width: 30px
+  height: 30px
+  background-size: 30px
+  border-radius: 20px
+
+.message-container .spacing
+  display: table-cell
+  vertical-align: top
+
+.message-container .message
+  display: table-cell
+  width: calc(100% - 40px)
+  padding: 5px 0 5px 10px
+
+.message-container .name
+  display: inline-block
+  width: 100%
+  padding-left: 40px
+  color: #bbb
+  font-style: italic
+  font-size: 12px
+  box-sizing: border-box
+
+#message-form
+  display: flex
+  flex-direction: row
+  width: calc(100% - 48px)
+  float: left
+
+#image-form
+  display: flex
+  flex-direction: row
+  width: 48px
+  float: right
+
+#message-form .mdl-textfield
+  width: calc(100% - 100px)
+
+#message-form button, #image-form button
+  width: 100px
+  margin: 15px 0 0 10px
+
+.mdl-grid
+  width: 100%
+
+.mdl-card
+  min-height: 0
+
+.mdl-card
+  background: linear-gradient(white, #f9f9f9)
+  justify-content: space-between
+
+#user-view #user-pic
+  position: relative
+  display: inline-block
+  background-image: url('/images/profile_placeholder.png')
+  background-repeat: no-repeat
+  width: 40px
+  height: 40px
+  background-size: 40px
+  border-radius: 20px
+
+
+@media screen and (max-width: 610px)
+  header
+    height: 113px
+    padding-bottom: 80px !important
+
+  #user-container
+    top: 72px
+    background-color: rgb(3,155,229)
+    height: 38px
+    padding-top: 3px
+    padding-right: 2px
+
+  #user-container #user-pic
+    top: 2px
+    width: 33px
+    height: 33px
+    background-size: 33px
+
+
+.mdl-textfield__label:after
+  background-color: #fff
+
+.mdl-color--grey-100
+  background-color:#fff !important
+
+.mdl-textfield--floating-label.is-focused .mdl-textfield__label
+  color: #0288D1
+
+.mdl-button .material-icons
+  top: -1px
+  margin-right: 5px
+
+@media (max-width: 996px)
+  main
+    grid-column: 1 / span 12
+    margin-left: 0
+
+  .fixed-action-btn
+    display: block
+
+  #mobile-submit
+    display: block
+
+  #submit
+    display: none
+
+  #content-wrap
+    width: 100%
+    margin: 10px 0

@@ -1,0 +1,21 @@
+path / {
+  read() { false },
+  write() { false }
+}
+path /courses {
+  read() { isSignedIn() }
+}
+
+path /courses/{courseId}/members/{uid} {
+  write() { isSignedIn() }
+  validate() { prior(root.courses[courseId]['code']) == this.code }
+}
+
+path /users/{userId}/regs {
+  read() { isCurrentUser(userId) }
+  write() { isCurrentUser(userId) }
+  validate() { prior(root.courses[courseId]['code']) == this.code }
+}
+
+isCurrentUser(uid) { isSignedIn() && auth.uid == uid }
+isSignedIn() { auth !== null }

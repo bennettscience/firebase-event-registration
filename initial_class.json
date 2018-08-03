@@ -1,0 +1,13 @@
+{
+    "users": {
+
+    },
+    "courses": {
+      "Is9a2": {
+        "title": "CPI Referesher Course",
+        "date": "Mon Jan 22 2018 13:43:42 GMT-0500 (EST)",
+        "desc": "CPI is the crisis prevention training which teaches strategies to be able to de-escalate situations. The intent is to use de-escalating strategies as a means of preventing physical aggression.",
+        "seats": "40"        
+      }
+    }
+}
