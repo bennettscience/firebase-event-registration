@@ -159,26 +159,40 @@ PDReg.prototype.register = function(e) {
       classes.push({title, id, code});
     }
   }
-  var userName = form.elements['userName'].value;
 
-  for (var i=0; i<classes.length; i++) {
+  var postTheClass = function(course) {
+    console.log(this)
+    console.log('adding the class to firebase')
+    this.coursesRef.set({'code': course['code']})
+    .then(function() {
+      document.getElementById('allCourses').removeChild(document.getElementById(course['id']));
+      M.toast({html: "Successfully registered for " + course['title']})
+      this.database.ref('users/' + uid + '/regs/' + course['id']).set(true)
+    }.bind(this))
+    .catch(function(e) {
+      console.log('error!', e)
+      M.toast({html: "Registration failed for " + course['title'] + ". Please check your registration code", classes: 'red'})
+    })
+  }.bind(this);
 
-    this.coursesRef = this.database.ref('courses/' + classes[i].id + '/members/' + uid);
-
-    this.coursesRef.set({'code': classes[i]['code']});
-    firebase.database().ref('users/' + uid + '/regs/' + id).set(true).then(function(classes) {
-      onSuccess(title);
-      document.getElementById('allCourses').removeChild(document.getElementById(id))
-    }, function(e) {
-      onFailure(e, title);
-    });
-  }
+  classes.forEach(function(value) {
+    this.coursesRef = this.database.ref('courses/' + value['id'] + '/members/' + uid);
+    postTheClass(value);
+  }.bind(this))
 
   // Update the UI with the number of user registrations
   this.database.ref('users/' + uid + '/regs').on('child_changed',
     function(snapshot) {
       this.userCoursesBadge.textContent = snapshot.numChildren();
   }.bind(this));
+
+  var addUserClass = function(snapshot) {
+    var course = snapshot.val();
+    course.key = snapshot.key
+    buildUserClass(course);
+  }
+
+  this.coursesRef.on('child_changed', addUserClass)
 };
 
 // Model for registrations
@@ -222,6 +236,7 @@ PDReg.prototype.buildUserClasses = function(course) {
   console.log("Got a new course, ", course)
   var parentDiv = document.getElementById("user-courses-list");
 
+  if(!parentDiv.querySelector("[id='user_" + course.key + "']")) {
   var container = document.createElement('div');
   container.innerHTML = PDReg.USER_TEMPLATE;
   container.setAttribute("id", "user_" + course.key)
@@ -234,6 +249,7 @@ PDReg.prototype.buildUserClasses = function(course) {
   parentDiv.appendChild(container);
 
   container.querySelector(".cancel").addEventListener('click', this.cancel.bind(this));
+}
 }
 
 PDReg.prototype.showUserClasses = function() {
@@ -334,7 +350,7 @@ PDReg.prototype.getAllClasses = function() {
     });
 
     this.classesRef.orderByChild('start').startAt(today).on('child_added', setClass);
-    this.classesRef.on('child_changed', setClass);
+    //this.classesRef.on('child_changed', setClass);
 };
 
 

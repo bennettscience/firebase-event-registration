@@ -19,18 +19,15 @@ $(document).ready(function() {
   $(".collapsible").collapsible();
 })
 
-// $(document).keydown(function(e) {
-//   console.log(e)
-//   if(e.keyCode == 27) {
-//       if($("#user-courses-list").hasClass('hidden')){
-//       console.log("It's already hidden!");
-//       return false;
-//     } else {
-//       console.log("Trying to hide it...")
-//       $("#user-courses-wrap").addClass('hidden');
-//     }
-//   }
-// });
+$(document).keydown(function(e) {
+  if(e.keyCode == 27) {
+      if($("#user-courses-list").hasClass('hidden')){
+      return false;
+    } else {
+      $("#user-courses-wrap").addClass('hidden');
+    }
+  }
+});
 
 
 /**
@@ -135,18 +132,6 @@ function smallFormat(date) {
   var d = new Date(date);
   var m = moment(d).format('MM/D/YY - h:00 A');
   return m;
-}
-
-// Display successful registration toast
-function onSuccess(e) {
-  M.toast({html: "Successfully registered for " + e})
-  return false;
-}
-
-// Display failure message. Only shows for incorrect code submission
-function onFailure(e, title) {
-  console.log(JSON.stringify(e));
-  M.toast({html: "Registration failed for " + title + ". Please check your registration code", classes: 'red'})
 }
 
 
