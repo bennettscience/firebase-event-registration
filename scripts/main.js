@@ -160,9 +160,29 @@ PDReg.prototype.register = function(e) {
     }
   }
 
+  var buildNewRegCourse = function(snapshot) {
+    var course = snapshot.val();
+    course.key = snapshot.key;
+
+    var parentDiv = document.getElementById("user-courses-list");
+
+    if(!parentDiv.querySelector("[id='user_" + course.key + "']")) {
+      var container = document.createElement('div');
+      container.innerHTML = PDReg.USER_TEMPLATE;
+      container.setAttribute("id", "user_" + course.key)
+      container.setAttribute("class", "collection-item");
+      container.getElementsByTagName("a")[0].setAttribute("id", "cancel_"+course.key);
+
+      container.querySelector('.title').textContent = course.title;
+      container.querySelector('.date').textContent = smallFormat(course.start);
+
+      parentDiv.appendChild(container);
+
+      container.querySelector(".cancel").addEventListener('click', this.cancel.bind(this));
+    }
+  }.bind(this)
+
   var postTheClass = function(course) {
-    console.log(this)
-    console.log('adding the class to firebase')
     this.coursesRef.set({'code': course['code']})
     .then(function() {
       document.getElementById('allCourses').removeChild(document.getElementById(course['id']));
@@ -186,13 +206,10 @@ PDReg.prototype.register = function(e) {
       this.userCoursesBadge.textContent = snapshot.numChildren();
   }.bind(this));
 
-  var addUserClass = function(snapshot) {
-    var course = snapshot.val();
-    course.key = snapshot.key
-    buildUserClass(course);
-  }
-
-  this.coursesRef.on('child_changed', addUserClass)
+  this.coursesRef.on('value', function(snap) {
+    var key = snap.ref.parent.parent.key
+    this.database.ref('courses/' + key).once('value', buildNewRegCourse);
+  }.bind(this))
 };
 
 // Model for registrations
@@ -237,19 +254,19 @@ PDReg.prototype.buildUserClasses = function(course) {
   var parentDiv = document.getElementById("user-courses-list");
 
   if(!parentDiv.querySelector("[id='user_" + course.key + "']")) {
-  var container = document.createElement('div');
-  container.innerHTML = PDReg.USER_TEMPLATE;
-  container.setAttribute("id", "user_" + course.key)
-  container.setAttribute("class", "collection-item");
-  container.getElementsByTagName("a")[0].setAttribute("id", "cancel_"+course.key);
+    var container = document.createElement('div');
+    container.innerHTML = PDReg.USER_TEMPLATE;
+    container.setAttribute("id", "user_" + course.key)
+    container.setAttribute("class", "collection-item");
+    container.getElementsByTagName("a")[0].setAttribute("id", "cancel_"+course.key);
 
-  container.querySelector('.title').textContent = course.title;
-  container.querySelector('.date').textContent = smallFormat(course.start);
+    container.querySelector('.title').textContent = course.title;
+    container.querySelector('.date').textContent = smallFormat(course.start);
 
-  parentDiv.appendChild(container);
+    parentDiv.appendChild(container);
 
-  container.querySelector(".cancel").addEventListener('click', this.cancel.bind(this));
-}
+    container.querySelector(".cancel").addEventListener('click', this.cancel.bind(this));
+  }
 }
 
 PDReg.prototype.showUserClasses = function() {
