@@ -1,8 +1,19 @@
 'use strict'
-
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
+const nodemailer = require('nodemailer')
+const mailTransport = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'pd@elkhart.k12.in.us',
+    pass: 'T3chnology@3c5'
+  }
+})
+
+const ref = admin.database().ref();
 
 exports.countRegistrations = functions.database.ref('/courses/{courseId}/members/{uid}').onWrite(
   (change) => {
@@ -28,7 +39,7 @@ exports.countRegistrations = functions.database.ref('/courses/{courseId}/members
     });
 
 // If the number of likes gets deleted, recount the number of likes
-exports.recountlikes = functions.database.ref('/courses/{courseId}/memers/{uid}').onDelete((snap) => {
+exports.recountlikes = functions.database.ref('/courses/{courseId}/members/{uid}').onDelete((snap) => {
   const counterRef = snap.ref;
   const collectionRef = counterRef.parent.child('seats');
 
@@ -37,3 +48,49 @@ exports.recountlikes = functions.database.ref('/courses/{courseId}/memers/{uid}'
   return collectionRef.once('value')
       .then((messagesData) => counterRef.set(messagesData.numChildren()));
 });
+
+exports.reminderEmail = functions.https.onRequest((req, res) => {
+  const currentTime = new Date().getTime();
+  const future = currentTime + 172800000;
+
+  return ref.child('courses/').once('value')
+  .then(snap => {
+    const promises = [];
+
+    snap.forEach(child => {
+      var el = child.val();
+
+      if(el.hasOwnProperty('members')) {
+        promises.push(admin.database().ref('courses/' + child.key + '/members/').once('value'));
+      }
+      console.log(promises)
+    })
+    return Promise.all(promises)
+  })
+  .then(results => {
+    const emails = [];
+    results.forEach(delta => {
+      console.log(delta.val());
+      delta.forEach(member => {
+        var email = member.val().email;
+        emails.push(email);
+      })
+    })
+
+    console.log('Sending to: ' + emails.join());
+
+    const mailOpts = {
+      from: '"Elkhart PD" <pd@elkhart.k12.in.us"',
+      bcc: emails.join(),
+      subject: 'Upcoming Registrations',
+      text: 'Something about registering here.'
+    }
+    return mailTransport.sendMail(mailOpts)
+  })
+  .then(() => {
+    res.send('Email sent')
+  })
+  .catch(error => {
+    res.send(error)
+  })
+})
