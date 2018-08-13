@@ -146,7 +146,7 @@ PDReg.prototype.register = function(e) {
   e.preventDefault();
   var form = this.courseForm;
   var classes = [];
-  var uid = firebase.auth().currentUser.uid;
+  var user = firebase.auth().currentUser;
 
   for (var i=0; i<form.elements.length; i++) {
     if (form.elements[i].checked) {
@@ -183,11 +183,11 @@ PDReg.prototype.register = function(e) {
   }.bind(this)
 
   var postTheClass = function(course) {
-    this.coursesRef.set({'code': course['code']})
+    this.coursesRef.set({'code': course['code'], 'email': user.email })
     .then(function() {
       document.getElementById('allCourses').removeChild(document.getElementById(course['id']));
       M.toast({html: "Successfully registered for " + course['title']})
-      this.database.ref('users/' + uid + '/regs/' + course['id']).set(true)
+      this.database.ref('users/' + user.uid + '/regs/' + course['id']).set(true)
     }.bind(this))
     .catch(function(e) {
       console.log('error!', e)
@@ -196,12 +196,12 @@ PDReg.prototype.register = function(e) {
   }.bind(this);
 
   classes.forEach(function(value) {
-    this.coursesRef = this.database.ref('courses/' + value['id'] + '/members/' + uid);
+    this.coursesRef = this.database.ref('courses/' + value['id'] + '/members/' + user.uid);
     postTheClass(value);
   }.bind(this))
 
   // Update the UI with the number of user registrations
-  this.database.ref('users/' + uid + '/regs').on('child_changed',
+  this.database.ref('users/' + user.uid + '/regs').on('child_changed',
     function(snapshot) {
       this.userCoursesBadge.textContent = snapshot.numChildren();
   }.bind(this));
