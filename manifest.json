@@ -3,5 +3,6 @@
   "short_name": "Web App",
   "start_url": "/index.html",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "gcm_sender_id": "697421799429"
 }
