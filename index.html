@@ -35,6 +35,7 @@
           <button id="sign-out-button" class="waves-effect waves-light btn blue">
             Sign out
           </button>
+          <button id="push-button" class="waves-effect waves-light btn red" disabled>Subscribe</button>
         </div>
       </li>
       <li>
@@ -155,6 +156,20 @@
     </div>
     <script src="/__/firebase/4.1.3/firebase.js"></script>
     <script src="/__/firebase/init.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCXmPVmNY1VyPM7uliVzsC5YoyttSTQcuk",
+        authDomain: "elkhart-pd-signup.firebaseapp.com",
+        databaseURL: "https://elkhart-pd-signup.firebaseio.com",
+        projectId: "elkhart-pd-signup",
+        storageBucket: "elkhart-pd-signup.appspot.com",
+        messagingSenderId: "697421799429"
+      };
+      firebase.initializeApp(config);
+    </script>
     <script src="scripts/filters.js"></script>
     <script src="scripts/main.js"></script>
   </body>
