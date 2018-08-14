@@ -148,11 +148,33 @@ nav
   padding: 10px
 
   #user-courses-list .collection-item
+    display: block
+    position: relative
+    padding-bottom: 4px
     margin: 5px 0
+    box-sizing: border-box
+    border-bottom: 1px solid #e0e0e0
 
-  #user-courses-list .cancel i
-    margin-left: 5px
-    vertical-align: middle
+    .info
+      display: inline-block
+
+      .title
+        font-size: 1.2rem
+        font-weight: 800
+
+    span
+      display: block
+
+    .course-cancel
+      display: inline
+      height: 100%
+      position: relative
+      cursor: pointer
+
+      i
+        display: inline-block
+        margin-left: 5px
+        vertical-align: middle
 
 main
   grid-column: col-start 4 / col-end 12
