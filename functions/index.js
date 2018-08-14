@@ -53,7 +53,7 @@ exports.reminderEmail = functions.https.onRequest((req, res) => {
   const currentTime = new Date().getTime();
   const future = currentTime + 172800000;
 
-  return ref.child('courses/').once('value')
+  return ref.child('courses/').orderByChild('start').startAt(future).once('value')
   .then(snap => {
     const promises = [];
 
@@ -61,13 +61,14 @@ exports.reminderEmail = functions.https.onRequest((req, res) => {
       var el = child.val();
 
       if(el.hasOwnProperty('members')) {
-        promises.push(admin.database().ref('courses/' + child.key + '/members/').once('value'));
+        promises.push(admin.database().ref('courses/' + child.key + '/members/').once('value'))
       }
-      console.log(promises)
     })
+
     return Promise.all(promises)
   })
   .then(results => {
+    console.log(results)
     const emails = [];
     results.forEach(delta => {
       console.log(delta.val());
@@ -77,14 +78,16 @@ exports.reminderEmail = functions.https.onRequest((req, res) => {
       })
     })
 
-    console.log('Sending to: ' + emails.join());
+    console.log('Line 79: Sending to: ' + emails.join());
 
     const mailOpts = {
-      from: '"Elkhart PD" <pd@elkhart.k12.in.us"',
+      from: '"Elkhart PD" <pd@elkhart.k12.in.us>',
       bcc: emails.join(),
-      subject: 'Upcoming Registrations',
+      subject: 'Upcoming Registration',
       text: 'Something about registering here.'
     }
+
+    console.log(mailOpts)
     return mailTransport.sendMail(mailOpts)
   })
   .then(() => {
