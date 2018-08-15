@@ -206,7 +206,7 @@ PDReg.prototype.register = function(e) {
       this.userCoursesBadge.textContent = snapshot.numChildren();
   }.bind(this));
 
-  this.coursesRef.on('value', function(snap) {
+  this.coursesRef.on('child_added', function(snap) {
     var key = snap.ref.parent.parent.key
     this.database.ref('courses/' + key).once('value', buildNewRegCourse);
   }.bind(this))
@@ -214,7 +214,7 @@ PDReg.prototype.register = function(e) {
 
 // Model for registrations
 PDReg.USER_TEMPLATE = `
-      <div><span class="title"></span><span class="date"></span><a id="course-cancel" class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a></div>
+  <div class="info"><span class="title"></span><span class="date"></span></div><a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a></div>
 `;
 
 // Model for classes available for registration.
@@ -236,9 +236,9 @@ PDReg.CLASS_TEMPLATE =
       '<span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>' +
       '<span class="card-desc"></span>' +
       '<div class="details">' +
-        '<span class="seats">Seats Remaining: </span>' +
-        '<span class="contact">Contact: </span>' +
-        '<span class="location">Location: </span>' +
+        '<span class="seats"></span>' +
+        '<span class="contact"></span>' +
+        '<span class="location"></span>' +
       '</div>'
     '</div>' +
   '</div>';
@@ -306,6 +306,9 @@ PDReg.prototype.buildAllClasses = function(course) {
     div.querySelector('.date').textContent = format(course.start);
     div.querySelector('.card-desc').innerHTML = course.desc;
     div.querySelector('.card-image').innerHTML = "<img class='activator' src='" + getBg() + "' />'";
+    div.querySelector('.seats').textContent = "Seats: " + course.seats;
+    div.querySelector('.contact').textContent = "Contact: " + course.poc;
+    div.querySelector('.location').textContent = "Location: " + course.loc;
     codes.push({
       'id': course.key,
       'code': course.code

@@ -1,5 +1,5 @@
 path / {
-  read() { false },
+  read() { false }
   write() { false }
 }
 path /courses {
@@ -14,7 +14,6 @@ path /courses/{courseId}/members/{uid} {
 path /users/{userId}/regs {
   read() { isCurrentUser(userId) }
   write() { isCurrentUser(userId) }
-  validate() { prior(root.courses[courseId]['code']) == this.code }
 }
 
 isCurrentUser(uid) { isSignedIn() && auth.uid == uid }
