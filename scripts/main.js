@@ -206,7 +206,7 @@ PDReg.prototype.register = function(e) {
       this.userCoursesBadge.textContent = snapshot.numChildren();
   }.bind(this));
 
-  this.coursesRef.on('child_added', function(snap) {
+  this.coursesRef.on('value', function(snap) {
     var key = snap.ref.parent.parent.key
     this.database.ref('courses/' + key).once('value', buildNewRegCourse);
   }.bind(this))
@@ -235,6 +235,7 @@ PDReg.CLASS_TEMPLATE =
     '<div class="card-reveal">' +
       '<span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>' +
       '<span class="card-desc"></span>' +
+      '<hr />' +
       '<div class="details">' +
         '<span class="seats"></span>' +
         '<span class="contact"></span>' +
