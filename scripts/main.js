@@ -175,6 +175,7 @@ PDReg.prototype.register = function(e) {
 
       container.querySelector('.title').textContent = course.title;
       container.querySelector('.date').textContent = smallFormat(course.start);
+      container.querySelector('.location').textContent = course.loc;
 
       parentDiv.appendChild(container);
 
@@ -214,7 +215,7 @@ PDReg.prototype.register = function(e) {
 
 // Model for registrations
 PDReg.USER_TEMPLATE = `
-  <div class="info"><span class="title"></span><span class="date"></span></div><a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a></div>
+  <div class="info"><span class="title"></span><span class="date"></span><span class="location"</span></div><a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a></div>
 `;
 
 // Model for classes available for registration.
@@ -263,6 +264,7 @@ PDReg.prototype.buildUserClasses = function(course) {
 
     container.querySelector('.title').textContent = course.title;
     container.querySelector('.date').textContent = smallFormat(course.start);
+    container.querySelector('.location').textContent = course.loc;
 
     parentDiv.appendChild(container);
 
@@ -400,6 +402,47 @@ PDReg.prototype.cancel = function(e) {
 
   document.getElementById('user-courses-list').removeChild(document.getElementById('user_' + id));
 
+  var buildCourse = function(snap) {
+    console.log(snap);
+    var course = snap.val();
+    course.key = snap.key;
+    // reused from main object methods. Hacky, but it works.
+    //TODO: Refactor someday.
+    var parentDiv = document.getElementById("allCourses");
+
+    if(!parentDiv.querySelector("[id='" + course.key + "']")) {
+      var container = document.createElement('div');
+      container.innerHTML = PDReg.CLASS_TEMPLATE;
+      var div = container.children[0];
+      div.setAttribute('id', course.key);
+      div.getElementsByTagName('input')[0].setAttribute('value', course.key);
+      div.getElementsByTagName('input')[0].setAttribute('id', "card-"+course.key);
+      div.getElementsByTagName('label')[0].setAttribute('for', "card-"+course.key);
+      div.getElementsByTagName('input')[1].setAttribute('id', "code-"+course.key);
+      div.getElementsByTagName('label')[1].setAttribute('for', "code-"+course.key);
+      div.setAttribute('data-dan', course.dan);
+      div.setAttribute('data-date', course.start)
+      div.setAttribute('data-title', course.title)
+      parentDiv.appendChild(div);
+
+      div.querySelector('.card-title').textContent = course.title;
+      div.querySelector('.date').textContent = format(course.start);
+      div.querySelector('.card-desc').innerHTML = course.desc;
+      div.querySelector('.card-image').innerHTML = "<img class='activator' src='" + getBg() + "' />'";
+      div.querySelector('.seats').textContent = "Seats: " + course.seats;
+      div.querySelector('.contact').textContent = "Contact: " + course.poc;
+      div.querySelector('.location').textContent = "Location: " + course.loc;
+      codes.push({
+        'id': course.key,
+        'code': course.code
+      })
+
+      if(course.code !== 'Code') {
+        div.querySelector('.code').classList.remove('hidden');
+      }
+    }
+  }
+
   // TODO: This is hacky. Debug child element addition from events.
   // document.getElementById(id).classList.remove('hidden')
   // document.getElementById(id).getElementsByTagName('input')[0].checked = false;
@@ -408,6 +451,7 @@ PDReg.prototype.cancel = function(e) {
     this.userCoursesBadge.textContent = snapshot.numChildren();
   }.bind(this));
 
+  this.database.ref('courses/' + id).on('value', buildCourse)
 }
 
 
