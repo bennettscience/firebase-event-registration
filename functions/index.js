@@ -105,5 +105,64 @@ exports.reminderEmail = functions.https.onRequest((req, res) => {
       }
     })
   })
+})
+
+exports.sendPostNotification = functions.database.ref('/courses/{courseId}}').onCreate(snapshot => {
+  var course = snapshot.val();
+  const title  = course.title;
+  const rawDate = new Date(course.start);
+  var date = rawDate.getDate() + '/' + rawDate.getMonth() + '/' + rawDate.getYear();
+
+
+    // // if data deleted => exit
+    // if (!postTitle) return console.log('Post', postID, 'deleted')
+    //
+    // // Get Device tokens
+  const getDeviceTokensPromise = admin.database().ref('device_ids').once('value').then(snapshots => {
+    //
+    //     // Check if tokens exist
+        if (!snapshots) {
+            return console.log('No device IDs to send notifications to.')
+        }
+    //
+    //     // Notification details
+        const payload = {
+            notification: {
+                title: `${title}`,
+                body: `A new session is available on ${date}`,
+                icon: 'img/ecslogo.png'
+            }
+        }
+    //
+        snapshots.forEach(childSnapshot => {
+            const token = childSnapshot.val()
+
+
+            // Send notification to all tokens
+            admin.messaging().sendToDevice(token, payload).then(response => {
+
+                response.results.forEach(result => {
+                    const error = result.error
+
+                    if (error) {
+                        console.error('Failed delivery to', token, error)
+
+                        // Prepare unused tokens for removal
+                        if (error.code === 'messaging/invalid-registration-token' ||
+                            error.code === 'messaging/registration-token-not-registered') {
+                            childSnapshot.ref.remove()
+                            console.info('Was removed:', token)
+                        }
+                    } else {
+                        console.info('Notification sent to', token)
+                    }
+
+                })
+
+            })
+
+        })
+
+    })
 
 })
