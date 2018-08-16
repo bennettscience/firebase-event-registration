@@ -176,6 +176,8 @@ PDReg.prototype.register = function(e) {
       container.querySelector('.title').textContent = course.title;
       container.querySelector('.date').textContent = smallFormat(course.start);
       container.querySelector('.location').textContent = course.loc;
+      container.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}'>${course.poc}</a>`
+
 
       parentDiv.appendChild(container);
 
@@ -215,7 +217,7 @@ PDReg.prototype.register = function(e) {
 
 // Model for registrations
 PDReg.USER_TEMPLATE = `
-  <div class="info"><span class="title"></span><span class="date"></span><span class="location"</span></div><a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a></div>
+  <div class="info"><span class="title"></span><span class="date"></span><span class="location"></span><span class="contact"></span></div><a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a></div>
 `;
 
 // Model for classes available for registration.
@@ -265,6 +267,7 @@ PDReg.prototype.buildUserClasses = function(course) {
     container.querySelector('.title').textContent = course.title;
     container.querySelector('.date').textContent = smallFormat(course.start);
     container.querySelector('.location').textContent = course.loc;
+    container.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}'>${course.poc}</a>`
 
     parentDiv.appendChild(container);
 
@@ -310,7 +313,7 @@ PDReg.prototype.buildAllClasses = function(course) {
     div.querySelector('.card-desc').innerHTML = course.desc;
     div.querySelector('.card-image').innerHTML = "<img class='activator' src='" + getBg() + "' />'";
     div.querySelector('.seats').textContent = "Seats: " + course.seats;
-    div.querySelector('.contact').textContent = "Contact: " + course.poc;
+    div.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}'>${course.poc}</a>`
     div.querySelector('.location').textContent = "Location: " + course.loc;
     codes.push({
       'id': course.key,
@@ -403,7 +406,6 @@ PDReg.prototype.cancel = function(e) {
   document.getElementById('user-courses-list').removeChild(document.getElementById('user_' + id));
 
   var buildCourse = function(snap) {
-    console.log(snap);
     var course = snap.val();
     course.key = snap.key;
     // reused from main object methods. Hacky, but it works.
@@ -430,8 +432,9 @@ PDReg.prototype.cancel = function(e) {
       div.querySelector('.card-desc').innerHTML = course.desc;
       div.querySelector('.card-image').innerHTML = "<img class='activator' src='" + getBg() + "' />'";
       div.querySelector('.seats').textContent = "Seats: " + course.seats;
-      div.querySelector('.contact').textContent = "Contact: " + course.poc;
+      div.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}'>${course.poc}</a>`
       div.querySelector('.location').textContent = "Location: " + course.loc;
+
       codes.push({
         'id': course.key,
         'code': course.code
