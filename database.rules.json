@@ -16,6 +16,10 @@
         "regs": {
           ".read": "(auth != null && auth.uid == $userId)",
           ".write": "(auth != null && auth.uid == $userId)"
+        },
+        "device_ids": {
+          ".read": "(auth != null && auth.uid == $userId)",
+          ".write": "(auth != null && auth.uid == $userId)"
         }
       }
     }

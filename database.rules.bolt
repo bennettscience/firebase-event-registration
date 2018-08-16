@@ -16,5 +16,10 @@ path /users/{userId}/regs {
   write() { isCurrentUser(userId) }
 }
 
+path /users/{userId}/device_ids {
+  read() { isCurrentUser(userId) }
+  write() { isCurrentUser(userId) }
+}
+
 isCurrentUser(uid) { isSignedIn() && auth.uid == uid }
 isSignedIn() { auth !== null }
