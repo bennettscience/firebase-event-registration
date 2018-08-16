@@ -465,9 +465,9 @@ window.addEventListener('load', () => {
 
     if ('serviceWorker' in navigator) {
 
-        navigator.serviceWorker.register('scripts/service-worker.js')
+        navigator.serviceWorker.register('service-worker.js')
             .then(registration => {
-
+              console.log(registration)
                 messaging.useServiceWorker(registration)
 
                 initializePush()
@@ -524,14 +524,17 @@ function subscribeUser() {
 }
 
 function updateSubscriptionOnServer(token) {
-  console.log(isSubscribed, token)
     if (isSubscribed) {
-        return database.ref('users/' + firebase.auth().currentUser.uid + '/device_ids')
-                .equalTo(token)
-                .on('child_added', snapshot => snapshot.ref.remove())
+        return database.ref('device_ids').once('value').then(snap => {
+          snap.forEach(device => {
+            if (device.val() === token) {
+              device.ref.remove();
+            }
+          })
+        })
     }
 
-    database.ref('users/' + firebase.auth().currentUser.uid + '/device_ids').once('value')
+    database.ref('device_ids').once('value')
         .then(snapshots => {
             let deviceExists = false
 
@@ -545,7 +548,7 @@ function updateSubscriptionOnServer(token) {
 
             if (!deviceExists) {
                 M.toast({html: 'Successfully subscribed to reminders'})
-                return database.ref('users/' + firebase.auth().currentUser.uid + '/device_ids').push(token)
+                return database.ref('device_ids').push(token)
             }
         })
 }
@@ -554,23 +557,13 @@ function unsubscribeUser() {
 
     messaging.deleteToken(userToken)
         .then(() => {
-            //updateSubscriptionOnServer(userToken)
-            return database.ref('users/' + firebase.auth().currentUser.uid + '/device_ids').once('value')
-            .then(snap => {
-              snap.forEach(token => {
-                if(token.val() === userToken) {
-                  snap.ref.remove();
-                }
-              })
-            })
-            .then(() => {
-                isSubscribed = false
-                userToken = null
-                localStorage.removeItem('pushToken')
-                updateBtn()
-                M.toast({ html: 'Successfully unsubscribed from notifications.' })
-              })
-            })
+            updateSubscriptionOnServer(userToken)
+            isSubscribed = false
+            userToken = null
+            localStorage.removeItem('pushToken')
+            updateBtn()
+            M.toast({ html: 'Successfully unsubscribed from notifications.' })
+        })
         .catch(err => console.log('Error unsubscribing', err))
 }
 
