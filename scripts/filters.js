@@ -3,14 +3,14 @@
  * Load sideNav script from materialize.js
  */
 
-// $(document).ready(function() {
-//   $('#slide-out').sidenav({
-//     el: 'slide-out',
-//     isFixed: true
-//   })
-//
-//   $('#slide-out').sidenav('open');
-// })
+$(document).ready(function() {
+  $(".sidenav").sidenav({
+    draggable: true,
+    edge: 'left',
+    preventScrolling: true,
+    isFixed: true
+  })
+})
 
 $(document).ready(function() {
   $(".button-collapse").sidenav({
@@ -117,7 +117,18 @@ $("#search-clear").on('click', function() {
    *  @param {Object} parent DOM object
    */
   $(this).parent().find('input').val('');
+  $("#search-form").toggleClass('hidden').blur()
   $(".class-container").show();
+})
+
+$("#search-button").on('click', function() {
+  $(this).next().toggleClass('hidden')
+  $("#search").focus()
+})
+
+$("#slide-out-button").on('click', function() {
+  console.log('clicked')
+  $('#slide-out').sidenav('open');
 })
 
 // Format dates for sessions displayed in main container
