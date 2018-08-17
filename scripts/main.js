@@ -152,7 +152,7 @@ PDReg.prototype.register = function(e) {
     if (form.elements[i].checked) {
       var title = form.elements[i].parentElement.querySelector('.card-title').innerHTML
       var id = form.elements[i].value;
-      var code = form.elements[i].parentElement.querySelector('.code').getElementsByTagName('input')[0].value
+      var code = form.elements[i].parentElement.nextSibling.nextSibling.childNodes[1].childNodes[0].value
       if(code.length === 0) {
         code = "Code"
       }
@@ -185,23 +185,26 @@ PDReg.prototype.register = function(e) {
     }
   }.bind(this)
 
-  var postTheClass = function(course) {
-    this.coursesRef.set({'code': course['code'], 'email': user.email })
-    .then(function() {
-      document.getElementById('allCourses').removeChild(document.getElementById(course['id']));
-      M.toast({html: "Successfully registered for " + course['title']})
-      this.database.ref('users/' + user.uid + '/regs/' + course['id']).set(true)
-    }.bind(this))
-    .catch(function(e) {
-      console.log('error!', e)
-      M.toast({html: "Registration failed for " + course['title'] + ". Please check your registration code", classes: 'red'})
+  var postTheClass = function(classes) {
+    var promises = [];
+    classes.forEach(function(item) {
+       firebase.database().ref('courses/' + item['id'] + '/members/' + user.uid).set({'code': item['code'], 'email': user.email})
+      .then(function() {
+        firebase.database().ref('courses/' + item['id']).once('value').then(function(snap) {
+          document.getElementById('allCourses').removeChild(document.getElementById(snap.key))
+          M.toast({html: "Successfully registered for " + item['title']})
+          firebase.database().ref('users/' + user.uid + '/regs/' + item['id']).set(true)
+          buildNewRegCourse(snap)
+        })
+      })
+      .catch(function(e) {
+        console.log('error!', e)
+        M.toast({html: "Registration failed for " + item['title'] + ". Please check your registration code", classes: 'red'})
+      })
     })
-  }.bind(this);
+  }
 
-  classes.forEach(function(value) {
-    this.coursesRef = this.database.ref('courses/' + value['id'] + '/members/' + user.uid);
-    postTheClass(value);
-  }.bind(this))
+  postTheClass(classes);
 
   // Update the UI with the number of user registrations
   this.database.ref('users/' + user.uid + '/regs').on('child_changed',
@@ -209,10 +212,6 @@ PDReg.prototype.register = function(e) {
       this.userCoursesBadge.textContent = snapshot.numChildren();
   }.bind(this));
 
-  this.coursesRef.on('value', function(snap) {
-    var key = snap.ref.parent.parent.key
-    this.database.ref('courses/' + key).once('value', buildNewRegCourse);
-  }.bind(this))
 };
 
 // Model for registrations
@@ -226,7 +225,10 @@ PDReg.CLASS_TEMPLATE =
   '<div class="card large class-container">' +
     '<div class="card-image waves-effect waves-block waves-light"></div>' +
     '<div class="card-content">' +
-    '<label for=""><input name="course" class="filled-in" value="" id="" type="checkbox" /><span class="sort-title card-title grey-text text-darken-4"></span></label>' +
+      '<label for="">' +
+        '<input name="course" class="filled-in" value="" id="" type="checkbox" />' +
+        '<span class="sort-title card-title grey-text text-darken-4"></span>' +
+      '</label>' +
       '<div class="date grey-text text-darken-1"></div>' +
       '<div class="code hidden"><i class="material-icons prefix">lock</i><div class="input-field inline"><input name="code" type="text" value="" /><label for="code">Registration code</label></div></div>' +
     '</div>'+
