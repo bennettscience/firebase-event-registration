@@ -221,14 +221,12 @@ PDReg.USER_TEMPLATE = `
 `;
 
 // Model for classes available for registration.
-// TODO: Turn into Vue component?
+// TODO: FIX FORM CHECKBOXES
 PDReg.CLASS_TEMPLATE =
   '<div class="card large class-container">' +
     '<div class="card-image waves-effect waves-block waves-light"></div>' +
     '<div class="card-content">' +
-    '<input name="course" class="filled-in" value="" id="" type="checkbox" />' +
-    '<label for=""></label>' +
-    '<span class="sort-title card-title grey-text text-darken-4 activator"></span>' +
+    '<label for=""><input name="course" class="filled-in" value="" id="" type="checkbox" /><span class="sort-title card-title grey-text text-darken-4"></span></label>' +
       '<div class="date grey-text text-darken-1"></div>' +
       '<div class="code hidden"><i class="material-icons prefix">lock</i><div class="input-field inline"><input name="code" type="text" value="" /><label for="code">Registration code</label></div></div>' +
     '</div>'+
@@ -457,6 +455,13 @@ PDReg.prototype.cancel = function(e) {
   this.database.ref('courses/' + id).on('value', buildCourse)
 }
 
+/**
+ *  Load the PDReg Class and initialize Firebase.
+ */
+window.onload = function() {
+  window.pdReg = new PDReg();
+}
+
 const messaging = firebase.messaging(),
       database  = firebase.database(),
       pushBtn   = document.getElementById('push-button')
@@ -568,12 +573,4 @@ function unsubscribeUser() {
             M.toast({ html: 'Successfully unsubscribed from notifications.' })
         })
         .catch(err => console.log('Error unsubscribing', err))
-}
-
-
-/**
- *  Load the PDReg Class and initialize Firebase.
- */
-window.onload = function() {
-  window.pdReg = new PDReg();
 }

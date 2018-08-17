@@ -34,14 +34,44 @@ html, body
   grid-gap: 15px
   margin: 0 15px
 
-#sidebar-wrap
+#slide-out, #fullscreen-sidebar
   display: block
   position: fixed
   z-index: 1000
   height: 100%
 
-  #slide-out
+  ul
+    margin: 0
+
+  .user-view
+    padding: 32px
+
+  #user-pic
+    display: block
     position: relative
+    height: auto
+    width: auto
+
+    img, i
+      width: 128px
+      height: 128px
+      margin: 0 auto
+
+    i
+      display: block
+      text-align: center
+
+#string-name, #user-email
+  text-align: center
+
+#sign-out-button, #sign-in-button, #push-button
+  display: block
+  width: 80%
+  margin: 3px auto
+
+
+  // #slide-out
+  //   position: relative
 
   .sort
     text-align: center
@@ -49,8 +79,6 @@ html, body
     a
       display: inline-block
       width: 30%
-
-  .side-nav
 
     .cancel
       cursor: pointer
@@ -63,54 +91,55 @@ html, body
         vertical-align: middle
         float: none
 
-    .user-view
-      padding: 32px
-
-    #user-pic
-      display: block
-      position: relative
-      height: auto
-      width: auto
-
-      img, i
-        width: 128px
-        height: 128px
-        margin: 0 auto
-
-      i
-        display: block
-        text-align: center
-
-    #string-name, #user-email
-      text-align: center
-
-    #sign-out-button, #sign-in-button, #push-button
-      display: block
-      width: 80%
-      margin: 3px auto
-
 #search-wrap
   grid-column: 1 / col-end 12
   grid-row: 1
   position: relative
 
-nav
-  position: fixed
-  z-index: 999
+  nav
+    position: fixed
+    z-index: 999
 
-  form
-    margin-left: 300px
+    .nav-wrapper
 
-  .input-field
-    margin: 0 0 0 -15px
+      i
+        font-size: 2.5rem
+        vertical-align: middle
 
-  .input-field label i
-    padding-left: 15px
-    background: transparent
+      &:hover
+        box-shadow: none
+        background-color: inherit
 
-.nav-wrapper .input-field input[type="search"]
-  font-size: 32px
-  line-height: 32px
+      &:active
+        background-color: inherit
+
+      &:focus
+        background-color: inherit
+
+      #search-button, #slide-out-button
+        position: absolute
+        display: block
+        top: 0
+        z-index: 1000
+
+      #search-button
+        right: 3rem
+
+      #slide-out-button
+        left: 3rem
+
+    #search-form
+      display: block
+      position: absolute
+      width: 100%
+      top: 0
+      left: 0
+      z-index: 1000
+
+      .input-field input[type="search"]
+        font-size: 32px
+        line-height: 32px
+        margin-left: 300px
 
 #user-courses-wrap
   display: block
@@ -225,6 +254,10 @@ main
   display: none
 
 #mobile-submit
+  display: block
+  position: fixed
+  bottom: 2.5rem
+  right: 2.5rem
   display: none
 
 /* Typography */
@@ -234,17 +267,26 @@ h1, h2, h3, p
 .hidden
   display: none !important
 
-input[type="checkbox"]:not(:checked)+label, input[type="checkbox"]:checked+label
-  pointer-events: auto
-  float: left
-  top: 0.35em
+// input[type="checkbox"]:not(:checked)+label, input[type="checkbox"]:checked+label
+//   pointer-events: auto
+//   float: left
+//   top: 0.35em
 
 .class-container
   margin: 10px
   flex-grow: 1
   border: 1px solid #f3f3f3
 
-.card.large
+.card
+
+  .card-image
+    max-height: 40% !important
+
+  .card-content
+
+    .card-title
+      font-size: 1.6rem
+      line-height: 1.6rem
 
   .content
     max-height: 60%
@@ -261,16 +303,16 @@ input[type="checkbox"]:not(:checked)+label, input[type="checkbox"]:checked+label
   right: 50px
   z-index: 100
 
-.input-field label
-  transform: none
-  -webkit-transform: none
-  -moz-transform: none
-  background: transparent !important
-
-input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-default):focus:not([readonly])+label, input[type=password]:not(.browser-default):focus:not([readonly])+label, input[type=email]:not(.browser-default):focus:not([readonly])+label, input[type=url]:not(.browser-default):focus:not([readonly])+label, input[type=time]:not(.browser-default):focus:not([readonly])+label, input[type=date]:not(.browser-default):focus:not([readonly])+label, input[type=datetime]:not(.browser-default):focus:not([readonly])+label, input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label, input[type=tel]:not(.browser-default):focus:not([readonly])+label, input[type=number]:not(.browser-default):focus:not([readonly])+label, input[type=search]:not(.browser-default):focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label
-  opacity: 0
-  background: transparent
-  transition: 0.3s ease all
+// .input-field label
+//   transform: none
+//   -webkit-transform: none
+//   -moz-transform: none
+//   background: transparent !important
+//
+// input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-default):focus:not([readonly])+label, input[type=password]:not(.browser-default):focus:not([readonly])+label, input[type=email]:not(.browser-default):focus:not([readonly])+label, input[type=url]:not(.browser-default):focus:not([readonly])+label, input[type=time]:not(.browser-default):focus:not([readonly])+label, input[type=date]:not(.browser-default):focus:not([readonly])+label, input[type=datetime]:not(.browser-default):focus:not([readonly])+label, input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label, input[type=tel]:not(.browser-default):focus:not([readonly])+label, input[type=number]:not(.browser-default):focus:not([readonly])+label, input[type=search]:not(.browser-default):focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label
+//   opacity: 0
+//   background: transparent
+//   transition: 0.3s ease all
 
 .input-field input[type="search"] ~ .mdi-navigation-close, .input-field input[type="search"] ~ .material-icons
   right: 3rem
@@ -289,83 +331,6 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
   margin: 5px auto
   padding: 10px
   background: rgba(200,200,200,0.6)
-
-
-.mdl-layout__header-row span
-  margin-left: 15px
-  margin-top: 17px
-
-.mdl-grid
-  max-width: 1024px
-  margin: auto
-
-.mdl-layout__content
-  margin-top: 10px
-
-.mdl-layout__header-row
-  padding: 0
-  margin: 0 auto
-
-.mdl-card__supporting-text
-  width: auto
-  height: 100%
-  padding-top: 0
-  padding-bottom: 0
-
-.message-container .pic
-  background-image: url('/images/profile_placeholder.png')
-  background-repeat: no-repeat
-  width: 30px
-  height: 30px
-  background-size: 30px
-  border-radius: 20px
-
-.message-container .spacing
-  display: table-cell
-  vertical-align: top
-
-.message-container .message
-  display: table-cell
-  width: calc(100% - 40px)
-  padding: 5px 0 5px 10px
-
-.message-container .name
-  display: inline-block
-  width: 100%
-  padding-left: 40px
-  color: #bbb
-  font-style: italic
-  font-size: 12px
-  box-sizing: border-box
-
-#message-form
-  display: flex
-  flex-direction: row
-  width: calc(100% - 48px)
-  float: left
-
-#image-form
-  display: flex
-  flex-direction: row
-  width: 48px
-  float: right
-
-#message-form .mdl-textfield
-  width: calc(100% - 100px)
-
-#message-form button, #image-form button
-  width: 100px
-  margin: 15px 0 0 10px
-
-.mdl-grid
-  width: 100%
-
-.mdl-card
-  min-height: 0
-
-.mdl-card
-  background: linear-gradient(white, #f9f9f9)
-  justify-content: space-between
 
 #user-view #user-pic
   position: relative
@@ -415,6 +380,9 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
     grid-column: 1 / span 12
     margin-left: 0
 
+  #fullscreen-sidebar
+    display: none
+
   .fixed-action-btn
     display: block
 
@@ -423,6 +391,9 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 
   #submit
     display: none
+
+  .input-field input[type="search"]
+    margin-left: 0px !important
 
   #content-wrap
     width: 100%
