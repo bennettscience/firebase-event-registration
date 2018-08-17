@@ -65,40 +65,32 @@
       </li>
       <li id="user-input" class="no-padding">
         <ul class="collapsible collapsible-accordion">
-          <!-- <li>
-            <a class="collapsible-header">Your Courses<i class="material-icons">arrow_drop_down</i><span class="badge blue white-text" id="user-courses-badge"></span></a>
-            <div class="collapsible-body">
-              <div id="userCourseList-content">
-                <ul class="collection" id="collection"></ul>
-              </div>
-            </div>
-          </li> -->
           <li> <!-- Danielson Filter START -->
             <a class="collapsible-header">Danielson Filters<i class="material-icons">arrow_drop_down</i></a>
             <div class="collapsible-body" id="dan-filters">
               <form name="filter-form" id="filter-form" action="" method="">
-                <input name='filterStatus' type='checkbox' value='1a' id='1a' class='filled-in' /><label for='1a'>1a Demonstrating Knowledge of Content and Pedagogy</label>
-                <input name='filterStatus' type='checkbox' value='1b' id='1b' class='filled-in' /><label for='1b'>1b Demonstrating Knowledge of Students</label>
-                <input name='filterStatus' type='checkbox' value='1c' id='1c' class='filled-in' /><label for='1c'>1c Setting Instructional Outcomes</label>
-                <input name='filterStatus' type='checkbox' value='1d' id='1d' class='filled-in' /><label for='1d'>1d Demonstrating Knowledge of Resources</label>
-                <input name='filterStatus' type='checkbox' value='1e' id='1e' class='filled-in' /><label for='1e'>1e Designing Coherent Instruction</label>
-                <input name='filterStatus' type='checkbox' value='1f' id='1f' class='filled-in' /><label for='1f'>1f Designing Student Assessments</label>
-                <input name='filterStatus' type='checkbox' value='2a' id='2a' class='filled-in' /><label for='2a'>2a Creating an Environment of Respect and Report</label>
-                <input name='filterStatus' type='checkbox' value='2b' id='2b' class='filled-in' /><label for='2b'>2b Establishing a culture for Learning</label>
-                <input name='filterStatus' type='checkbox' value='2c' id='2c' class='filled-in' /><label for='2c'>2c Managing Classroom Procedures</label>
-                <input name='filterStatus' type='checkbox' value='2d' id='2d' class='filled-in' /><label for='2d'>2d Managing Student Behavior</label>
-                <input name='filterStatus' type='checkbox' value='2e' id='2e' class='filled-in' /><label for='2e'>2e Organizing Physical Space</label>
-                <input name='filterStatus' type='checkbox' value='3a' id='3a' class='filled-in' /><label for='3a'>3a Communicating with Students</label>
-                <input name='filterStatus' type='checkbox' value='3b' id='3b' class='filled-in' /><label for='3b'>3b Using Questioning and Discussion Techniques</label>
-                <input name='filterStatus' type='checkbox' value='3c' id='3c' class='filled-in' /><label for='3c'>3c Engaging Students in Learning</label>
-                <input name='filterStatus' type='checkbox' value='3d' id='3d' class='filled-in' /><label for='3d'>3d Using Assessment in Instruction</label>
-                <input name='filterStatus' type='checkbox' value='3e' id='3e' class='filled-in' /><label for='3e'>3e Demonstrating Flexibility and Responsiveness</label>
-                <input name='filterStatus' type='checkbox' value='4a' id='4a' class='filled-in' /><label for='4a'>4a Reflecting on Teaching</label>
-                <input name='filterStatus' type='checkbox' value='4b' id='4b' class='filled-in' /><label for='4b'>4b Maintaining Accurate Records</label>
-                <input name='filterStatus' type='checkbox' value='4c' id='4c' class='filled-in' /><label for='4c'>4c Communicating with Families</label>
-                <input name='filterStatus' type='checkbox' value='4d' id='4d' class='filled-in' /><label for='4d'>4d Participating in the Professional Community</label>
-                <input name='filterStatus' type='checkbox' value='4e' id='4e' class='filled-in' /><label for='4e'>4e Growing and Developing Professionally</label>
-                <input name='filterStatus' type='checkbox' value='4f' id='4f' class='filled-in' /><label for='4f'>4f Showing Professionalism</label>
+                <label for='1a'><input name='filterStatus' type='checkbox' value='1a' id='1a' class='filled-in' /><span>1a Demonstrating Knowledge of Content and Pedagogy</span></label>
+                <label for='1b'><input name='filterStatus' type='checkbox' value='1b' id='1b' class='filled-in' /><span>1b Demonstrating Knowledge of Students</span></label>
+                <label for='1c'><input name='filterStatus' type='checkbox' value='1c' id='1c' class='filled-in' /><span>1c Setting Instructional Outcomes</span></label>
+                <label for='1d'><input name='filterStatus' type='checkbox' value='1d' id='1d' class='filled-in' /><span>1d Demonstrating Knowledge of Resources</span></label>
+                <label for='1e'><input name='filterStatus' type='checkbox' value='1e' id='1e' class='filled-in' /><span>1e Designing Coherent Instruction</span></label>
+                <label for='1f'><input name='filterStatus' type='checkbox' value='1f' id='1f' class='filled-in' /><span>1f Designing Student Assessments</span></label>
+                <label for='2a'><input name='filterStatus' type='checkbox' value='2a' id='2a' class='filled-in' /><span>2a Creating an Environment of Respect and Report</span></label>
+                <label for='2b'><input name='filterStatus' type='checkbox' value='2b' id='2b' class='filled-in' /><span>2b Establishing a culture for Learning</span></label>
+                <label for='2c'><input name='filterStatus' type='checkbox' value='2c' id='2c' class='filled-in' /><span>2c Managing Classroom Procedures</span></label>
+                <label for='2d'><input name='filterStatus' type='checkbox' value='2d' id='2d' class='filled-in' /><span>2d Managing Student Behavior</span></label>
+                <label for='2e'><input name='filterStatus' type='checkbox' value='2e' id='2e' class='filled-in' /><span>2e Organizing Physical Space</span></label>
+                <label for='3a'><input name='filterStatus' type='checkbox' value='3a' id='3a' class='filled-in' /><span>3a Communicating with Students</span></label>
+                <label for='3b'><input name='filterStatus' type='checkbox' value='3b' id='3b' class='filled-in' /><span>3b Using Questioning and Discussion Techniques</span></label>
+                <label for='3c'><input name='filterStatus' type='checkbox' value='3c' id='3c' class='filled-in' /><span>3c Engaging Students in Learning</span></label>
+                <label for='3d'><input name='filterStatus' type='checkbox' value='3d' id='3d' class='filled-in' /><span>3d Using Assessment in Instruction</span></label>
+                <label for='3e'><input name='filterStatus' type='checkbox' value='3e' id='3e' class='filled-in' /><span>3e Demonstrating Flexibility and Responsiveness</span></label>
+                <label for='4a'><input name='filterStatus' type='checkbox' value='4a' id='4a' class='filled-in' /><span>4a Reflecting on Teaching</span></label>
+                <label for='4b'><input name='filterStatus' type='checkbox' value='4b' id='4b' class='filled-in' /><span>4b Maintaining Accurate Records</span></label>
+                <label for='4c'><input name='filterStatus' type='checkbox' value='4c' id='4c' class='filled-in' /><span>4c Communicating with Families</span></label>
+                <label for='4d'><input name='filterStatus' type='checkbox' value='4d' id='4d' class='filled-in' /><span>4d Participating in the Professional Community</span></label>
+                <label for='4e'><input name='filterStatus' type='checkbox' value='4e' id='4e' class='filled-in' /><span>4e Growing and Developing Professionally</span></label>
+                <label for='4f'><input name='filterStatus' type='checkbox' value='4f' id='4f' class='filled-in' /><span>4f Showing Professionalism</span></label>
               </form>
             </div>
           </li>
