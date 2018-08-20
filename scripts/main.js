@@ -24,6 +24,8 @@ function PDReg() {
   this.allCourses = document.getElementById('allCourses');
   this.search = document.getElementById('search-wrap');
   this.userInput = document.getElementById('user-input');
+  this.subscribeButton = document.getElementById('push-button');
+  this.sorting = document.getElementById('sorting')
 
   // Do stuff when buttons are clicked
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
@@ -107,6 +109,8 @@ PDReg.prototype.onAuthStateChanged = function(user) {
     this.courseForm.classList.remove('hidden');
     this.search.classList.remove('hidden');
     this.userInput.classList.remove('hidden');
+    this.subscribeButton.classList.remove('hidden')
+    this.sorting.classList.remove('hidden')
 
     // Hide sign-in button.
     this.signInButton.classList.add('hidden');
@@ -128,6 +132,8 @@ PDReg.prototype.onAuthStateChanged = function(user) {
     this.courseForm.classList.add('hidden');
     this.search.classList.add('hidden');
     this.userInput.classList.add('hidden');
+    this.subscribeButton.classList.add('hidden')
+    this.sorting.classList.add('hidden')
 
     this.signInButton.classList.remove('hidden');
   }
