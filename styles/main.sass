@@ -68,7 +68,7 @@ html, body
 #string-name, #user-email
   text-align: center
 
-#sign-out-button, #sign-in-button, #push-button
+#sign-out-button, #push-button
   display: block
   width: 80%
   margin: 3px auto
@@ -209,17 +209,30 @@ html, body
         margin-left: 5px
         vertical-align: middle
 
+#login-splash
+  font-size: 28px
+  font-family: sans-serif
+  grid-column: 2 / span 10
+  grid-row: 1
+  text-align: center
+
+  img
+    width: 95%
+
+  #sign-in-button
+    height: 64px
+    line-height: 64px
+    font-size: 1.6rem
+
+    i
+      vertical-align: middle
+      font-size: 2.2rem
+      margin-right: 1rem
+
 main
   grid-column: col-start 4 / col-end 12
   grid-row: 2
   margin-left: -15px
-
-  #login-splash
-    font-size: 28px
-    font-family: sans-serif
-    grid-column: 2 / span 10
-    grid-row: 1
-    text-align: center
 
   #allCourses
     display: flex

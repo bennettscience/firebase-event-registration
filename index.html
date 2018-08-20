@@ -31,9 +31,6 @@
           <div id="user-pic" class="circle"></div>
           <div id="string-name" class="white-text name"></div>
           <div id="user-email" class="white-text email"></div>
-          <button id="sign-in-button" class="waves-effect waves-light btn blue">
-            Google Sign In
-          </button>
           <button id="sign-out-button" class="waves-effect waves-light btn blue">
             Sign out
           </button>
@@ -97,11 +94,14 @@
     </div>
     </div> <!-- /#sidebar-wrap -->
     <div id="wrap">
+      <div id="login-splash">
+        <img src='https://newscdn.weigelbroadcasting.com/79qZX-1527177142-109961-blog-elkhartschoolslogo.jpg' />
+        <p>Please log in with your ECS Google account.</p>
+        <button id="sign-in-button" class="waves-effect waves-light btn btn-large blue">
+          <i class="material-icons large white-text prefix large">account_circle</i>Google Sign In
+        </button>
+      </div>
       <main>
-        <div id="login-splash">
-          <img src='https://newscdn.weigelbroadcasting.com/79qZX-1527177142-109961-blog-elkhartschoolslogo.jpg' />
-          <p>Please log in with your ECS Google account on the left</p>
-        </div>
         <form id="course-form" action="#">
           <input hidden type="text" name="name" value="" />
           <input hidden type="text" name="userName" value="" />

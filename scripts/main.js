@@ -26,6 +26,7 @@ function PDReg() {
   this.userInput = document.getElementById('user-input');
   this.subscribeButton = document.getElementById('push-button');
   this.sorting = document.getElementById('sorting')
+  this.sidebar = document.getElementById('slide-out')
 
   // Do stuff when buttons are clicked
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
@@ -111,6 +112,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
     this.userInput.classList.remove('hidden');
     this.subscribeButton.classList.remove('hidden')
     this.sorting.classList.remove('hidden')
+    this.sidebar.classList.remove('hidden')
 
     // Hide sign-in button.
     this.signInButton.classList.add('hidden');
@@ -121,19 +123,20 @@ PDReg.prototype.onAuthStateChanged = function(user) {
     this.getAllClasses(userName);
   } else { // User is signed out!
     // Hide user's profile and interactive elements button.
-    this.userCourses.innerHTML = '';
-    this.userEmail.classList.add('hidden');
+    // this.userCourses.innerHTML = '';
+    // this.userEmail.classList.add('hidden');
     document.getElementById('login-splash').classList.remove('hidden');
 
-    this.stringName.classList.add('hidden');
+    // this.stringName.classList.add('hidden');
 
-    this.userPic.innerHTML = '<i class="material-icons large white-text">account_circle</i>';
-    this.signOutButton.classList.add('hidden');
+    // this.userPic.innerHTML = '<i class="material-icons large white-text">account_circle</i>';
+    // this.signOutButton.classList.add('hidden');
     this.courseForm.classList.add('hidden');
     this.search.classList.add('hidden');
-    this.userInput.classList.add('hidden');
-    this.subscribeButton.classList.add('hidden')
-    this.sorting.classList.add('hidden')
+    // this.userInput.classList.add('hidden');
+    // this.subscribeButton.classList.add('hidden')
+    // this.sorting.classList.add('hidden')
+    this.sidebar.classList.add('hidden')
 
     this.signInButton.classList.remove('hidden');
   }
