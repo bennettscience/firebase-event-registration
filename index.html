@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-  <title>Elkhart PD | Login</title>
+  <title>Elkhart PD</title>
   <link rel="manifest" href="manifest.json">
 
   <!-- scripts -->
@@ -40,28 +40,10 @@
           <button id="push-button" class="waves-effect waves-light btn red" disabled>Subscribe</button>
         </div>
       </li>
-      <li>
-        <a id="date" class="sort btn-flat">Sort by Date</a>
-        <a id="title" class="sort btn-flat">Sort by Title</a>
-        <!-- <p>Sort By</p>
-        <form id="sortForm" action="#">
-          <div class="switch">
-            <label>
-              Off
-              <input type="checkbox">
-              <span class="lever"></span>
-              On
-            </label>
-          </div>
-          <p>
-            <input name="sortType" type="radio" id="date" value="date" />
-            <label for="date">Date</label>
-          </p>
-          <p>
-            <input name="sortType" type="radio" id="title" value="title" />
-            <label for="title">Title</label>
-          </p> -->
-          <a id="collection" class="btn-flat waves-effect waves-light">Your courses <span class="badge blue white-text" id="user-courses-badge"></span></a>
+      <li id="sorting">
+        <a id="date" class="sort btn blue"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
+        <a id="title" class="sort btn blue"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
+        <a id="collection" class="btn-flat waves-effect waves-light">Show Your Courses <span class="badge blue white-text" id="user-courses-badge"></span></a>
       </li>
       <li id="user-input" class="no-padding">
         <ul class="collapsible collapsible-accordion">
