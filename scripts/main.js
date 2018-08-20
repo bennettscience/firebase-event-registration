@@ -242,7 +242,7 @@ PDReg.CLASS_TEMPLATE =
       '<div class="code hidden"><i class="material-icons prefix">lock</i><div class="input-field inline"><input name="code" type="text" value="" /><label for="code">Registration code</label></div></div>' +
     '</div>'+
     '<div class="card-action">' +
-      '<a class="btn btn-flat btn-grey activator">More Information</a>' +
+      '<a class="btn btn-grey activator">More Information</a>' +
     '</div>' +
     '<div class="card-reveal">' +
       '<span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>' +
@@ -322,7 +322,7 @@ PDReg.prototype.buildAllClasses = function(course) {
     div.querySelector('.card-desc').innerHTML = course.desc;
     div.querySelector('.card-image').innerHTML = "<img class='activator' src='" + getBg() + "' />'";
     div.querySelector('.seats').textContent = "Seats: " + course.seats;
-    div.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}'>${course.poc}</a>`
+    div.querySelector('.contact').innerHTML = `Contact: <a href='mailto:${course.pocEmail}'>${course.poc}</a>`
     div.querySelector('.location').textContent = "Location: " + course.loc;
     codes.push({
       'id': course.key,
