@@ -45,10 +45,6 @@ function PDReg() {
   this.initFirebase();
 }
 
-PDReg.prototype.registerUserBuilding = function() {
-  console.log(this.building.value)
-}.bind(this)
-
 /**
  * PDReg.prototype.initFirebase - Connect to firebase
  *
@@ -87,8 +83,16 @@ PDReg.prototype.checkSignedInWithMessage = function() {
   }
 };
 
-// TODO: onboarding for first time user
-// TODO: require ECS email domain for login - add to rules manifest
+PDReg.prototype.registerUserBuilding = function() {
+  var building = document.getElementById('user-building-select').value
+  var user = firebase.auth().currentUser
+
+  console.log(user)
+  // TODO: Store user building in the tables
+  this.database.ref('users/' + user.uid).set({'building': building}).then(() => {
+    this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this))
+  })
+}
 
 /**
  * PDReg.prototype.onAuthStateChanged - Listen for sign in/out events
@@ -110,15 +114,13 @@ PDReg.prototype.onAuthStateChanged = function(user) {
     .then(function(snap) {
       const userData = snap.val()
       if(user && !snap.hasChild('building')) {
-        // buildSchools()
         document.getElementById('login-splash').classList.add('hidden')
         document.getElementById('user-building-splash').classList.remove('hidden')
         this.courseForm.classList.add('hidden');
         this.search.classList.add('hidden');
 
         this.sidebar.classList.add('hidden')
-      }
-      else if (user && snap.hasChild('building')) { // User is signed in!
+      } else if (user && snap.hasChild('building')) { // User is signed in and registered with a building
         // Get profile pic and user's name from the Firebase user object.
         var stringName = user.displayName;
         var userName = user.email.split('@')[0];
@@ -144,6 +146,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         this.subscribeButton.classList.remove('hidden')
         this.sorting.classList.remove('hidden')
         this.sidebar.classList.remove('hidden')
+        this.registerBuilding.classList.add('hidden')
 
         // Hide sign-in button.
         this.signInButton.classList.add('hidden');

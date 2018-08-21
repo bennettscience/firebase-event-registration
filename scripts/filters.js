@@ -13,21 +13,24 @@ $(document).ready(function() {
 })
 
 $(document).ready(function() {
+  var el = $("#user-building-select")
+	var schools = ["Beardsley", "Beck", "Bristol", "Cleveland", "Daly", "Eastwood", "Feeser", "Hawthorne", "Monger", "Osolo", "Pinewood", "Riverview", "Roosevelt", "Woodland", "North Side", "Pierre Moran", "West Side", "Elkhart Academy",
+			"Central", "Memorial", "EACC", "Community Education", "PACE", "Administration", "Services", "Transportation", "School Without Walls"
+	];
+	var sorted = schools.sort();
+
+	for (var i = 0; i < sorted.length; i++) {
+    var opt = document.createElement('option')
+    opt.text = sorted[i];
+    opt.value = sorted[i];
+		opt = '<option value="' + sorted[i] + '">' + sorted[i] + '</option>'
+    el.append(opt)
+	}
+
+	// el.appendChild(opt);
+
   $('#user-building-select').formSelect();
 })
-
-// function buildSchools() {
-//   	var schools = ["Beardsley", "Beck", "Bristol", "Cleveland", "Daly", "Eastwood", "Feeser", "Hawthorne", "Monger", "Osolo", "Pinewood", "Riverview", "Roosevelt", "Woodland", "North Side", "Pierre Moran", "West Side", "Elkhart Academy",
-//   			"Central", "Memorial", "EACC", "Community Education", "PACE", "Administration", "Services", "Transportation", "School Without Walls"
-//   	];
-//   	var sorted = schools.sort();
-//   	var opt = '';
-//
-//   	for (var i = 0; i < sorted.length; i++) {
-//   			opt += '<option value="' + sorted[i] + '">' + sorted[i] + '</option>'
-//   	}
-//   	document.getElementById("#user-building-select").append(opt);
-// }
 
 $(document).keydown(function(e) {
   if(e.keyCode == 27) {
