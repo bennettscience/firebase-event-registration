@@ -9,15 +9,25 @@ $(document).ready(function() {
     edge: 'left',
     preventScrolling: true,
     isFixed: true
-  })
+  });
 })
 
 $(document).ready(function() {
-  $(".button-collapse").sidenav({
-    draggable: true
-  });
-  $(".collapsible").collapsible();
+  $('#user-building-select').formSelect();
 })
+
+// function buildSchools() {
+//   	var schools = ["Beardsley", "Beck", "Bristol", "Cleveland", "Daly", "Eastwood", "Feeser", "Hawthorne", "Monger", "Osolo", "Pinewood", "Riverview", "Roosevelt", "Woodland", "North Side", "Pierre Moran", "West Side", "Elkhart Academy",
+//   			"Central", "Memorial", "EACC", "Community Education", "PACE", "Administration", "Services", "Transportation", "School Without Walls"
+//   	];
+//   	var sorted = schools.sort();
+//   	var opt = '';
+//
+//   	for (var i = 0; i < sorted.length; i++) {
+//   			opt += '<option value="' + sorted[i] + '">' + sorted[i] + '</option>'
+//   	}
+//   	document.getElementById("#user-building-select").append(opt);
+// }
 
 $(document).keydown(function(e) {
   if(e.keyCode == 27) {

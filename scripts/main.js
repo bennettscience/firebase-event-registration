@@ -27,12 +27,16 @@ function PDReg() {
   this.subscribeButton = document.getElementById('push-button');
   this.sorting = document.getElementById('sorting')
   this.sidebar = document.getElementById('slide-out')
+  this.building = document.getElementById('user-building-select')
+  this.registerBuilding = document.getElementById('user-building-splash')
+  this.registerBuildingButton = document.getElementById('user-building-splash-submit')
 
   // Do stuff when buttons are clicked
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
   this.userCoursesButton.addEventListener('click', this.showUserClasses.bind(this));
   this.hideUserCoursesButton.addEventListener('click', this.hideUserClasses.bind(this))
+  this.registerBuildingButton.addEventListener('click', this.registerUserBuilding.bind(this))
 
 
   // listen for the registration button
@@ -40,6 +44,10 @@ function PDReg() {
 
   this.initFirebase();
 }
+
+PDReg.prototype.registerUserBuilding = function() {
+  console.log(this.building.value)
+}.bind(this)
 
 /**
  * PDReg.prototype.initFirebase - Connect to firebase
@@ -88,59 +96,68 @@ PDReg.prototype.checkSignedInWithMessage = function() {
  * @param  {Object} user authenticated user object from the firebase auth API
  */
 PDReg.prototype.onAuthStateChanged = function(user) {
-  if (user) { // User is signed in!
-    // Get profile pic and user's name from the Firebase user object.
-    var stringName = user.displayName;
-    var userName = user.email.split('@')[0];
-
-    // Set the user's profile picture and name.
-    // this.userPic.setAttribute('src', profilePicUrl);
-    this.userEmail.textContent = user.email;
-
-    this.stringName.textContent = stringName;
-    this.courseForm['name'].value = stringName;
-    this.courseForm['email'].value = user.email;
-    this.courseForm['userName'].value = userName;
-
-    // Show user's profile and sign-out button.
-    this.stringName.classList.remove('hidden');
-    this.userPic.innerHTML = '<img class="circle" src="'+ user.photoURL +'"/>';
-    this.userEmail.classList.remove('hidden');
-    this.signOutButton.classList.remove('hidden');
-    this.courseForm.classList.remove('hidden');
-    this.search.classList.remove('hidden');
-    this.userInput.classList.remove('hidden');
-    this.subscribeButton.classList.remove('hidden')
-    this.sorting.classList.remove('hidden')
-    this.sidebar.classList.remove('hidden')
-
-    // Hide sign-in button.
-    this.signInButton.classList.add('hidden');
-
-    document.getElementById('login-splash').classList.add('hidden')
-
-    // this.userClasses(userName);
-    this.getAllClasses(userName);
-  } else { // User is signed out!
-    // Hide user's profile and interactive elements button.
-    // this.userCourses.innerHTML = '';
-    // this.userEmail.classList.add('hidden');
+  if(!user) {
     document.getElementById('login-splash').classList.remove('hidden');
 
-    // this.stringName.classList.add('hidden');
-
-    // this.userPic.innerHTML = '<i class="material-icons large white-text">account_circle</i>';
-    // this.signOutButton.classList.add('hidden');
+    document.getElementById('user-building-splash').classList.add('hidden')
     this.courseForm.classList.add('hidden');
     this.search.classList.add('hidden');
-    // this.userInput.classList.add('hidden');
-    // this.subscribeButton.classList.add('hidden')
-    // this.sorting.classList.add('hidden')
-    this.sidebar.classList.add('hidden')
 
+    this.sidebar.classList.add('hidden')
     this.signInButton.classList.remove('hidden');
+  } else {
+    return firebase.database().ref('users/' + user.uid).once('value')
+    .then(function(snap) {
+      const userData = snap.val()
+      if(user && !snap.hasChild('building')) {
+        // buildSchools()
+        document.getElementById('login-splash').classList.add('hidden')
+        document.getElementById('user-building-splash').classList.remove('hidden')
+        this.courseForm.classList.add('hidden');
+        this.search.classList.add('hidden');
+
+        this.sidebar.classList.add('hidden')
+      }
+      else if (user && snap.hasChild('building')) { // User is signed in!
+        // Get profile pic and user's name from the Firebase user object.
+        var stringName = user.displayName;
+        var userName = user.email.split('@')[0];
+        console.log(user)
+
+        // Set the user's profile picture and name.
+        // this.userPic.setAttribute('src', profilePicUrl);
+        this.userEmail.textContent = user.email;
+
+        this.stringName.textContent = stringName;
+        this.courseForm['name'].value = stringName;
+        this.courseForm['email'].value = user.email;
+        this.courseForm['userName'].value = userName;
+
+        // Show user's profile and sign-out button.
+        this.stringName.classList.remove('hidden');
+        this.userPic.innerHTML = '<img class="circle" src="'+ user.photoURL +'"/>';
+        this.userEmail.classList.remove('hidden');
+        this.signOutButton.classList.remove('hidden');
+        this.courseForm.classList.remove('hidden');
+        this.search.classList.remove('hidden');
+        this.userInput.classList.remove('hidden');
+        this.subscribeButton.classList.remove('hidden')
+        this.sorting.classList.remove('hidden')
+        this.sidebar.classList.remove('hidden')
+
+        // Hide sign-in button.
+        this.signInButton.classList.add('hidden');
+
+        document.getElementById('login-splash').classList.add('hidden')
+
+        // this.userClasses(userName);
+        this.getAllClasses(userName);
+      } else { // User is signed out!
+
+      }
+    }.bind(this))
   }
-};
+}
 
 
 /**

@@ -3,7 +3,7 @@ path / {
   write() { false }
 }
 path /courses {
-  read() { isSignedIn() }
+  read() { isSignedIn() && auth.token.email.matches(/.*@elkhart.k12.in.us$/) }
 }
 
 path /courses/{courseId}/members/{uid} {
@@ -16,9 +16,14 @@ path /users/{userId}/regs {
   write() { isCurrentUser(userId) }
 }
 
-path /users/{userId}/device_ids {
+path /users/{userId} {
   read() { isCurrentUser(userId) }
   write() { isCurrentUser(userId) }
+}
+
+path /device_ids {
+  read() { isSignedIn() }
+  write() { isSignedIn() }
 }
 
 isCurrentUser(uid) { isSignedIn() && auth.uid == uid }

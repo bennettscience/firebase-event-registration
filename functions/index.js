@@ -53,6 +53,7 @@ exports.reminderEmail = functions.https.onRequest((req, res) => {
   const currentTime = new Date().getTime();
   const future = currentTime + 172800000;
   const mailOpts = {};
+  const courseOpts = {}
 
   return ref.child('courses/').orderByChild('start').startAt(future).once('value')
   .then(snap => {
@@ -70,6 +71,8 @@ exports.reminderEmail = functions.https.onRequest((req, res) => {
     const emails = [];
     results.forEach(delta => {
       var course = delta.val();
+      courseOpts.title = course.title
+      courseOpts.date = new Date(course.start).toLocaleDateString()
       mailOpts.subject = "Upcoming registration for " + course.title;
       if(course.members) {
         return admin.database().ref('courses/' + delta.key + '/members').once('value')
@@ -81,17 +84,11 @@ exports.reminderEmail = functions.https.onRequest((req, res) => {
           return Promise.all(emails)
         })
         .then(emails => {
-          // console.log(emailList)
-        //   const emails = [];
-        //   members.forEach(member => {
-        //     var email = member.email;
-        //     emails.push(email);
-        //   });
 
-          // console.log('Line 79: Sending to: ' + emails.join());
+          console.log('Line 79: Sending to: ' + emails.join());
           mailOpts.from = '"Elkhart PD" <pd@elkhart.k12.in.us>',
           mailOpts.bcc = emails.join(),
-          mailOpts.text = 'Something about registering here.'
+          mailOpts.html = `<p>This is a reminder that you're currently scheduled to attend <b>${courseOpts.title}</b> on <b>${courseOpts.date}</b>. Please visit the <b><a href="//pd.elkhart.k12.in.us">Elkhart PD website</a></b> for details or to cancel your registration if you can no longer attend.</p><br /><b>Elkhart Professional Development</b>`
 
           console.log(mailOpts)
           return mailTransport.sendMail(mailOpts)
@@ -128,12 +125,9 @@ exports.sendPostNotification = functions.database.ref('/courses/{courseId}}').on
     //     // Notification details
         const payload = {
             notification: {
-                title: `${title}`,
-                body: `A new session is available on ${date}`,
-                icon: 'img/ecslogo.png'
+                body: `${title} is available on ${date}. Click to sign up.`,
             }
         }
-    //
         snapshots.forEach(childSnapshot => {
             const token = childSnapshot.val()
 
@@ -166,3 +160,7 @@ exports.sendPostNotification = functions.database.ref('/courses/{courseId}}').on
     })
 
 })
+// 
+// exports.storeUserData = functions.auth.user().onCreate((user) => {
+//
+// })

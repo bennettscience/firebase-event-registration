@@ -21,11 +21,12 @@ self.addEventListener('notificationclick', function(event) {
 const messaging = firebase.messaging();
 
 self.addEventListener('push', function(event) {
-  console.log('Received push', event.data.text());
+  console.log(event.data.json.body);
   if(event.data) {
-    var title = event.title;
+    var data = event.data.json();
+    var title = "Elkhart PD Update";
     var opts = {
-      body: event.data.text(),
+      body: data.notification.body,
       icon: 'img/ecslogo.png',
       actions: [{
         action: "get",
