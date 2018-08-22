@@ -60,7 +60,9 @@ PDReg.prototype.initFirebase = function() {
  * PDReg.prototype.signOut - Sign out of the current user
  */
 PDReg.prototype.signOut = function() {
-  this.auth.signOut();
+  this.auth.signOut().then(() => {
+    console.log('signed out')
+  });
 };
 
 /**
@@ -87,8 +89,6 @@ PDReg.prototype.registerUserBuilding = function() {
   var building = document.getElementById('user-building-select').value
   var user = firebase.auth().currentUser
 
-  console.log(user)
-  // TODO: Store user building in the tables
   this.database.ref('users/' + user.uid).set({'building': building}).then(() => {
     this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this))
   })
@@ -124,7 +124,6 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         // Get profile pic and user's name from the Firebase user object.
         var stringName = user.displayName;
         var userName = user.email.split('@')[0];
-        console.log(user)
 
         // Set the user's profile picture and name.
         // this.userPic.setAttribute('src', profilePicUrl);
@@ -249,7 +248,6 @@ PDReg.USER_TEMPLATE = `
 `;
 
 // Model for classes available for registration.
-// TODO: FIX FORM CHECKBOXES
 PDReg.CLASS_TEMPLATE =
   '<div class="card large class-container">' +
     '<div class="card-image waves-effect waves-block waves-light"></div>' +
