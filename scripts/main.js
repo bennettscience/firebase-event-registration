@@ -142,7 +142,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         this.courseForm.classList.remove('hidden');
         this.search.classList.remove('hidden');
         this.userInput.classList.remove('hidden');
-        this.subscribeButton.classList.remove('hidden')
+        // this.subscribeButton.classList.remove('hidden')
         this.sorting.classList.remove('hidden')
         this.sidebar.classList.remove('hidden')
         this.registerBuilding.classList.add('hidden')
