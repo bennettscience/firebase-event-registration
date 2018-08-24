@@ -30,6 +30,7 @@ function PDReg() {
   this.building = document.getElementById('user-building-select')
   this.registerBuilding = document.getElementById('user-building-splash')
   this.registerBuildingButton = document.getElementById('user-building-splash-submit')
+  this.changeSchoolButton = document.getElementById('change-school-button')
 
   // Do stuff when buttons are clicked
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
@@ -37,6 +38,7 @@ function PDReg() {
   this.userCoursesButton.addEventListener('click', this.showUserClasses.bind(this));
   this.hideUserCoursesButton.addEventListener('click', this.hideUserClasses.bind(this))
   this.registerBuildingButton.addEventListener('click', this.registerUserBuilding.bind(this))
+  this.changeSchoolButton.addEventListener('click', this.changeSchool.bind(this))
 
 
   // listen for the registration button
@@ -89,7 +91,7 @@ PDReg.prototype.registerUserBuilding = function() {
   var building = document.getElementById('user-building-select').value
   var user = firebase.auth().currentUser
 
-  this.database.ref('users/' + user.uid).set({'building': building}).then(() => {
+  this.database.ref('users/' + user.uid).update({'building': building}).then(() => {
     this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this))
   })
 }
@@ -124,7 +126,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         // Get profile pic and user's name from the Firebase user object.
         var stringName = user.displayName;
         var userName = user.email.split('@')[0];
-
+        document.getElementById('user-location').textContent = userData.building;
         // Set the user's profile picture and name.
         // this.userPic.setAttribute('src', profilePicUrl);
         this.userEmail.textContent = user.email;
@@ -161,6 +163,11 @@ PDReg.prototype.onAuthStateChanged = function(user) {
   }
 }
 
+PDReg.prototype.changeSchool = function() {
+  var user = firebase.auth().currentUser;
+  this.database.ref('users/' + user.uid).update({building: null})
+  this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this))
+}
 
 /**
  * PDReg.prototype.register - description
@@ -498,24 +505,24 @@ const messaging = firebase.messaging(),
 let userToken    = null,
     isSubscribed = false
 
-window.addEventListener('load', () => {
-
-    if ('serviceWorker' in navigator) {
-
-        navigator.serviceWorker.register('service-worker.js')
-            .then(registration => {
-              console.log(registration)
-                messaging.useServiceWorker(registration)
-
-                initializePush()
-            })
-            .catch(err => console.log('Service Worker Error', err))
-
-    } else {
-        pushBtn.textContent = 'Push not supported.'
-    }
-
-})
+// window.addEventListener('load', () => {
+//
+//     if ('serviceWorker' in navigator) {
+//
+//         navigator.serviceWorker.register('service-worker.js')
+//             .then(registration => {
+//               console.log(registration)
+//                 messaging.useServiceWorker(registration)
+//
+//                 initializePush()
+//             })
+//             .catch(err => console.log('Service Worker Error', err))
+//
+//     } else {
+//         pushBtn.textContent = 'Push not supported.'
+//     }
+//
+// })
 
 function initializePush() {
 
