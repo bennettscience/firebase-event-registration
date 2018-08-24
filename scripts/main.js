@@ -267,7 +267,7 @@ PDReg.CLASS_TEMPLATE =
       '<div class="code hidden"><i class="material-icons prefix">lock</i><div class="input-field inline"><input name="code" type="text" value="" /><label for="code">Registration code</label></div></div>' +
     '</div>'+
     '<div class="card-action">' +
-      '<a class="btn btn-grey activator">More Information</a>' +
+      '<a class="btn btn-flat blue white-text activator">More Information</a>' +
     '</div>' +
     '<div class="card-reveal">' +
       '<span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>' +
@@ -312,7 +312,6 @@ PDReg.prototype.buildUserClasses = function(course) {
 PDReg.prototype.showUserClasses = function() {
   document.getElementById('user-courses-head').innerHTML = "<h2>" + firebase.auth().currentUser.displayName + "</h2>";
   document.getElementById('user-courses-wrap').classList.toggle('hidden');
-  this.userCoursesButton.classList.toggle('active');
 }
 
 PDReg.prototype.hideUserClasses = function() {

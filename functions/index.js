@@ -49,6 +49,7 @@ const ref = admin.database().ref();
 //       .then((messagesData) => counterRef.set(messagesData.numChildren()));
 // });
 
+// TODO: Return promise if no emails are sent
 exports.reminderEmail = functions.https.onRequest((req, res) => {
   const currentTime = new Date().getTime();
   const future = currentTime + 172800000;
@@ -160,7 +161,7 @@ exports.sendPostNotification = functions.database.ref('/courses/{courseId}}').on
     })
 
 })
-// 
+//
 // exports.storeUserData = functions.auth.user().onCreate((user) => {
 //
 // })

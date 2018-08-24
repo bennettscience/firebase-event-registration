@@ -187,9 +187,6 @@ $("body").on("keyup",".code :input", function() {
 
 // Sort options - date, alphabetical
 $("#title").on('click', function() {
-  $("#date").removeClass('active');
-  $(this).addClass('active');
-
   var divs = $("div.class-container");
 
   var alphabeticalDivs = divs.sort(function(a, b) {
@@ -202,9 +199,6 @@ $("#title").on('click', function() {
 })
 
 $("#date").on('click', function() {
-  $("#title").removeClass('active');
-  $(this).addClass('active');
-
   var divs = $("div.class-container");
 
   var dateDivs = divs.sort(function(a,b) {
