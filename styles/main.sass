@@ -104,13 +104,15 @@ html, body
 
     .nav-wrapper
 
+      a
+        border-radius: 50%
+
+        &:hover
+          background-color: rgba(255,255,255,0.25)
+
       i
         font-size: 2.5rem
         vertical-align: middle
-
-      &:hover
-        box-shadow: none
-        background-color: inherit
 
       &:active
         background-color: inherit
@@ -125,10 +127,9 @@ html, body
         z-index: 1000
 
       #search-button
-        right: 3rem
-
-      #slide-out-button
-        left: 3rem
+        right: 1.5rem
+        height: 64px
+        width: 64px
 
     #search-form
       display: block
