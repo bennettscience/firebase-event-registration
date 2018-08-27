@@ -3,34 +3,55 @@
  * Load sideNav script from materialize.js
  */
 
-$(document).ready(function() {
+jQuery(function() {
   $(".sidenav").sidenav({
     draggable: true,
     edge: 'left',
     preventScrolling: true,
     isFixed: true
   });
-})
 
-$(document).ready(function() {
   var el = $("#user-building-select")
-	var schools = ["Beardsley", "Beck", "Bristol", "Cleveland", "Daly", "Eastwood", "Feeser", "Hawthorne", "Monger", "Osolo", "Pinewood", "Riverview", "Roosevelt", "Woodland", "North Side", "Pierre Moran", "West Side", "Elkhart Academy",
-			"Central", "Memorial", "EACC", "Community Education", "PACE", "Administration", "Services", "Transportation", "School Without Walls"
-	];
-	var sorted = schools.sort();
+  var schools = ["Beardsley", "Beck", "Bristol", "Cleveland", "Daly", "Eastwood", "Feeser", "Hawthorne", "Monger", "Osolo", "Pinewood", "Riverview", "Roosevelt", "Woodland", "North Side", "Pierre Moran", "West Side", "Elkhart Academy",
+      "Central", "Memorial", "EACC", "Community Education", "PACE", "Administration", "Services", "Transportation", "School Without Walls"
+  ];
+  var sorted = schools.sort();
 
-	for (var i = 0; i < sorted.length; i++) {
+  for (var i = 0; i < sorted.length; i++) {
     var opt = document.createElement('option')
     opt.text = sorted[i];
     opt.value = sorted[i];
-		opt = '<option value="' + sorted[i] + '">' + sorted[i] + '</option>'
+    opt = '<option value="' + sorted[i] + '">' + sorted[i] + '</option>'
     el.append(opt)
-	}
+  }
 
-	// el.appendChild(opt);
+  // el.appendChild(opt);
 
   $('#user-building-select').formSelect();
+
+  $('.collapsible').collapsible();
+
 })
+
+// $(document).ready(function() {
+//   var el = $("#user-building-select")
+// 	var schools = ["Beardsley", "Beck", "Bristol", "Cleveland", "Daly", "Eastwood", "Feeser", "Hawthorne", "Monger", "Osolo", "Pinewood", "Riverview", "Roosevelt", "Woodland", "North Side", "Pierre Moran", "West Side", "Elkhart Academy",
+// 			"Central", "Memorial", "EACC", "Community Education", "PACE", "Administration", "Services", "Transportation", "School Without Walls"
+// 	];
+// 	var sorted = schools.sort();
+//
+// 	for (var i = 0; i < sorted.length; i++) {
+//     var opt = document.createElement('option')
+//     opt.text = sorted[i];
+//     opt.value = sorted[i];
+// 		opt = '<option value="' + sorted[i] + '">' + sorted[i] + '</option>'
+//     el.append(opt)
+// 	}
+//
+// 	// el.appendChild(opt);
+//
+//   $('#user-building-select').formSelect();
+// })
 
 $(document).keydown(function(e) {
   if(e.keyCode == 27) {
