@@ -391,7 +391,6 @@ PDReg.prototype.getAllClasses = function() {
 
   this.classesRef = this.database.ref('courses/');
 
-  // console.log('Current ref: ', this.classesRef)
   this.userRef = this.database.ref('users/' + uid + "/regs");
 
     var setClass = function(snapshot) {
@@ -402,10 +401,18 @@ PDReg.prototype.getAllClasses = function() {
         if(course.members.hasOwnProperty(uid)) {
           this.buildUserClasses(course);
         } else {
-          this.buildAllClasses(course)
+          if (course.type === "In Person" && course.start > today) {
+            this.buildAllClasses(course)
+          } else if(course.type === "Online" ) {
+            this.buildAllClasses(course);
+          }
         }
       } else {
-        this.buildAllClasses(course)
+        if(course.type === "In Person" && course.start > today) {
+          this.buildAllClasses(course)
+        } else if (course.type === "Online") {
+          this.buildAllClasses(course)
+        }
       }
     }.bind(this);
 
@@ -414,9 +421,9 @@ PDReg.prototype.getAllClasses = function() {
     });
 
     if(!checked) {
-      this.classesRef.orderByChild('type').startAt('offline').on('child_added', setClass);
+      this.classesRef.orderByChild('type').equalTo('In Person').on('child_added', setClass);
     } else {
-      this.classesRef.orderByChild('type').startAt('online').on('child_added', setClass);
+      this.classesRef.orderByChild('type').equalTo('Online').on('child_added', setClass);
     }
     //this.classesRef.on('child_changed', setClass);
 };
