@@ -28,6 +28,7 @@ function PDReg() {
   this.sorting = document.getElementById('sorting')
   this.sidebar = document.getElementById('slide-out')
   this.building = document.getElementById('user-building-select')
+  this.toggle = document.getElementById('course-toggle')
   this.registerBuilding = document.getElementById('user-building-splash')
   this.registerBuildingButton = document.getElementById('user-building-splash-submit')
   this.changeSchoolButton = document.getElementById('change-school-button')
@@ -39,6 +40,7 @@ function PDReg() {
   this.hideUserCoursesButton.addEventListener('click', this.hideUserClasses.bind(this))
   this.registerBuildingButton.addEventListener('click', this.registerUserBuilding.bind(this))
   this.changeSchoolButton.addEventListener('click', this.changeSchool.bind(this))
+  this.toggle.addEventListener('change', this.getAllClasses.bind(this));
 
 
   // listen for the registration button
@@ -73,6 +75,9 @@ PDReg.prototype.signOut = function() {
  */
 PDReg.prototype.signIn = function() {
   var provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({
+    'hd': 'elkhart.k12.in.us'
+  })
   this.auth.signInWithPopup(provider);
 };
 
@@ -91,7 +96,7 @@ PDReg.prototype.registerUserBuilding = function() {
   var building = document.getElementById('user-building-select').value
   var user = firebase.auth().currentUser
 
-  this.database.ref('users/' + user.uid).update({'building': building}).then(() => {
+  this.database.ref('users/' + user.uid).update({'building': building, 'email':user.email, 'name': user.displayName}).then(() => {
     this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this))
   })
 }
@@ -120,12 +125,13 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         document.getElementById('user-building-splash').classList.remove('hidden')
         this.courseForm.classList.add('hidden');
         this.search.classList.add('hidden');
-
-        this.sidebar.classList.add('hidden')
-      } else if (user && snap.hasChild('building')) { // User is signed in and registered with a building
+        this.sidebar.classList.add('hidden');
+      } else if (user && snap.hasChild('building')) {
+        // User is signed in and registered with a building
         // Get profile pic and user's name from the Firebase user object.
         var stringName = user.displayName;
         var userName = user.email.split('@')[0];
+        var checked = this.toggle.checked;
         document.getElementById('user-location').textContent = userData.building;
         // Set the user's profile picture and name.
         // this.userPic.setAttribute('src', profilePicUrl);
@@ -148,6 +154,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         this.sorting.classList.remove('hidden')
         this.sidebar.classList.remove('hidden')
         this.registerBuilding.classList.add('hidden')
+        this.submitButton.classList.remove('hidden');
 
         // Hide sign-in button.
         this.signInButton.classList.add('hidden');
@@ -155,9 +162,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         document.getElementById('login-splash').classList.add('hidden')
 
         // this.userClasses(userName);
-        this.getAllClasses(userName);
-      } else { // User is signed out!
-
+        this.getAllClasses(checked);
       }
     }.bind(this))
   }
@@ -223,12 +228,12 @@ PDReg.prototype.register = function(e) {
   var postTheClass = function(classes) {
     var promises = [];
     classes.forEach(function(item) {
-       firebase.database().ref('courses/' + item['id'] + '/members/' + user.uid).set({'code': item['code'], 'email': user.email})
+       firebase.database().ref('courses/' + item['id'] + '/members/' + user.uid).set({'code': item['code'], 'email': user.email, 'name':user.displayName})
       .then(function() {
         firebase.database().ref('courses/' + item['id']).once('value').then(function(snap) {
           document.getElementById('allCourses').removeChild(document.getElementById(snap.key))
           M.toast({html: "Successfully registered for " + item['title']})
-          firebase.database().ref('users/' + user.uid + '/regs/' + item['id']).set(true)
+          firebase.database().ref('users/' + user.uid + '/regs/' + item['id']).set({'title': item['title']});
           buildNewRegCourse(snap)
         })
       })
@@ -288,7 +293,6 @@ PDReg.CLASS_TEMPLATE =
  * @param  {Object} course Course object data as JSON to create DOM elements
  */
 PDReg.prototype.buildUserClasses = function(course) {
-  console.log("Got a new course, ", course)
   var parentDiv = document.getElementById("user-courses-list");
 
   if(!parentDiv.querySelector("[id='user_" + course.key + "']")) {
@@ -382,9 +386,12 @@ PDReg.prototype.getAllClasses = function() {
   var uid = firebase.auth().currentUser.uid;
   var courses = [];
   var today = new Date().toISOString();
+  var checked = this.toggle.checked;
+  document.getElementById('allCourses').innerHTML = "";
 
-  this.classesRef = this.database.ref('courses');
+  this.classesRef = this.database.ref('courses/');
 
+  // console.log('Current ref: ', this.classesRef)
   this.userRef = this.database.ref('users/' + uid + "/regs");
 
     var setClass = function(snapshot) {
@@ -392,9 +399,7 @@ PDReg.prototype.getAllClasses = function() {
       course.key = snapshot.key;
 
       if(course.members) {
-        console.log("There are members")
         if(course.members.hasOwnProperty(uid)) {
-          console.log("You are the member, building a class")
           this.buildUserClasses(course);
         } else {
           this.buildAllClasses(course)
@@ -408,11 +413,13 @@ PDReg.prototype.getAllClasses = function() {
        document.getElementById('user-courses-badge').textContent = snapshot.numChildren();
     });
 
-    this.classesRef.orderByChild('start').startAt(today).on('child_added', setClass);
+    if(!checked) {
+      this.classesRef.orderByChild('type').startAt('offline').on('child_added', setClass);
+    } else {
+      this.classesRef.orderByChild('type').startAt('online').on('child_added', setClass);
+    }
     //this.classesRef.on('child_changed', setClass);
 };
-
-
 
 /**
  * PDReg.prototype.cancel - Remove a user's course from the databse
@@ -490,6 +497,10 @@ PDReg.prototype.cancel = function(e) {
   this.database.ref('courses/' + id).on('value', buildCourse)
 }
 
+// PDReg().prototype.toggleCourseType = function() {
+//   this.ref =
+// }
+
 /**
  *  Load the PDReg Class and initialize Firebase.
  */
@@ -503,25 +514,6 @@ const messaging = firebase.messaging(),
 
 let userToken    = null,
     isSubscribed = false
-
-// window.addEventListener('load', () => {
-//
-//     if ('serviceWorker' in navigator) {
-//
-//         navigator.serviceWorker.register('service-worker.js')
-//             .then(registration => {
-//               console.log(registration)
-//                 messaging.useServiceWorker(registration)
-//
-//                 initializePush()
-//             })
-//             .catch(err => console.log('Service Worker Error', err))
-//
-//     } else {
-//         pushBtn.textContent = 'Push not supported.'
-//     }
-//
-// })
 
 function initializePush() {
 
@@ -568,7 +560,7 @@ function subscribeUser() {
 
 function updateSubscriptionOnServer(token) {
     if (isSubscribed) {
-        return database.ref('device_ids').once('value').then(snap => {
+        return database.ref('device_ids').on('value').then(snap => {
           snap.forEach(device => {
             if (device.val() === token) {
               device.ref.remove();
@@ -577,7 +569,7 @@ function updateSubscriptionOnServer(token) {
         })
     }
 
-    database.ref('device_ids').once('value')
+    database.ref('device_ids').on('value')
         .then(snapshots => {
             let deviceExists = false
 

@@ -3,7 +3,7 @@
  * Load sideNav script from materialize.js
  */
 
-jQuery(function() {
+$(document).ready(function() {
   $(".sidenav").sidenav({
     draggable: true,
     edge: 'left',
@@ -13,7 +13,7 @@ jQuery(function() {
 
   var el = $("#user-building-select")
   var schools = ["Beardsley", "Beck", "Bristol", "Cleveland", "Daly", "Eastwood", "Feeser", "Hawthorne", "Monger", "Osolo", "Pinewood", "Riverview", "Roosevelt", "Woodland", "North Side", "Pierre Moran", "West Side", "Elkhart Academy",
-      "Central", "Memorial", "EACC", "Community Education", "PACE", "Administration", "Services", "Transportation", "School Without Walls"
+      "Central", "Memorial", "EACC", "Community Education", "PACE", "Administration", "Tech Services", "Building Services", "Transportation", "School Without Walls"
   ];
   var sorted = schools.sort();
 
@@ -25,33 +25,11 @@ jQuery(function() {
     el.append(opt)
   }
 
-  // el.appendChild(opt);
-
   $('#user-building-select').formSelect();
 
   $('.collapsible').collapsible();
 
 })
-
-// $(document).ready(function() {
-//   var el = $("#user-building-select")
-// 	var schools = ["Beardsley", "Beck", "Bristol", "Cleveland", "Daly", "Eastwood", "Feeser", "Hawthorne", "Monger", "Osolo", "Pinewood", "Riverview", "Roosevelt", "Woodland", "North Side", "Pierre Moran", "West Side", "Elkhart Academy",
-// 			"Central", "Memorial", "EACC", "Community Education", "PACE", "Administration", "Services", "Transportation", "School Without Walls"
-// 	];
-// 	var sorted = schools.sort();
-//
-// 	for (var i = 0; i < sorted.length; i++) {
-//     var opt = document.createElement('option')
-//     opt.text = sorted[i];
-//     opt.value = sorted[i];
-// 		opt = '<option value="' + sorted[i] + '">' + sorted[i] + '</option>'
-//     el.append(opt)
-// 	}
-//
-// 	// el.appendChild(opt);
-//
-//   $('#user-building-select').formSelect();
-// })
 
 $(document).keydown(function(e) {
   if(e.keyCode == 27) {

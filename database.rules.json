@@ -2,6 +2,10 @@
   "rules": {
     "courses": {
       ".read": "(auth != null && auth.token.email.matches(/.*@elkhart.k12.in.us$/))",
+      ".indexOn": [
+        "start",
+        "type"
+      ],
       "$courseId": {
         "members": {
           "$uid": {
@@ -19,7 +23,8 @@
         },
         ".read": "(auth != null && auth.uid == $userId)",
         ".write": "(auth != null && auth.uid == $userId)"
-      }
+      },
+      ".read": "auth != null"
     },
     "device_ids": {
       ".read": "auth != null",

@@ -5,15 +5,12 @@
   <link rel="manifest" href="manifest.json">
 
   <!-- scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
   <!-- App Styling -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
 
   <!-- Materialize Stylesheets-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
   <link rel="stylesheet" href="styles/main.min.css">
@@ -21,9 +18,12 @@
 </head>
 
 <body>
-  <div id="slide-out" class="sidenav sidenav-fixed">
+  <div id="slide-out" class="hidden sidenav sidenav-fixed">
     <ul>
       <li>
+        <div class="help">
+          <a href="mailto:pd@elkhart.k12.in.us?subject=PD%20site%20help&body=Please%20describe%20what%20didn&#39t%20work%2E%0A%0ADid%20you%20see%20any%20errors%3F"><i class="material-icons white-text">help</i></a>
+        </div>
         <div class="user-view">
           <div class="background">
             <img src="https://c1.staticflickr.com/9/8579/15899932525_cce383f209_b.jpg">
@@ -41,6 +41,10 @@
       <li id="sorting">
         <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
         <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
+        <p>
+          <input id="course-toggle" type="checkbox" class="toggle" value="toggle">
+          <label for="course-toggle"></label>
+        </p>
         <a id="collection" class="btn-flat waves-effect waves-light">Show Your Courses <span class="badge blue white-text" id="user-courses-badge"></span></a>
       </li>
       <li id="user-input" class="no-padding">
@@ -78,7 +82,7 @@
         </li>
       </ul> <!-- End sidebar nav -->
     </div>
-    <div id="search-wrap">
+    <div class="hidden" id="search-wrap">
       <nav class="blue">
         <div class="nav-wrapper">
           <a href="#" data-target="slide-out" class="btn btn-flat white-text sidenav-trigger" id="slide-out-button" class="white-text"><i class="material-icons">menu</i></a>
@@ -95,14 +99,18 @@
     </div>
     </div> <!-- /#sidebar-wrap -->
     <div id="wrap">
-      <div id="login-splash">
+      <div id="account-error-splash" class="hidden">
+        <h2>Sorry, you can't use that account.</h2>
+        <p>This page is locked for Elkhart Community Schools employees only. Please sign out of this account using the button on the left and sign back in with an ECS email account instead.</p>
+      </div>
+      <div class="hidden" id="login-splash">
         <img src='https://newscdn.weigelbroadcasting.com/79qZX-1527177142-109961-blog-elkhartschoolslogo.jpg' />
         <p>Please log in with your ECS Google account.</p>
         <button id="sign-in-button" class="waves-effect waves-light btn btn-large blue">
           <i class="material-icons large white-text prefix large">account_circle</i>Google Sign In
         </button>
       </div>
-      <div id="user-building-splash" class="input-field">
+      <div id="user-building-splash" class="input-field hidden">
         <span id="user-building-prompt"><i class="material-icons large">school</i>Pick your location</span>
         <select id="user-building-select"></select>
         <button class="btn btn-large waves-effect waves-light blue" id="user-building-splash-submit">Submit<i class="material-icons right large">check</i></button>
@@ -114,7 +122,7 @@
           <input hidden type="text" name="email" value="" />
 
            <div id="allCourses"></div>
-           <button class="btn btn-large waves-effect waves-light teal darken-1" type="submit" id="submit" name="action">Submit
+           <button class="btn btn-large waves-effect waves-light teal darken-1 hidden" type="submit" id="submit" name="action">Submit
              <i class="material-icons right">send</i>
            </button>
            <button class="btn btn-large btn-floating blue" type="submit" id="mobile-submit" name="action"><i class="material-icons right large">send</i></button>
@@ -129,6 +137,9 @@
         <div id="user-courses-list"></div>
       </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-app.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-database.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-functions.js"></script>

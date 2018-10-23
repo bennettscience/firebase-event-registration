@@ -4,6 +4,7 @@ path / {
 }
 path /courses {
   read() { isSignedIn() && auth.token.email.matches(/.*@elkhart.k12.in.us$/) }
+  index() { ['start', 'type'] }
 }
 
 path /courses/{courseId}/members/{uid} {
@@ -19,6 +20,10 @@ path /users/{userId}/regs {
 path /users/{userId} {
   read() { isCurrentUser(userId) }
   write() { isCurrentUser(userId) }
+}
+
+path /users {
+  read() { isSignedIn() }
 }
 
 path /device_ids {
