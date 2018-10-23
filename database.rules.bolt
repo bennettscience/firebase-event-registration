@@ -4,7 +4,7 @@ path / {
 }
 path /courses {
   read() { isSignedIn() && auth.token.email.matches(/.*@elkhart.k12.in.us$/) }
-  index() { ['start', 'type'] }
+  index() { ['type', 'start'] }
 }
 
 path /courses/{courseId}/members/{uid} {

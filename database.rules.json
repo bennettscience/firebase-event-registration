@@ -3,8 +3,8 @@
     "courses": {
       ".read": "(auth != null && auth.token.email.matches(/.*@elkhart.k12.in.us$/))",
       ".indexOn": [
-        "start",
-        "type"
+        "type",
+        "start"
       ],
       "$courseId": {
         "members": {
