@@ -28,7 +28,6 @@ function PDReg() {
   this.sorting = document.getElementById('sorting')
   this.sidebar = document.getElementById('slide-out')
   this.building = document.getElementById('user-building-select')
-  this.toggle = document.getElementById('course-toggle')
   this.registerBuilding = document.getElementById('user-building-splash')
   this.registerBuildingButton = document.getElementById('user-building-splash-submit')
   this.changeSchoolButton = document.getElementById('change-school-button')
@@ -40,7 +39,6 @@ function PDReg() {
   this.hideUserCoursesButton.addEventListener('click', this.hideUserClasses.bind(this))
   this.registerBuildingButton.addEventListener('click', this.registerUserBuilding.bind(this))
   this.changeSchoolButton.addEventListener('click', this.changeSchool.bind(this))
-  this.toggle.addEventListener('change', this.getAllClasses.bind(this));
 
 
   // listen for the registration button
@@ -131,7 +129,6 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         // Get profile pic and user's name from the Firebase user object.
         var stringName = user.displayName;
         var userName = user.email.split('@')[0];
-        var checked = this.toggle.checked;
         document.getElementById('user-location').textContent = userData.building;
         // Set the user's profile picture and name.
         // this.userPic.setAttribute('src', profilePicUrl);
@@ -162,7 +159,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         document.getElementById('login-splash').classList.add('hidden')
 
         // this.userClasses(userName);
-        this.getAllClasses(checked);
+        this.getAllClasses();
       }
     }.bind(this))
   }
@@ -343,6 +340,7 @@ PDReg.prototype.buildAllClasses = function(course) {
     div.setAttribute('data-dan', course.dan);
     div.setAttribute('data-date', course.start)
     div.setAttribute('data-title', course.title)
+    if(course.type == "Online") { div.classList.add('hidden') }
     parentDiv.appendChild(div);
 
     div.querySelector('.card-title').textContent = course.title;
@@ -360,6 +358,7 @@ PDReg.prototype.buildAllClasses = function(course) {
     if(course.code !== 'Code') {
       div.querySelector('.code').classList.remove('hidden');
     }
+
   }
 }
 
@@ -386,7 +385,6 @@ PDReg.prototype.getAllClasses = function() {
   var uid = firebase.auth().currentUser.uid;
   var courses = [];
   var today = new Date().toISOString();
-  var checked = this.toggle.checked;
   document.getElementById('allCourses').innerHTML = "";
 
   this.classesRef = this.database.ref('courses/');
@@ -401,16 +399,12 @@ PDReg.prototype.getAllClasses = function() {
         if(course.members.hasOwnProperty(uid)) {
           this.buildUserClasses(course);
         } else {
-          if (course.type === "In Person" && course.start > today) {
+          if ((course.type === "In Person" && course.start > today) || course.type === "Online" ) {
             this.buildAllClasses(course)
-          } else if(course.type === "Online" ) {
-            this.buildAllClasses(course);
           }
         }
       } else {
-        if(course.type === "In Person" && course.start > today) {
-          this.buildAllClasses(course)
-        } else if (course.type === "Online") {
+        if((course.type === "In Person" && course.start > today) || course.type === "Online" ) {
           this.buildAllClasses(course)
         }
       }
@@ -420,12 +414,7 @@ PDReg.prototype.getAllClasses = function() {
        document.getElementById('user-courses-badge').textContent = snapshot.numChildren();
     });
 
-    if(!checked) {
-      this.classesRef.orderByChild('type').equalTo('In Person').on('child_added', setClass);
-    } else {
-      this.classesRef.orderByChild('type').equalTo('Online').on('child_added', setClass);
-    }
-    //this.classesRef.on('child_changed', setClass);
+    this.classesRef.orderByChild('start').on('child_added',setClass);
 };
 
 /**
