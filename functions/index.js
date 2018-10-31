@@ -29,13 +29,16 @@ exports.onlineRegConfirmation = functions.database.ref('/courses/{courseId}/memb
 
     return course.once('value').then(snap => {
       var el = snap.val();
-      mailOpts.from = "<pd@elkhart.k12.in.us> Elkhart PD";
-      mailOpts.subject = `Your registration for ${el.title}`;
-      mailOpts.html = `<p>Thank you for registering for ${el.title}. This is an online course, so please visit the <a href='${el.redirect}' target='_blank'>Canvas login page</a> to begin.</p><p>If you have trouble, please <a href='mailto:${el.pocEmail}'>contact the course facilitator</a> for more help.</p><p>---</p><p>Elkhart Professional Development</p>`
+      if(el.type === 'Online') {
+        mailOpts.from = "<pd@elkhart.k12.in.us> Elkhart PD";
+        mailOpts.subject = `Your registration for ${el.title}`;
+        mailOpts.html = `<p>Thank you for registering for ${el.title}. This is an online course, so please visit the <a href='${el.redirect}' target='_blank'>Canvas login page</a> to begin.</p><p>If you have trouble, please <a href='mailto:${el.pocEmail}'>contact the course facilitator</a> for more help.</p><p>---</p><p>Elkhart Professional Development</p>`
 
-      console.log(mailOpts);
-      return mailTransport.sendMail(mailOpts)
-
+        console.log(mailOpts);
+        return mailTransport.sendMail(mailOpts)
+    } else {
+      return null;
+    }
     }).catch(e =>{
       console.log(e)
     });
