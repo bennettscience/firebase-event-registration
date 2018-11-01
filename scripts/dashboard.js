@@ -49,48 +49,83 @@ Dashboard.prototype.signIn = function() {
 // List all participants for a course if you're a trainer
 // Remap results based on the leader of a course, not by location
 Dashboard.prototype.findTrainerCourses = function() {
-  var adminLocation;
-  var adminId = this.auth.currentUser.uid;
+  let parent = document.getElementById('placeholder')
+  var trainerId = this.auth.currentUser.uid;
 
-  return this.database.ref('users/' + adminId + '/building').once('value').then((snap) => {
-    adminLocation = snap.val();
-    return this.database.ref('users/').once('value').then(function(users) {
+  parent.innerHTML = ''
+
+    return this.database.ref('courses/').once('value').then(function(snap) {
       var teachers = [];
-      users.forEach(function(child) {
-        var user = child.val();
-        if(user.building == adminLocation) {
-          teachers.push(user)
-        }
+
+      snap.forEach(function(c) {
+        if(c.val().members) { teachers.push({'title': c.val().title, 'users': c.val().members }) }
       })
+
       return Promise.all(teachers)
     }).then(function(teachers) {
-      let result = teachers.filter(child => child.regs != undefined);
-      result.forEach(function(el) {
+      teachers.forEach(function(course) {
 
-        let { name, email, building } = el;
+        let { title, users } = course;
 
-        let courses = Object.values(el.regs).map(function(key) {
-          return key.title
+        let usrArray = Object.values(users).map(function(key) {
+          return key
         });
 
         let container = document.createElement('div');
 
         // Set a template literal loop inside the forEach to make variable assignment simple
         // See more at https://gist.github.com/wiledal/3c5b63887cc8a010a330b89aacff2f2e
-        container.innerHTML = `
-          <div class="teacher"><a href="mailto:${email}">${ name }</a></div>
-          <div class="courses">
-            <ul class="courses-list">
-            ${courses.join(0).split(0).map((item) => `
-                <li>${item}.</li>
-              `).join('')}
+        container.innerHTML =
+        `
+          <div class="courses">${ course.title }</div>
+          <div class="teachers">
+            <ul class="teachers-list">
+            ${usrArray.map((item) =>
+              `<li><a href="mailto:${item.email}">${item.name}</a></li>`
+            ).join('')}
             </ul>
           </div>
         `
-        document.getElementById('placeholder').appendChild(container);
-      });
+        parent.appendChild(container);
     })
   });
+  //   return this.database.ref('users/').once('value').then(function(users) {
+  //     var teachers = [];
+  //     users.forEach(function(child) {
+  //       var user = child.val();
+  //       if(user.building == adminLocation) {
+  //         teachers.push(user)
+  //       }
+  //     })
+  //     return Promise.all(teachers)
+  //   }).then(function(teachers) {
+  //     let result = teachers.filter(child => child.regs != undefined);
+  //     result.forEach(function(el) {
+  //
+  //       let { name, email, building } = el;
+  //
+  //       let courses = Object.values(el.regs).map(function(key) {
+  //         return key.title
+  //       });
+  //
+  //       let container = document.createElement('div');
+  //
+  //       // Set a template literal loop inside the forEach to make variable assignment simple
+  //       // See more at https://gist.github.com/wiledal/3c5b63887cc8a010a330b89aacff2f2e
+  //       container.innerHTML = `
+  //         <div class="teacher"><a href="mailto:${email}">${ name }</a></div>
+  //         <div class="courses">
+  //           <ul class="courses-list">
+  //           ${courses.join(0).split(0).map((item) => `
+  //               <li>${item}.</li>
+  //             `).join('')}
+  //           </ul>
+  //         </div>
+  //       `
+  //       document.getElementById('placeholder').appendChild(container);
+  //     });
+  //   })
+  // });
 }
 
 Dashboard.prototype.findAdminCourses = function() {
@@ -161,115 +196,7 @@ Dashboard.prototype.findAdminCourses = function() {
       }
     })
   })
-
-
-  // let adminBuilding, names, title, teachers;
-
-  // let courses = [];
-  // let users = [];
-  //
-  // Promise.all([
-  //   userDb.once('value'),
-  //   courseDb.once('value')
-  // ])
-  // // start with the admin building
-  // return this.database.ref('users/' + adminId + '/building').once('value').then((admin) => {
-  //   adminLocation = admin.val();
-  //
-  //   // get the courses with members, return an array of promises
-  //   return courseDb.once('value').then(function(data) {
-  //     data.forEach(function(e) {
-  //       let course = e.val();
-  //       if(course.hasOwnProperty('members')) {
-  //         title = course.title;
-  //         users = Object.keys(course.members).map(function(key) {
-  //           return key;
-  //         })
-  //
-  //         Promise.all(userDb.child())
-  //         teachers = users.filter(function(u) {
-  //           return userDb.child(u).once('value').then((snap) => {
-  //             var userLocation = snap.val().building;
-  //             console.log(userLocation)
-  //           })
-  //           userLocation == adminLocation
-  //         })
-  //         courses.push({'title': title, 'teachers': teachers})
-  //       }
-  //     })
-  //     console.log(courses);
-  //
-  //
-
-      // return the courses object for processing in the browser.
-      //return Promise.all(courses)
-    // }).then(function(courses) {
-    //   courses.forEach(function(course) {
-    //     // console.log(course)
-    //     course.users.forEach(function(u) {
-    //       // console.log(u)
-    //       console.log(this.database)
-    //       return this.database.ref('users/' + u).once('value').then((snap) => {
-    //         console.log(snap.val())
-    //     //     if(snap.val().building == adminLocation) {
-    //     //       teachers.push(snap.val().name);
-    //     //     }
-    //       })
-    //     })
-    //   })
-    //   return Promise.all(teachers);
-    // }).then(function(teachers) {
-    //   console.log(teachers);
-    // });
-
-  // });
 }
-
-// TODO: Bind the current object to the map function
-// Dashboard.prototype.findAdminCourses = function(dateSelect) {
-//   var adminLocation;
-//   var adminId = this.auth.currentUser.uid;
-//   let container = document.createElement('div');
-//   var startDate = new Date(this.dateSelect.value).toISOString();
-//
-//   return this.database.ref('courses/').orderByChild('start').startAt(startDate).once('value').then((snap) => {
-//     snap.forEach((el) => {
-//       if(el.val().members) {
-//         let usernames = [];
-//         let users = Object.keys(el.val().members).map(function(m) {
-//           return m;
-//         });
-//         users.forEach(function(n) {
-//           this.database.ref('users/' + n).once('value').then((user) => {
-//             teachers.push(user.name)
-//           })
-//           return Promise.all(usernames)
-//         });
-//       }
-//       console.log(usernames);
-//     });
-    // console.log(users);
-    //   let regs = el.child('/members');
-    //   if(regs.val() != null) {
-    //     let users = Object.keys(regs.val()).map(function(m) {
-    //       return this.database.ref('users/' + m + '/name');
-    //     });
-    //     return Promise.all(users);
-    //   }
-    // })
-    // console.log(users);
-    // container.innerHTML = `
-    //   <div class="teacher"><a href="mailto:${email}">${ name }</a></div>
-    //   <div class="courses">
-    //     <ul class="courses-list">
-    //     ${courses.join(0).split(0).map((item) => `
-    //         <li>${item}.</li>
-    //       `).join('')}
-    //     </ul>
-    //   </div>
-    //
-//   })
-// }
 
 Dashboard.prototype.getCurrentUserLocation = function(user) {
   let currentUid = this.auth.uid;
