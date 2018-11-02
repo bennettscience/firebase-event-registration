@@ -34,6 +34,15 @@ html, body
   grid-gap: 15px
   margin: 0 15px
 
+  #admin-sidebar
+    grid-row: 1 / span 2
+    grid-column: 1 / span 3
+    margin-top: 25px
+    margin-right: 10px
+
+    > .input-field
+      margin-bottom: 30px
+
 #slide-out, #fullscreen-sidebar
   display: block
   position: fixed
@@ -344,6 +353,10 @@ main
   grid-row: 2
   margin-left: -15px
 
+  &.admin
+    grid-row: 1 / span 2
+    margin-left: 0
+
   #allCourses
     display: flex
     flex-direction: row
@@ -370,7 +383,7 @@ main
     h2
       position: relative
 
-.active
+.active:not(label)
   background-color: rgba(0,0,0,0.05)
 
 .fixed-action-btn
