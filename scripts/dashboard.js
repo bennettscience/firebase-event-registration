@@ -65,12 +65,14 @@ Dashboard.prototype.findTrainerCourses = function() {
 
       // Get sessions with teachers signed up
       snap.forEach(function(c) {
-        if(c.val().members) { courses.push({'title': c.val().title, 'users': c.val().members }) }
+        if(c.val().members) { courses.push({'start': c.val().start, 'title': c.val().title, 'users': c.val().members }) }
       })
 
       // Return an array of promises to process in the browser
       return Promise.all(courses)
     }).then(function(courses) {
+
+      console.log(courses)
 
       // For each course...
       courses.forEach(function(course) {
@@ -86,19 +88,22 @@ Dashboard.prototype.findTrainerCourses = function() {
         // Create a container to hold the results
         // No need to check for empty arrays at this point
         let container = document.createElement('div');
+        container.classList.add('course');
 
         // Set a template literal loop inside the forEach to make variable assignment simple
         // See more at https://gist.github.com/wiledal/3c5b63887cc8a010a330b89aacff2f2e
         container.innerHTML =
         `
-          <h4>${ course.title }</h4>
-          <div class="teachers">
-            <ul class="teachers-list">
-            ${usrArray.map((item) =>
-              `<li><a href="mailto:${item.email}">${item.name}</a></li>`
-            ).join('')}
-            </ul>
-          </div>
+            <span class="wkshp-title"><h5>${ course.title }</h5></span>
+            <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
+            <a class="email"></a>
+            <div class="teachers">
+              <ul class="teachers-list">
+              ${usrArray.map((item) =>
+                `<li><a href="mailto:${item.email}">${item.name}</a></li>`
+              ).join('')}
+              </ul>
+            </div>
         `
         // Append the child array to the parent
         parent.appendChild(container);

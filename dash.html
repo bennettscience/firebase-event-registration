@@ -50,7 +50,13 @@
       $(document).ready(function() {
         $('.datepicker').datepicker({
           defaultDate: new Date(),
-          setDefaultDate: true
+          setDefaultDate: true,
+          today: 'Today',
+          autoClose: true,
+          shoeClearBtn: true,
+          i8n: [{
+            clear: 'Clear'
+          }]
         });
         $('select').formSelect();
       })
