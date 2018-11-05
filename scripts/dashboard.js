@@ -85,6 +85,14 @@ Dashboard.prototype.findTrainerCourses = function() {
           return key
         });
 
+        var emailString = "mailto:"
+
+        usrArray.forEach(function(user) {
+          emailString += user.email + ";"
+        });
+
+        console.log(emailString);
+
         // Create a container to hold the results
         // No need to check for empty arrays at this point
         let container = document.createElement('div');
@@ -96,11 +104,11 @@ Dashboard.prototype.findTrainerCourses = function() {
         `
             <span class="wkshp-title"><h5>${ course.title }</h5></span>
             <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
-            <a class="email"></a>
+            <a class="email" href="${emailString}">Send Email</a>
             <div class="teachers">
               <ul class="teachers-list">
               ${usrArray.map((item) =>
-                `<li><a href="mailto:${item.email}">${item.name}</a></li>`
+                `<li>${item.name}</li>`
               ).join('')}
               </ul>
             </div>
