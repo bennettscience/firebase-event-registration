@@ -57,6 +57,23 @@ html, body
     grid-template-areas: "title date email" "names . ."
     align-items: center
 
+    .list
+      display: table
+      table-layout: fixed
+
+    .list > div
+      display: table-row
+      margin-left: 10%
+
+      span
+        padding: 2px 0 0 55px
+
+    .teacher--name, teacher--building
+      display: table-cell
+
+    .teacher--name
+      font-weight: 700
+
 #slide-out, #fullscreen-sidebar
   display: block
   position: fixed

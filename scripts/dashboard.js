@@ -39,8 +39,8 @@ Dashboard.prototype.onAuthStateChanged = function(user) {
 
 // Listen for the login click
 Dashboard.prototype.signIn = function() {
-  let provider = new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({
+  let authProvider = new firebase.auth.GoogleAuthProvider();
+  authProvider.setCustomParameters({
     'hd': 'elkhart.k12.in.us'
   })
   this.auth.signInWithPopup(provider);
@@ -70,29 +70,38 @@ Dashboard.prototype.findTrainerCourses = function() {
 
       // Return an array of promises to process in the browser
       return Promise.all(courses)
-    }).then(function(courses) {
-
-      console.log(courses)
+    }).then(async function(courses) {
 
       // For each course...
-      courses.forEach(function(course) {
+      for(course of courses) {
+
+        console.log(course)
 
         // Destructure the course object for easier handling
         let { title, users } = course;
 
         // Map the teachers in the course into an array for looping
-        let usrArray = Object.values(users).map(function(key) {
+        let userArray = Object.values(users).map(function(key) {
           return key
         });
 
+        // Concat a string of user emails for bulk actions
         var emailString = "mailto:"
 
-        usrArray.forEach(function(user) {
+        userArray.forEach(function(user) {
           emailString += user.email + ";"
         });
 
-        console.log(emailString);
+        // Look up the user building
+        await Promise.all(userArray.map(async function(user) {
+          let building = await firebase.database().ref('users/').orderByChild('email').equalTo(user.email).once('value', snapshot => {
+              snapshot.forEach(async function(child) {
+                return user.building = child.val().building;
+              })
+          });
+        }))
 
+        console.log(userArray)
         // Create a container to hold the results
         // No need to check for empty arrays at this point
         let container = document.createElement('div');
@@ -106,21 +115,20 @@ Dashboard.prototype.findTrainerCourses = function() {
             <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
             <a class="email" href="${emailString}">Send Email</a>
             <div class="teachers">
-              <ul class="teachers-list">
-              ${usrArray.map((item) =>
-                `<li>${item.name}</li>`
-              ).join('')}
-              </ul>
+              <div class="list">
+              ${ userArray.map((item) =>
+                 `<div class="list-item"><span class="teacher--name">${ item.name }</span><span class="teacher--building">${ item.building }</span></div>`
+              ).join('') }
+              </div>
             </div>
         `
         // Append the child array to the parent
         parent.appendChild(container);
-      })
-    });
+
+      }
+    })
   }
 }
-
-
 
 Dashboard.prototype.findAdminCourses = function() {
   const parent = document.getElementById('placeholder');
