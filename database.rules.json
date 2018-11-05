@@ -1,7 +1,13 @@
 {
   "rules": {
+    "admins": {
+      ".read": "auth != null"
+    },
+    "trainers": {
+      ".read": "auth != null"
+    },
     "courses": {
-      ".read": "(auth != null && auth.token.email.matches(/.*@elkhart.k12.in.us$/))",
+      ".read": "auth != null && auth.token.email.matches(/.*@elkhart.k12.in.us$/)",
       ".indexOn": [
         "type",
         "start"
@@ -18,11 +24,11 @@
     "users": {
       "$userId": {
         "regs": {
-          ".read": "(auth != null && auth.uid == $userId)",
-          ".write": "(auth != null && auth.uid == $userId)"
+          ".read": "auth != null && auth.uid == $userId",
+          ".write": "auth != null && auth.uid == $userId"
         },
-        ".read": "(auth != null && auth.uid == $userId)",
-        ".write": "(auth != null && auth.uid == $userId)"
+        ".read": "auth != null && auth.uid == $userId",
+        ".write": "auth != null && auth.uid == $userId"
       },
       ".read": "auth != null"
     },

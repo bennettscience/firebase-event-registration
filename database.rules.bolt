@@ -2,6 +2,15 @@ path / {
   read() { false }
   write() { false }
 }
+
+path /admins {
+  read() { isSignedIn() }
+}
+
+path /trainers {
+  read() { isSignedIn() }
+}
+
 path /courses {
   read() { isSignedIn() && auth.token.email.matches(/.*@elkhart.k12.in.us$/) }
   index() { ['type', 'start'] }

@@ -93,6 +93,7 @@ Dashboard.prototype.findTrainerCourses = function() {
         });
 
         // Look up the user building
+        // see https://stackoverflow.com/questions/53159448/appending-div-with-async-promises
         await Promise.all(userArray.map(async function(user) {
           let building = await firebase.database().ref('users/').orderByChild('email').equalTo(user.email).once('value', snapshot => {
               snapshot.forEach(async function(child) {

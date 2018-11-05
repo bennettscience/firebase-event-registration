@@ -31,6 +31,7 @@ function PDReg() {
   this.registerBuilding = document.getElementById('user-building-splash')
   this.registerBuildingButton = document.getElementById('user-building-splash-submit')
   this.changeSchoolButton = document.getElementById('change-school-button')
+  this.adminButton = document.getElementById('admin-button')
 
   // Do stuff when buttons are clicked
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
@@ -125,6 +126,18 @@ PDReg.prototype.onAuthStateChanged = function(user) {
         this.search.classList.add('hidden');
         this.sidebar.classList.add('hidden');
       } else if (user && snap.hasChild('building')) {
+        Promise.all([
+          this.database.ref('admins').orderByKey().equalTo(user.email.split('@')[0]).once('value'),
+          this.database.ref('trainers').orderByKey().equalTo(user.email.split('@')[0]).once('value')
+        ]).then(function(snaps) {
+          var admins = snaps[0];
+          var trainers = snaps[1];
+          console.log(admins.exists(), trainers.exists())
+          if(admins.exists() | trainers.exists()) {
+            this.adminButton.classList.remove('hidden');
+          };
+        }.bind(this))
+
         // User is signed in and registered with a building
         // Get profile pic and user's name from the Firebase user object.
         var stringName = user.displayName;
@@ -225,7 +238,7 @@ PDReg.prototype.register = function(e) {
   var postTheClass = function(classes) {
     var promises = [];
     classes.forEach(function(item) {
-       firebase.database().ref('courses/' + item['id'] + '/members/' + user.uid).set({'code': item['code'], 'email': user.email, 'name':user.displayName})
+      firebase.database().ref('courses/' + item['id'] + '/members/' + user.uid).set({'code': item['code'], 'email': user.email, 'name':user.displayName })
       .then(function() {
         firebase.database().ref('courses/' + item['id']).once('value').then(function(snap) {
           document.getElementById('allCourses').removeChild(document.getElementById(snap.key))
