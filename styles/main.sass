@@ -35,13 +35,28 @@ html, body
   margin: 0 15px
 
   #admin-sidebar
-    grid-row: 1 / span 2
-    grid-column: 1 / span 3
-    margin-top: 25px
+    position: fixed
+    margin-top: 15px
     margin-right: 10px
+    padding: 25px
+    background-color: rgba(0,0,0,0.01)
+    width: 300px
 
     > .input-field
       margin-bottom: 30px
+
+    .back
+      display: block
+      padding: 10px 0
+
+      a
+      font-size: 18px
+      line-height: 2.2
+      vertical-align: middle
+
+      i
+        vertical-align: middle
+        padding-bottom: 5px
 
   .datepicker-controls .select-month input
     width: 90px !important

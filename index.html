@@ -4,6 +4,16 @@
   <title>Elkhart PD</title>
   <link rel="manifest" href="manifest.json">
 
+  <!-- Google Tag Manager -->
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-TRD2J67');</script>
+  <!-- End Google Tag Manager -->
+  <!-- End Google Tag Manager -->
+
   <!-- scripts -->
 
   <!-- App Styling -->
@@ -18,6 +28,10 @@
 </head>
 
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
   <div id="slide-out" class="hidden sidenav sidenav-fixed">
     <ul>
       <li>
@@ -38,6 +52,8 @@
           <button id="change-school-button" class="waves-effect waves-light btn blue darken-2 white-text"><i class='material-icons'>arrow_drop_down</i><span id="user-location"></span></button>
         </div>
       </li>
+      <li><a id="admin-button" class="hidden btn red waves-effect waves-light" href="/dashboard.html"><i class="material-icons white-text">lock_open</i>Admin Links</a></li>
+
       <li id="sorting">
         <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
         <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
@@ -79,9 +95,6 @@
             </div>
           </li>
         </ul>
-      </li>
-      <li>
-        <a id="admin-button" class="hidden btn-flat gray waves-effect waves-light" href="/dash.html"><i class="material-icons">lock_open</i>Admin Links</a>
       </li>
     </ul> <!-- End sidebar nav -->
     </div>
