@@ -37,18 +37,9 @@ Dashboard.prototype.onAuthStateChanged = function(user) {
   }
 }
 
-// Listen for the login click
-Dashboard.prototype.signIn = function() {
-  let authProvider = new firebase.auth.GoogleAuthProvider();
-  authProvider.setCustomParameters({
-    'hd': 'elkhart.k12.in.us'
-  })
-  this.auth.signInWithPopup(provider);
-};
-
 // List all participants for a course if you're a trainer
 Dashboard.prototype.findTrainerCourses = function() {
-  let parent = document.getElementById('placeholder')
+  var parent = document.getElementById('placeholder');
   var trainerId = this.auth.currentUser.uid;
   var dateInput = document.getElementById('date-select').value;
 
@@ -78,10 +69,10 @@ Dashboard.prototype.findTrainerCourses = function() {
         console.log(course)
 
         // Destructure the course object for easier handling
-        let { title, users } = course;
+        var { title, users } = course;
 
         // Map the teachers in the course into an array for looping
-        let userArray = Object.values(users).map(function(key) {
+        var userArray = Object.values(users).map(function(key) {
           return key
         });
 
@@ -95,7 +86,7 @@ Dashboard.prototype.findTrainerCourses = function() {
         // Look up the user building
         // see https://stackoverflow.com/questions/53159448/appending-div-with-async-promises
         await Promise.all(userArray.map(async function(user) {
-          let building = await firebase.database().ref('users/').orderByChild('email').equalTo(user.email).once('value', snapshot => {
+          var building = await firebase.database().ref('users/').orderByChild('email').equalTo(user.email).once('value', snapshot => {
               snapshot.forEach(async function(child) {
                 return user.building = child.val().building;
               })
@@ -105,14 +96,14 @@ Dashboard.prototype.findTrainerCourses = function() {
         console.log(userArray)
         // Create a container to hold the results
         // No need to check for empty arrays at this point
-        let container = document.createElement('div');
+        var container = document.createElement('div');
         container.classList.add('course');
 
         // Set a template literal loop inside the forEach to make variable assignment simple
         // See more at https://gist.github.com/wiledal/3c5b63887cc8a010a330b89aacff2f2e
         container.innerHTML =
         `
-            <span class="wkshp-title"><h5>${ course.title }</h5></span>
+            <span class="wkshp-title"><h5>${ course.title } - (${userArray.length})</h5></span>
             <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
             <a class="email" href="${emailString}">Send Email</a>
             <div class="teachers">
@@ -133,10 +124,10 @@ Dashboard.prototype.findTrainerCourses = function() {
 
 Dashboard.prototype.findAdminCourses = function() {
   const parent = document.getElementById('placeholder');
-  let userDb = this.database.ref('users/')
-  let courseDb = this.database.ref('courses/')
-  let adminId = this.auth.currentUser.uid;
-  let adminLocation;
+  var userDb = this.database.ref('users/')
+  var courseDb = this.database.ref('courses/')
+  var adminId = this.auth.currentUser.uid;
+  var adminLocation;
   var dateInput = document.getElementById('date-select').value;
 
   if(!dateInput) {
@@ -170,9 +161,9 @@ Dashboard.prototype.findAdminCourses = function() {
         // If there are registrations, we need to extract those IDs and cross-reference locations
         // Create a new array of registration UIDs to pull from users
         if(regs) {
-          let container = document.createElement('div') // make a div to hold the course;
-          let teachers = [];
-          let regsArr = Object.keys(regs).map(function(r) {
+          var container = document.createElement('div') // make a div to hold the course;
+          var teachers = [];
+          var regsArr = Object.keys(regs).map(function(r) {
             return r;
           })
 
@@ -209,9 +200,9 @@ Dashboard.prototype.findAdminCourses = function() {
 }
 
 Dashboard.prototype.getCurrentUserLocation = function(user) {
-  let currentUid = this.auth.uid;
-  let ref = this.database.ref('users/' + currentUid).on('value').then(function(snap) {
-    let building = snap.val().building;
+  var currentUid = this.auth.uid;
+  var ref = this.database.ref('users/' + currentUid).on('value').then(function(snap) {
+    var building = snap.val().building;
   });
   return building;
 };
