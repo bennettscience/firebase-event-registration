@@ -54,10 +54,18 @@ Dashboard.prototype.findTrainerCourses = function() {
     return this.database.ref('courses/').orderByChild('start').startAt(startDate).once('value').then(function(snap) {
       var courses = [];
 
+
       // Get sessions with teachers signed up
-      snap.forEach(function(c) {
-        if(c.val().members) { courses.push({'start': c.val().start, 'title': c.val().title, 'users': c.val().members }) }
+      snap.forEach(function(c){
+        if(c.val().members && c.val().pocEmail.split('@')[0] == firebase.auth().currentUser.email.split('@')[0]) {
+          courses.push({'start': c.val().start, 'title': c.val().title, 'users': c.val().members })
+        }
       })
+
+      if(courses.length === 0) {
+        M.toast({html: 'No courses found under your name.', classes: 'red'});
+        return;
+      }
 
       // Return an array of promises to process in the browser
       return Promise.all(courses)
@@ -65,8 +73,6 @@ Dashboard.prototype.findTrainerCourses = function() {
 
       // For each course...
       for(course of courses) {
-
-        console.log(course)
 
         // Destructure the course object for easier handling
         var { title, users } = course;
