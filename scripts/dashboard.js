@@ -162,6 +162,7 @@ Dashboard.prototype.findAdminCourses = function() {
         // Create a new array of registration UIDs to pull from users
         if(regs) {
           var container = document.createElement('div') // make a div to hold the course;
+          container.classList.add('course');
           var teachers = [];
           var regsArr = Object.keys(regs).map(function(r) {
             return r;
@@ -180,15 +181,16 @@ Dashboard.prototype.findAdminCourses = function() {
           // If the registrations length is > 0, write a new child to the doc.
           if(teachers.length > 0) {
 
-              container.innerHTML =
-              `
-                <h4>${ course.title }</h4>
+              container.innerHTML =`
+                <span class="wkshp-title"><h5>${ course.title }</h5></span>
+                <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
+                <span class="email"></span>
                 <div class="teachers">
-                  <ul class="teachers-list">
+                  <div class="list">
                   ${teachers.map((item) =>
                     `<li><a href="mailto:${item.email}">${item.name}</a></li>`
                   ).join('')}
-                  </ul>
+                  </div>
                 </div>
               `
               parent.appendChild(container);
