@@ -63,7 +63,7 @@ Dashboard.prototype.findTrainerCourses = function() {
       })
 
       if(courses.length === 0) {
-        M.toast({html: 'No courses found under your name.', classes: 'red'});
+        M.toast({html: 'No courses found under your name. Try searching from a different date.', classes: 'red'});
         return;
       }
 

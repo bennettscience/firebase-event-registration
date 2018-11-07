@@ -48,12 +48,12 @@ $(document).keydown(function(e) {
  * @returns {String}  relative path to an image
  */
 function getBg() {
-  let sub = 'img/';
+  let base = 'img/';
   let ext = '.png';
 
   let rand = Math.ceil(Math.random() * 7);
 
-  return sub + rand + ext;
+  return base + rand + ext;
 }
 
 
@@ -69,7 +69,7 @@ $(".input-field input").on('keyup',function() {
    * @event Hide
    * @param {String} String input by the user.
    */
-
+  // var dataLayer = [];
   $(".class-container").hide();
   var input = $(this).val().toUpperCase();
   $(".card-title").each(function() {
@@ -78,6 +78,11 @@ $(".input-field input").on('keyup',function() {
       $(this).parents(".class-container").show();
     }
   });
+
+  this.onblur = function() {
+    console.log(this.value);
+    window.dataLayer.push({'event': 'search', 'searchTerm': this.value})
+  }
 });
 
 // Filter by Danielson category
