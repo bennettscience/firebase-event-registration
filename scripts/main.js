@@ -272,7 +272,7 @@ PDReg.USER_TEMPLATE = `
 // Model for classes available for registration.
 PDReg.CLASS_TEMPLATE =
   '<div class="card large class-container">' +
-    '<div class="card-image waves-effect waves-block waves-light"></div>' +
+    '<div class="card-image"></div>' +
     '<div class="card-content">' +
       '<label for="">' +
         '<input name="course" class="filled-in" value="" id="" type="checkbox" />' +
@@ -359,10 +359,11 @@ PDReg.prototype.buildAllClasses = function(course) {
     div.querySelector('.card-title').textContent = course.title;
     div.querySelector('.date').textContent = format(course.start);
     div.querySelector('.card-desc').innerHTML = course.desc;
-    div.querySelector('.card-image').innerHTML = "<img class='activator' src='" + getBg() + "' />'";
+    div.querySelector('.card-image').innerHTML = "<img src='" + getBg() + "' />'";
     div.querySelector('.seats').textContent = "Seats: " + course.seats;
     div.querySelector('.contact').innerHTML = `Contact: <a href='mailto:${course.pocEmail}'>${course.poc}</a>`
     div.querySelector('.location').textContent = "Location: " + course.loc;
+    div.querySelector('.activator').setAttribute('data-title', course.title);
     codes.push({
       'id': course.key,
       'code': course.code
@@ -479,7 +480,7 @@ PDReg.prototype.cancel = function(e) {
       div.querySelector('.card-title').textContent = course.title;
       div.querySelector('.date').textContent = format(course.start);
       div.querySelector('.card-desc').innerHTML = course.desc;
-      div.querySelector('.card-image').innerHTML = "<img class='activator' src='" + getBg() + "' />'";
+      div.querySelector('.card-image').innerHTML = "<img src='" + getBg() + "' />'";
       div.querySelector('.seats').textContent = "Seats: " + course.seats;
       div.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}'>${course.poc}</a>`
       div.querySelector('.location').textContent = "Location: " + course.loc;
