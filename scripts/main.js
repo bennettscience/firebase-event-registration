@@ -266,7 +266,13 @@ PDReg.prototype.register = function(e) {
 
 // Model for registrations
 PDReg.USER_TEMPLATE = `
-  <div class="info"><span class="title"></span><span class="date"></span><span class="location"></span><span class="contact"></span></div><a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a></div>
+  <div class="info">
+    <span class="title"></span>
+    <span class="date"></span>
+    <span class="location"></span>
+    <span class="contact"></span>
+  </div>
+  <a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a>
 `;
 
 // Model for classes available for registration.
@@ -303,6 +309,7 @@ PDReg.CLASS_TEMPLATE =
  * @param  {Object} course Course object data as JSON to create DOM elements
  */
 PDReg.prototype.buildUserClasses = function(course) {
+  console.log(course)
   var parentDiv = document.getElementById("user-courses-list");
 
   if(!parentDiv.querySelector("[id='user_" + course.key + "']")) {
@@ -312,7 +319,11 @@ PDReg.prototype.buildUserClasses = function(course) {
     container.setAttribute("class", "collection-item");
     container.getElementsByTagName("a")[0].setAttribute("id", "cancel_"+course.key);
 
-    container.querySelector('.title').textContent = course.title;
+    if(course.type == "Online") {
+      container.querySelector('.title').innerHTML = `<a href='${course.redirect}' target='_blank'>${course.title}</a>`;
+    } else {
+      container.querySelector('.title').textContent = course.title;
+    }
     container.querySelector('.date').textContent = smallFormat(course.start);
     container.querySelector('.location').textContent = course.loc;
     container.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}'>${course.poc}</a>`
