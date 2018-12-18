@@ -178,7 +178,7 @@ Dashboard.prototype.findAdminCourses = function() {
           // Compare the user building with the admin building. If it exists, push the teacher.
           regsArr.forEach(function(u) {
             if(users.hasOwnProperty(u)) {
-              if(users[u]['building'] == adminLocation) {
+              if(users[u]['building'] == adminLocation || adminLocation === "all") {
                 teachers.push({'name': users[u]['name'], 'email': users[u]['email']})
               }
             }
