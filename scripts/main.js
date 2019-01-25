@@ -319,7 +319,8 @@ PDReg.prototype.buildUserClasses = function(course) {
     container.setAttribute("class", "collection-item");
     container.getElementsByTagName("a")[0].setAttribute("id", "cancel_"+course.key);
 
-    if(course.type == "Online") {
+    console.log(course.redirect);
+    if(course.redirect) {
       container.querySelector('.title').innerHTML = `<a href='${course.redirect}' target='_blank'>${course.title}</a>`;
     } else {
       container.querySelector('.title').textContent = course.title;
