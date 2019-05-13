@@ -68,9 +68,10 @@ html, body
     display: grid
     width: 90%
     grid-template-columns: auto 25% 15%
-    grid-template-rows: 15% auto
+    grid-template-rows: auto auto
     grid-template-areas: "title date email" "names . ."
     align-items: center
+    margin-bottom: 35px
 
     .list
       display: table
@@ -528,6 +529,14 @@ h1, h2, h3, p
   background-size: 40px
   border-radius: 20px
 
+@media screen and (max-width: 1166px)
+  main 
+    grid-column: 1 / span 12
+    margin-left: 0
+
+  .sidenav.sidenav-fixed 
+      -webkit-transform: translate(-105%) !important
+      transform: translate(-105%) !important
 
 @media screen and (max-width: 610px)
   header
