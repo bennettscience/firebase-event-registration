@@ -6,3 +6,7 @@ index4.html
 .eslintrc
 .DS_Store
 .firebaserc
+node_modules
+.firebase/hosting..cache
+.vscode/
+.eslintrc.json
