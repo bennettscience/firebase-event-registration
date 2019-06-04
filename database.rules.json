@@ -7,12 +7,13 @@
       ".read": "auth != null"
     },
     "courses": {
-      ".read": "auth != null && auth.token.email.matches(/.*@elkhart.k12.in.us$/)",
+      ".read": "(auth != null && auth.token.email.matches(/.*@elkhart.k12.in.us$/))",
       ".indexOn": [
         "type",
         "start"
       ],
       "$courseId": {
+        ".write": "(auth != null && root.child('courses').child($courseId).child('pocEmail').val() == auth.token.email)",
         "members": {
           "$uid": {
             ".validate": "root.child('courses').child($courseId).child('code').val() == newData.child('code').val()",
@@ -24,13 +25,16 @@
     "users": {
       "$userId": {
         "regs": {
-          ".read": "auth != null && auth.uid == $userId",
-          ".write": "auth != null && auth.uid == $userId"
+          ".read": "(auth != null && auth.uid == $userId)",
+          ".write": "(auth != null && auth.uid == $userId)"
         },
-        ".read": "auth != null && auth.uid == $userId",
-        ".write": "auth != null && auth.uid == $userId"
+        ".read": "(auth != null && auth.uid == $userId)",
+        ".write": "(auth != null && auth.uid == $userId)"
       },
-      ".read": "auth != null"
+      ".read": "auth != null",
+      ".indexOn": [
+        "email"
+      ]
     },
     "device_ids": {
       ".read": "auth != null",

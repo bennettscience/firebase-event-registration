@@ -1,11 +1,11 @@
-
-// TODO: Only expose if in the '/admins' or '/presenters' table
 function Dashboard() {
   // this.loginButton = document.getElementById('login-button');
   this.dateSelect = document.getElementById('date-select');
   this.teachers = document.querySelector('teachers');
 
   this.runButton = document.getElementById('run-button');
+
+  this.course = document.querySelectorAll('.wkshp-title');
 
   // Listen for the loading call and return the appropriate function
   this.runButton.addEventListener('click', function() {
@@ -16,6 +16,10 @@ function Dashboard() {
       this.findTrainerCourses();
     }
   }.bind(this))
+
+  // this.course.addEventListener('click', function() {
+  //   this.updateSession(this.dataset.id)
+  // }.bind(this))
 
   // this.loginButton.addEventListener('click', this.signIn.bind(this));
 
@@ -54,11 +58,10 @@ Dashboard.prototype.findTrainerCourses = function() {
     return this.database.ref('courses/').orderByChild('start').startAt(startDate).once('value').then(function(snap) {
       var courses = [];
 
-
       // Get sessions with teachers signed up
       snap.forEach(function(c){
         if(c.val().members && c.val().pocEmail.split('@')[0] == firebase.auth().currentUser.email.split('@')[0]) {
-          courses.push({'start': c.val().start, 'title': c.val().title, 'users': c.val().members })
+          courses.push({'id': c.key, 'start': c.val().start, 'title': c.val().title, 'users': c.val().members })
         }
       })
 
@@ -70,12 +73,12 @@ Dashboard.prototype.findTrainerCourses = function() {
       // Return an array of promises to process in the browser
       return Promise.all(courses)
     }).then(async function(courses) {
-
+      currentUser = firebase.auth().currentUser.email;
       // For each course...
       for(course of courses) {
 
         // Destructure the course object for easier handling
-        var { title, users } = course;
+        var { id, title, users } = course;
 
         // Map the teachers in the course into an array for looping
         var userArray = Object.values(users).map(function(key) {
@@ -83,7 +86,7 @@ Dashboard.prototype.findTrainerCourses = function() {
         });
 
         // Concat a string of user emails for bulk actions
-        var emailString = "mailto:"
+        var emailString = "mailto:" + currentUser + "?bcc=";
 
         userArray.forEach(function(user) {
           emailString += user.email + ";"
@@ -99,17 +102,17 @@ Dashboard.prototype.findTrainerCourses = function() {
           });
         }))
 
-        console.log(userArray)
         // Create a container to hold the results
         // No need to check for empty arrays at this point
         var container = document.createElement('div');
         container.classList.add('course');
+        container.setAttribute('data-id', course.id)
 
         // Set a template literal loop inside the forEach to make variable assignment simple
         // See more at https://gist.github.com/wiledal/3c5b63887cc8a010a330b89aacff2f2e
         container.innerHTML =
         `
-            <span class="wkshp-title"><h5>${ course.title } - (${userArray.length})</h5></span>
+            <span class="wkshp-title" onclick="Dashboard.prototype.updateSession('${ course.id}')" data-id="${course.id}"><h5><i class="material-icons">edit</i>${ course.title } - (${userArray.length})</h5></span>
             <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
             <a class="email" href="${emailString}">Send Email</a>
             <div class="teachers">
@@ -188,7 +191,7 @@ Dashboard.prototype.findAdminCourses = function() {
           if(teachers.length > 0) {
 
               container.innerHTML =`
-                <span class="wkshp-title"><h5>${ course.title }</h5></span>
+                <span class="wkshp-title"><h5>${ course.title } - (${teachers.length})</h5></span>
                 <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
                 <span class="email"></span>
                 <div class="teachers">
@@ -213,6 +216,157 @@ Dashboard.prototype.getCurrentUserLocation = function(user) {
     var building = snap.val().building;
   });
   return building;
+};
+
+// Update the select course on click
+Dashboard.prototype.updateSession = function(id) {
+  currentUser = firebase.auth().currentUser.email;
+  // start a form
+  let form = document.createElement('form');
+  form.setAttribute('class', 'course-update');
+  form.setAttribute('data-courseid', `${id}`)
+  let fields = ['title', 'desc', 'start', 'end', 'loc', 'poc', 'pocEmail']
+  let container = document.querySelector(`[data-id="${id}"]`);
+
+  // get the course from Firebase.
+  course = firebase.database().ref('courses/' + id).once('value' , snap => {
+
+    for(el in fields) {
+
+      var d = document.createElement('div');
+
+      if(fields[el] !== 'start' && fields[el] !== 'end') {
+        d.setAttribute('class', 'input-field');
+
+        var i = document.createElement('input')
+        i.setAttribute('id', fields[el]);
+
+        var l = document.createElement('label');
+        l.setAttribute('for', fields[el]);
+        l.setAttribute('class', 'active');
+        l.innerText = fields[el];
+
+        i.setAttribute('type', 'text');
+        i.value = snap.val()[fields[el]];
+        d.appendChild(i);
+        d.appendChild(l);
+        form.appendChild(d);
+
+      } else {
+        // Ad-hoc create an input to update the start/stop times
+        var rawDate = new Date(snap.val()[fields[el]]);
+
+        var formattedDate = moment(rawDate).format('YYYY-MM-DD');
+        var formattedTime = moment(rawDate).format('HH:mm', 'A');
+
+        var label = document.createElement('label');
+        label.setAttribute('for', fields[el]);
+        label.setAttribute('class', 'active');
+
+        label.innerText = fields[el];
+        
+        var i = document.createElement('input')
+        i.setAttribute('type', 'date');
+        i.setAttribute('id', fields[el]);
+        i.value = formattedDate;
+        d.setAttribute('class', 'input-field date')
+        d.appendChild(label)
+        d.appendChild(i)
+
+        var timeDiv = document.createElement('div');
+        timeDiv.setAttribute('class', 'input-field time');
+
+        var t = document.createElement('input');
+        t.setAttribute('type', 'time')
+        t.setAttribute('id', `${ fields[el] }-time`);
+        t.value = formattedTime;
+        
+        var tl = document.createElement('label');
+        tl.setAttribute('for', `${ fields[el] }-time`);
+        tl.innerText = `${ fields[el] } time`;
+       
+        timeDiv.appendChild(t)
+        timeDiv.appendChild(tl)
+        form.appendChild(d);
+        form.appendChild(timeDiv)
+      }
+    }
+    var s = document.createElement('button');
+    s.setAttribute('class', 'btn');
+    s.setAttribute('id', 'update-submit')
+    s.setAttribute('type', 'submit');
+    s.innerText = "Submit";
+    form.appendChild(s);
+
+    var c = document.createElement('button');
+    c.innerText = "Cancel";
+    c.setAttribute('class', 'btn red')
+    c.setAttribute('value', 'cancel');
+    c.setAttribute('onclick','return this.parentNode.remove()');
+    form.appendChild(c);
+
+  })
+  container.appendChild(form)
+  form.addEventListener('submit', postSessionUpdate)
+}.bind(this)
+
+const postSessionUpdate = function(event) {
+  event.preventDefault();
+  const form = document.querySelector('.course-update');
+
+  // Call the function to get the form data.
+  let data = formToJSON(form.elements);
+  
+  // Define the course ID
+  data.id = form.dataset.courseid;
+
+  // console.log(JSON.stringify(data, null, "  "));
+
+  // Modify the start/stop into timestamps that firebase understands
+  var startDate = moment(new Date(data['start'] + ' ' + data['start-time']));
+  var endDate = moment(new Date(data['end'] + ' ' + data['end-time']));
+
+  data['start'] = startDate.toISOString();
+  data['end'] = endDate.toISOString();
+
+  delete data['start-time'];
+  delete data['end-time'];
+
+  // console.log(JSON.stringify(data, null, "  "));
+
+
+  // send it to Firebase
+  firebase.database().ref('courses/' + data.id).update(data, function(error) {
+    if(error) {
+      alert("Something went wrong!" + error)
+    } else {
+      alert("The course updated!")
+      return $('.course-update').remove();
+    }
+  })
+}.bind(this)
+
+const isValidInput = element => {
+  return element.id && element.value;
+}
+
+const formToJSON = elements => {
+
+  const reducerFunction = (data, element) => {
+    if(isValidInput(element)) {
+      data[element.id] = element.value;
+    }
+    return data;
+  }
+
+  const reduceInitialVal = {}
+
+  console.log('Initial `data` value:', JSON.stringify(reduceInitialVal));
+
+  const formData = [].reduce.call(elements, reducerFunction, reduceInitialVal);
+
+  return formData;
+
 };
 
 window.onload = function() {

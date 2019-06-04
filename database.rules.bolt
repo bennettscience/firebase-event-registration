@@ -16,6 +16,10 @@ path /courses {
   index() { ['type', 'start'] }
 }
 
+path /courses/{courseId} {
+  write() { isSignedIn() && prior(root.courses[courseId]['pocEmail']) == auth.token.email }
+}
+
 path /courses/{courseId}/members/{uid} {
   write() { isSignedIn() }
   validate() { prior(root.courses[courseId]['code']) == this.code }
@@ -33,6 +37,7 @@ path /users/{userId} {
 
 path /users {
   read() { isSignedIn() }
+  index() { ['email'] }
 }
 
 path /device_ids {
