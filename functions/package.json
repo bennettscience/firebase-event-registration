@@ -3,7 +3,7 @@
   "description": "Count Child nodes Firebase Functions sample",
   "dependencies": {
     "firebase-admin": "6.0.0",
-    "firebase-functions": "^2.1.0",
+    "firebase-functions": "^2.2.0",
     "nodemailer": "^4.6.7",
     "nodemon": "^1.18.4"
   },
