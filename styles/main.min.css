@@ -16,7 +16,9 @@
 html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  height: 100%;
+  width: 100%; }
 
 #wrap {
   display: grid;
@@ -53,7 +55,8 @@ html, body {
     grid-template-rows: auto auto;
     grid-template-areas: "title date email" "names . .";
     align-items: center;
-    margin-bottom: 35px; }
+    margin-bottom: 35px;
+    position: relative; }
     #wrap #placeholder > .course .list {
       display: table;
       table-layout: fixed; }
@@ -297,12 +300,13 @@ input.toggle:checked + label:after {
   grid-row: 1;
   text-align: center; }
 
-#login-splash img {
-  width: 75%; }
-
-#login-splash #sign-in-button i {
-  vertical-align: middle;
-  margin-right: 25px; }
+#login-splash {
+  backface-visibility: hidden; }
+  #login-splash img {
+    width: 75%; }
+  #login-splash #sign-in-button i {
+    vertical-align: middle;
+    margin-right: 25px; }
 
 #user-building-splash {
   grid-row: 2; }
@@ -331,6 +335,25 @@ main {
   main.admin {
     grid-row: 1 / span 2;
     margin-left: 0; }
+    main.admin .wkshp-title i {
+      vertical-align: top; }
+    main.admin .wkshp-title:hover {
+      cursor: pointer; }
+    main.admin .course-update {
+      position: absolute;
+      top: 55px;
+      width: 100%;
+      height: 100%;
+      background: #fff; }
+      main.admin .course-update .date {
+        margin-right: 10%; }
+      main.admin .course-update .date, main.admin .course-update .time {
+        width: 40%;
+        display: inline-block; }
+        main.admin .course-update .date .time, main.admin .course-update .time .time {
+          float: right; }
+      main.admin .course-update #update-submit {
+        margin-right: 25px; }
   main #allCourses {
     display: flex;
     flex-direction: row;
@@ -432,10 +455,7 @@ h1, h2, h3, p {
 @media screen and (max-width: 1166px) {
   main {
     grid-column: 1 / span 12;
-    margin-left: 0; }
-  .sidenav.sidenav-fixed {
-    -webkit-transform: translate(-105%) !important;
-    transform: translate(-105%) !important; } }
+    margin-left: 0; } }
 
 @media screen and (max-width: 610px) {
   header {
