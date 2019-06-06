@@ -53,10 +53,24 @@ html, body {
     width: 90%;
     grid-template-columns: auto 25% 15%;
     grid-template-rows: auto auto;
-    grid-template-areas: "title date email" "names . .";
+    grid-template-areas: "title date admin" "names . .";
     align-items: center;
     margin-bottom: 35px;
     position: relative; }
+    #wrap #placeholder > .course i {
+      vertical-align: middle; }
+    #wrap #placeholder > .course a.email {
+      grid-area: admin;
+      position: relative;
+      left: 0;
+      color: #000; }
+    #wrap #placeholder > .course i.download {
+      grid-area: admin;
+      position: relative;
+      left: 35%;
+      color: #000; }
+      #wrap #placeholder > .course i.download:hover {
+        cursor: pointer; }
     #wrap #placeholder > .course .list {
       display: table;
       table-layout: fixed; }

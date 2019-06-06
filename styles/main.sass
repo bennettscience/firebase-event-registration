@@ -35,6 +35,7 @@ html, body
   grid-template-rows: 65px 1fr
   grid-gap: 15px
   margin: 0 15px
+  
 
   #admin-sidebar
     position: fixed
@@ -71,10 +72,28 @@ html, body
     width: 90%
     grid-template-columns: auto 25% 15%
     grid-template-rows: auto auto
-    grid-template-areas: "title date email" "names . ."
+    grid-template-areas: "title date admin" "names . ."
     align-items: center
     margin-bottom: 35px
     position: relative
+
+    i 
+      vertical-align: middle
+
+    a.email 
+      grid-area: admin
+      position: relative
+      left: 0
+      color: #000
+    
+    i.download
+      grid-area: admin
+      position: relative
+      left: 35%
+      color: #000
+
+      &:hover
+        cursor: pointer
 
     .list
       display: table
