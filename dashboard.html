@@ -79,6 +79,9 @@
       });
       $('select').formSelect();
 
+      $("#date-select").on('click', function() {
+        $("#placeholder").empty();
+      })
       $('#date-select').on('change', function() {
         console.log($("#date-select").val())
         if($("#date-select").val()) {

@@ -136,6 +136,18 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
           });
         }))
 
+        // Filter userArray by name
+        compare = (a, b) => {
+          let flip = function(str) {
+            val = str.split(" ");
+            return JSON.stringify({"first":val[0], "last": val[1]})
+          }
+          let nameA = flip(a.name);
+          let nameB = flib(b.name);
+
+          return 
+        }
+
         sessionStorage.setItem(`users-${course.id}`, JSON.stringify(userArray))
 
         // Create a container to hold the results
@@ -354,7 +366,8 @@ Dashboard.prototype.updateSession = function(id) {
     form.appendChild(c);
 
   })
-  container.appendChild(form)
+  document.querySelector("#placeholder").appendChild(form)
+  // container.setAttribute('height', '100%')
   form.addEventListener('submit', postSessionUpdate)
 }.bind(this)
 

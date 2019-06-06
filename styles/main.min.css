@@ -49,7 +49,9 @@ html, body {
   #wrap .datepicker-controls .select-month input {
     width: 90px !important; }
   #wrap #placeholder {
-    margin-top: 35px; }
+    margin-top: 35px;
+    position: relative;
+    display: block; }
   #wrap #placeholder > .course {
     display: grid;
     width: 90%;
@@ -58,8 +60,7 @@ html, body {
     grid-template-areas: "title date admin" "names . .";
     align-items: center;
     margin-bottom: 35px;
-    position: relative;
-    z-index: -100; }
+    position: relative; }
     #wrap #placeholder > .course i {
       vertical-align: middle; }
     #wrap #placeholder > .course a.email {
@@ -357,8 +358,10 @@ main {
     main.admin .wkshp-title:hover {
       cursor: pointer; }
     main.admin .course-update {
+      display: block;
       position: absolute;
-      top: 55px;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       background: #fff; }
