@@ -2,8 +2,9 @@
   "name": "child-count-functions",
   "description": "Count Child nodes Firebase Functions sample",
   "dependencies": {
-    "firebase-admin": "6.0.0",
+    "firebase-admin": "^8.0.0",
     "firebase-functions": "^2.2.0",
+    "firebase-tools": "^6.10.0",
     "nodemailer": "^4.6.7",
     "nodemon": "^1.18.4"
   },
@@ -16,6 +17,7 @@
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
+    "firebase-functions-test": "^0.1.6",
     "prettier": "1.14.3"
   },
   "scripts": {
@@ -26,5 +28,8 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": "8"
+  }
 }
