@@ -102,6 +102,8 @@ Dashboard.prototype.findTrainerCourses = function() {
           });
         }))
 
+        sessionStorage.setItem(`users-${course.id}`, JSON.stringify(userArray))
+
         // Create a container to hold the results
         // No need to check for empty arrays at this point
         var container = document.createElement('div');
@@ -114,7 +116,8 @@ Dashboard.prototype.findTrainerCourses = function() {
         `
             <span class="wkshp-title" onclick="Dashboard.prototype.updateSession('${ course.id}')" data-id="${course.id}"><h5><i class="material-icons">edit</i>${ course.title } - (${userArray.length})</h5></span>
             <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
-            <a class="email" href="${emailString}">Send Email</a>
+            <a data-name="Send email" class="email" href="${emailString}" title="Send email"><i class="small material-icons">email</i></a>
+            <i data-name="Download registrations" onclick="download_csv('users-${course.id}')" class="download small material-icons">cloud_download</i>
             <div class="teachers">
               <div class="list">
               ${ userArray.map((item) =>
@@ -225,7 +228,7 @@ Dashboard.prototype.updateSession = function(id) {
   let form = document.createElement('form');
   form.setAttribute('class', 'course-update');
   form.setAttribute('data-courseid', `${id}`)
-  let fields = ['title', 'desc', 'start', 'end', 'loc', 'poc', 'pocEmail']
+  let fields = ['title', 'desc', 'seats', 'start', 'end', 'loc', 'poc', 'pocEmail']
   let container = document.querySelector(`[data-id="${id}"]`);
 
   // get the course from Firebase.
@@ -245,6 +248,10 @@ Dashboard.prototype.updateSession = function(id) {
         l.setAttribute('for', fields[el]);
         l.setAttribute('class', 'active');
         l.innerText = fields[el];
+
+        if(fields[el] === 'seats') {
+          l.innerText = `Remaining ${fields[el]}`
+        }
 
         i.setAttribute('type', 'text');
         i.value = snap.val()[fields[el]];
@@ -368,6 +375,81 @@ const formToJSON = elements => {
   return formData;
 
 };
+
+const download_csv = function(obj) {
+  console.log(obj);
+  var data = JSON.parse(sessionStorage.getItem(obj))
+
+  var headers = {
+    name: 'Name'.replace(/,/g, ''), // remove commas to avoid errors
+    email: "Email",
+    building: "Building",
+  };
+
+  var itemsFormatted = [];
+
+  data.forEach((item) => {
+    console.log(item)
+    itemsFormatted.push({
+      name: item.name.replace(/,/g, ''), // remove commas to avoid errors,
+      email: item.email,
+      building: item.building,
+    });
+  });
+
+  exportCSVFile(headers, itemsFormatted, 'Download')
+
+  
+}.bind(this)
+
+function convertToCSV(objArray) {
+  var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+  var str = '';
+
+  for (var i = 0; i < array.length; i++) {
+    var line = '';
+    for (var index in array[i]) {
+      if (line != '') line += ','
+
+      line += array[i][index];
+    }
+
+    str += line + '\r\n';
+  }
+
+  return str;
+}
+
+function exportCSVFile(headers, items, fileTitle) {
+  
+  if (headers) {
+    items.unshift(headers);
+  }
+
+  // Convert Object to JSON
+  var jsonObject = JSON.stringify(items);
+
+  var csv = this.convertToCSV(jsonObject);
+
+  var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  if (navigator.msSaveBlob) { // IE 10+
+    navigator.msSaveBlob(blob, exportedFilenmae);
+  } else {
+    var link = document.createElement("a");
+    if (link.download !== undefined) { // feature detection
+      // Browsers that support HTML5 download attribute
+      var url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", exportedFilenmae);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+}
 
 window.onload = function() {
   window.dashboard = new Dashboard();
