@@ -35,6 +35,8 @@ html, body {
     width: 300px; }
     #wrap #admin-sidebar > .input-field {
       margin-bottom: 30px; }
+      #wrap #admin-sidebar > .input-field input {
+        cursor: pointer; }
     #wrap #admin-sidebar .back {
       display: block;
       padding: 10px 0;
@@ -56,7 +58,8 @@ html, body {
     grid-template-areas: "title date admin" "names . .";
     align-items: center;
     margin-bottom: 35px;
-    position: relative; }
+    position: relative;
+    z-index: -100; }
     #wrap #placeholder > .course i {
       vertical-align: middle; }
     #wrap #placeholder > .course a.email {

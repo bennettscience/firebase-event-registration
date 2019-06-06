@@ -34,14 +34,17 @@
           <label>Select Role</label>
         </div>
         <div class="input-field">
-          <!-- <select name="" id="date-select">
-            <option value="past">Previous</option>
+          <select name="" id="range-select">
+            <option value="past">Past</option>
             <option value="future">Upcoming</option>
-          </select> -->
-          <input type="text" value="" class="datepicker" id="date-select"/>
-          <label for="date-select">Start date</label>
+          </select>
+          <label>Date Range</label>
         </div>
-        <button id="run-button" class="btn btn-primary">Get Teachers</button>
+        <div class="input-field">
+          <input type="text" value="" placeholder="MM/DD/YYYY" class="active datepicker" id="date-select"/>
+          <label>Specific date</label>
+        </div>
+        <button id="run-button" class="btn btn-primary">Find Courses</button>
         <div class="back"><i class="material-icons blue-text inline-icon">arrow_left</i><a href="/">Back</a></div>
       </div> <!-- /#admin-sidebar -->
     <main class="admin">
@@ -66,15 +69,26 @@
     <script>
       $('.datepicker').datepicker({
         defaultDate: new Date(),
-        setDefaultDate: true,
+        setDefaultDate: false,
         today: 'Today',
-        autoClose: true,
-        shoeClearBtn: true,
+        autoClose: false,
+        showClearBtn: true,
         i8n: [{
           clear: 'Clear'
         }]
       });
       $('select').formSelect();
+
+      $('#date-select').on('change', function() {
+        console.log($("#date-select").val())
+        if($("#date-select").val()) {
+          $('#range-select').prop('disabled', true);
+        } else {
+          $("#range-select").prop('disabled', false)
+        }
+        
+        $('select').formSelect();
+      })
     </script>
   </body>
 </html>

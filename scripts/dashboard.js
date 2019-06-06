@@ -1,6 +1,6 @@
 function Dashboard() {
   // this.loginButton = document.getElementById('login-button');
-  this.dateSelect = document.getElementById('date-select');
+  // this.dateSelect = document.getElementById('date-select');
   this.teachers = document.querySelector('teachers');
 
   this.runButton = document.getElementById('run-button');
@@ -10,10 +10,13 @@ function Dashboard() {
   // Listen for the loading call and return the appropriate function
   this.runButton.addEventListener('click', function() {
     var runType = document.getElementById('run-button-type');
+    var filter = document.getElementById('range-select').value;
+    let filterDate = document.getElementById('date-select').value;
+
     if(runType.options[runType.selectedIndex].value == 'admin') {
-      this.findAdminCourses();
+      this.findAdminCourses(filter, filterDate);
     } else {
-      this.findTrainerCourses();
+      this.findTrainerCourses(filter, filterDate);
     }
   }.bind(this))
 
@@ -42,39 +45,70 @@ Dashboard.prototype.onAuthStateChanged = function(user) {
 }
 
 // List all participants for a course if you're a trainer
-Dashboard.prototype.findTrainerCourses = function() {
-  var parent = document.getElementById('placeholder');
-  var trainerId = this.auth.currentUser.uid;
-  var dateInput = document.getElementById('date-select').value;
+Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
+  let userDb = this.database.ref('users/')
+  let courseDb = this.database.ref('courses/')
+  const parent = document.getElementById('placeholder');
+  let trainerId = this.auth.currentUser.uid;
+  let dateInput = document.getElementById('date-select').value;
+  let promise;
+  let html;
 
-  if(!dateInput) {
-    M.toast({html: "Please enter a start date in the sidebar.", classes: 'red'})
+  let today = new Date().toISOString();
+
+  if(!filterDate) {
+    if (filter === "past") {
+      promise = this.database.ref('courses/').orderByChild('start').endAt(today).once('value')
+      // promise = Promise.all([userDb.once('value'), courseDb.orderByChild('start').endAt(today).once('value')])
+    } else if (filter === "future") {
+      promise = this.database.ref('courses/').orderByChild('start').startAt(today).once('value');
+      // promise = Promise.all([ userDb.once('value'), courseDb.orderByChild('start').startAt(today).once('value')])
+    } else {
+      M.toast({ html: "Something strange happened.", classes: "red" })
+    }
   } else {
-    var startDate = new Date(dateInput).toISOString();
+    console.log(filterDate)
+    console.log(filterDate + "\uf8ff")
+    promise = this.database.ref('courses/').orderByKey().startAt(filterDate).once('value')
+  }
+  
+
+  // if(!dateInput) {
+  //   M.toast({html: "Please enter a start date in the sidebar.", classes: 'red'})
+  // } else {
+  //   var startDate = new Date(dateInput).toISOString();
 
     parent.innerHTML = ''
 
     // Get all the courses listed
-    return this.database.ref('courses/').orderByChild('start').startAt(startDate).once('value').then(function(snap) {
+    return promise.then(function(snap) {
       var courses = [];
 
       // Get sessions with teachers signed up
       snap.forEach(function(c){
+
         if(c.val().members && c.val().pocEmail.split('@')[0] == firebase.auth().currentUser.email.split('@')[0]) {
           courses.push({'id': c.key, 'start': c.val().start, 'title': c.val().title, 'users': c.val().members })
         }
       })
 
       if(courses.length === 0) {
-        M.toast({html: 'No courses found under your name. Try searching from a different date.', classes: 'red'});
+        if(filter === "past") {
+          html = "No past courses found under your name. Try searching upcoming courses."
+        } else if(filter === "future") {
+          html = "No upcoming courses found under your name. Try searching past courses."
+        }
+        M.toast({html: html, classes: 'red'});
         return;
       }
 
       // Return an array of promises to process in the browser
-      return Promise.all(courses)
+      return Promise.all(courses);
     }).then(async function(courses) {
+      if(!courses) return
       currentUser = firebase.auth().currentUser.email;
       // For each course...
+      console.log(courses)
       for(course of courses) {
 
         // Destructure the course object for easier handling
@@ -132,29 +166,37 @@ Dashboard.prototype.findTrainerCourses = function() {
       }
     })
   }
-}
 
-Dashboard.prototype.findAdminCourses = function() {
+Dashboard.prototype.findAdminCourses = function(filter) {
   const parent = document.getElementById('placeholder');
-  var userDb = this.database.ref('users/')
-  var courseDb = this.database.ref('courses/')
-  var adminId = this.auth.currentUser.uid;
-  var adminLocation;
-  var dateInput = document.getElementById('date-select').value;
+  let userDb = this.database.ref('users/')
+  let courseDb = this.database.ref('courses/')
+  let adminId = this.auth.currentUser.uid;
+  let adminLocation;
+  let today;
+  let promise;
 
-  if(!dateInput) {
-    M.toast({html: "Please enter a start date in the sidebar.", classes: 'red'})
+  today = new Date().toISOString()
+
+  if(filter === "past") {
+    promise = Promise.all([userDb.once('value'), courseDb.orderByChild('start').endAt(today).once('value')]);
+  } else if (filter === "future") {
+    promise = Promise.all([userDb.once('value'), courseDb.orderByChild('start').startAt(today).once('value')])
   } else {
-      var startDate = new Date(dateInput).toISOString()
+    M.toast({html: "Something strange happened.", classes: "red"})
+  }
+  // var dateInput = document.getElementById('date-select').value;
+
+  // if(!dateInput) {
+  //   M.toast({html: "Please enter a start date in the sidebar.", classes: 'red'})
+  // } else {
+  //     var startDate = new Date(dateInput).toISOString()
 
     // Empty anything in the parent div
     parent.innerHTML = '';
 
     // get all the data
-    Promise.all([
-      userDb.once('value'),
-      courseDb.orderByChild('start').startAt(startDate).once('value')
-    ]).then(function(snaps) {
+    promise.then(function(snaps) {
       // snaps is an array of promise arrays that can be iterated
       // All the data is now stored in objects
       var users = snaps[0].val();
@@ -211,7 +253,6 @@ Dashboard.prototype.findAdminCourses = function() {
       })
     })
   }
-}
 
 Dashboard.prototype.getCurrentUserLocation = function(user) {
   var currentUid = this.auth.uid;
