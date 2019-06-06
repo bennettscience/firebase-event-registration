@@ -119,6 +119,24 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
           return key
         });
 
+        // sort the users by last name
+        function compare(a, b) {
+          let nameA = a.name.split(" ")[1].toLowerCase();
+          let nameB = b.name.split(" ")[1].toLowerCase();
+
+          let diff = 0;
+          if(nameA > nameB) {
+            diff = 1
+          } else if(nameA < nameB) {
+            diff = -1
+          } else {
+            diff = 0
+          }
+          return diff;
+        }
+
+        userArray.sort(compare)
+
         // Concat a string of user emails for bulk actions
         var emailString = "mailto:" + currentUser + "?bcc=";
 
@@ -135,18 +153,6 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
               })
           });
         }))
-
-        // Filter userArray by name
-        compare = (a, b) => {
-          let flip = function(str) {
-            val = str.split(" ");
-            return JSON.stringify({"first":val[0], "last": val[1]})
-          }
-          let nameA = flip(a.name);
-          let nameB = flib(b.name);
-
-          return 
-        }
 
         sessionStorage.setItem(`users-${course.id}`, JSON.stringify(userArray))
 
@@ -243,6 +249,24 @@ Dashboard.prototype.findAdminCourses = function(filter) {
               }
             }
           })
+
+          // Now that there's an array of teachers for the building, sort them by last name.
+          function compare(a, b) {
+            let nameA = a.name.split(" ")[1].toLowerCase();
+            let nameB = b.name.split(" ")[1].toLowerCase();
+
+            let diff = 0;
+            if (nameA > nameB) {
+              diff = 1
+            } else if (nameA < nameB) {
+              diff = -1
+            } else {
+              diff = 0
+            }
+            return diff;
+          }
+
+          teachers.sort(compare)
 
           // If the registrations length is > 0, write a new child to the doc.
           if(teachers.length > 0) {
