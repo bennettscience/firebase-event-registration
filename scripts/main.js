@@ -304,7 +304,8 @@ PDReg.USER_TEMPLATE = `
   <div class="info">
     <span class="title"></span>
     <span class="date"></span>
-    <span class="location"></span>
+	<span class="location"></span>
+	<span class="description"></span>
     <span class="contact"></span>
   </div>
   <a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a>
@@ -346,6 +347,8 @@ PDReg.prototype.buildUserClasses = function(course) {
 	var parentDiv = document.getElementById('user-courses-list');
 
 	if (!parentDiv.querySelector('[id=\'user_' + course.key + '\']')) {
+		var start = format(course.start);
+		var end = formatEnd(course.end);
 		var container = document.createElement('div');
 		container.innerHTML = PDReg.USER_TEMPLATE;
 		container.setAttribute('id', 'user_' + course.key);
@@ -360,8 +363,9 @@ PDReg.prototype.buildUserClasses = function(course) {
 		} else {
 			container.querySelector('.title').textContent = course.title;
 		}
-		container.querySelector('.date').textContent = format(course.start);
+		container.querySelector('.date').textContent = `${start} - ${end}`;
 		container.querySelector('.location').textContent = course.loc;
+		container.querySelector('.description').textContent = course.desc;
 		container.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}?subject=${course.title}'>${
 			course.poc
 		}</a>`;
