@@ -93,62 +93,64 @@ exports.countRegistrations = functions.database
 // });
 
 // TODO: Return promise if no emails are sent
-// exports.reminderEmail = functions.https.onRequest((req, res) => {
-//   const currentTime = new Date().getTime();
-//   const future = currentTime + 172800000;
-//   const mailOpts = {};
-//   const courseOpts = {}
-//
-//   return ref.child('courses/').orderByChild('start').startAt(future).once('value')
-//   .then(snap => {
-//     const promises = [];
-//     snap.forEach(child => {
-//      TODO: Only send emails to events exactly two days in the future
-//       var el = child.val();
-//
-//       if(el.hasOwnProperty('members')) {
-//         promises.push(admin.database().ref('courses/' + child.key).once('value'))
-//       }
-//     })
-//     TODO: Log here to check for a correct array
-//     return Promise.all(promises)
-//   })
-//   .then(results => {
-//     const emails = [];
-//     results.forEach(delta => {
-//       var course = delta.val();
-//       courseOpts.title = course.title
-//       courseOpts.date = new Date(course.start).toLocaleDateString()
-//       mailOpts.subject = "Upcoming registration for " + course.title;
-//       if(course.members) {
-//         return admin.database().ref('courses/' + delta.key + '/members').once('value')
-//         .then(data => {
-//           data.forEach(member => {
-//             var email = member.val().email;
-//             emails.push(email)
-//           })
-//           return Promise.all(emails)
-//         })
-//         .then(emails => {
-//
-//           console.log('Line 79: Sending to: ' + emails.join());
-//           mailOpts.from = '"Elkhart PD" <pd@elkhart.k12.in.us>',
-//           mailOpts.bcc = emails.join(),
-//           mailOpts.html = `<p>This is a reminder that you're currently scheduled to attend <b>${courseOpts.title}</b> on <b>${courseOpts.date}</b>. Please visit the <b><a href="//pd.elkhart.k12.in.us">Elkhart PD website</a></b> for details or to cancel your registration if you can no longer attend.</p><br /><b>Elkhart Professional Development</b>`
-//
-//           console.log(mailOpts)
-//           return mailTransport.sendMail(mailOpts)
-//         })
-//         .then(() => {
-//           res.send('Email sent')
-//         })
-//         .catch(error => {
-//           res.send(error)
-//         })
-//       }
-//     })
-//   })
-// })
+exports.reminderEmail = functions.https.onRequest((req, res) => {
+	const today = Date.now();
+	const future = today + (48 * 60 * 60 * 1000);
+	const ffuture = today + (72 * 60 * 60 * 1000);
+	const mailOpts = {};
+	const courseOpts = {};
+	let responses = [];
+
+	return ref.child('courses/').orderByChild('start').once('value')
+		.then(snap => {
+			const promises = [];
+			snap.forEach(child => {
+				// TODO: Only send emails to events exactly two days in the future
+				var el = child.val();
+				let timestamp = new Date(el.start).getTime();
+				if(timestamp >= future && timestamp <= ffuture && el.hasOwnProperty('members')) {
+					promises.push(admin.database().ref('courses/' + child.key).once('value'));
+				}
+			});
+			return Promise.all(promises);
+		})
+		.then(results => {
+			const emails = [];
+			results.forEach(delta => {
+				var course = delta.val();
+				responses.push(course.title);
+				courseOpts.title = course.title;
+				courseOpts.date = new Date(course.start).toLocaleDateString();
+				mailOpts.subject = 'Upcoming registration for ' + course.title;
+				if(course.members) {
+					return admin.database().ref('courses/' + delta.key + '/members').once('value')
+						.then(data => {
+							data.forEach(member => {
+								var email = member.val().email;
+								emails.push(email);
+							});
+							return Promise.all(emails);
+						})
+						.then(emails => {
+
+							//console.log('Line 79: Sending to: ' + emails.join());
+							mailOpts.from = '"Elkhart PD" <pd@elkhart.k12.in.us>',
+							mailOpts.bcc = emails.join(),
+							mailOpts.html = `<p>This is a reminder that you're currently scheduled to attend <b>${courseOpts.title}</b> on <b>${courseOpts.date}</b>. Please visit the <b><a href="//pd.elkhart.k12.in.us">Elkhart PD website</a></b> for details or to cancel your registration if you can no longer attend.</p><br /><b>Elkhart Professional Development</b>`;
+
+							return JSON.stringify(mailOpts);
+							// return mailTransport.sendMail(mailOpts);
+						})
+						.then((mailOpts) => {
+							res.send(`Emails sent to ${responses}`);
+						})
+						.catch(error => {
+							res.send(error);
+						});
+				}
+			});
+		});
+});
 
 // exports.sendPostNotification = functions.database.ref('/courses/{courseId}}').onCreate(snapshot => {
 // 	var course = snapshot.val();
