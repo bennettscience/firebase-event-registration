@@ -370,7 +370,9 @@ main {
       main.admin .course-update .date, main.admin .course-update .time {
         width: 40%;
         display: inline-block; }
-        main.admin .course-update .date .time, main.admin .course-update .time .time {
+      main.admin .course-update #seats {
+        width: 40%; }
+        main.admin .course-update #seats .time {
           float: right; }
       main.admin .course-update #update-submit {
         margin-right: 25px; }

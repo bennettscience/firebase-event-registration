@@ -328,9 +328,11 @@ Dashboard.prototype.updateSession = function(id) {
 
         if(fields[el] === 'seats') {
           l.innerText = `Remaining ${fields[el]}`
+          i.setAttribute('type', 'number');
+        } else {
+          i.setAttribute('type', 'text');
         }
 
-        i.setAttribute('type', 'text');
         i.value = snap.val()[fields[el]];
         d.appendChild(i);
         d.appendChild(l);
