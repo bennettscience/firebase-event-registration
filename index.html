@@ -5,6 +5,13 @@
   <link rel="manifest" href="manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Sentry error tracking -->
+  <script src="https://browser.sentry-cdn.com/5.6.0/bundle.min.js" integrity="sha384-9aGOmRDrtIQRcZmYbrNQmfS1dW44OCMtOlQ3JFUYCdCpxTJQ8vK+//K35AKgZh96" crossorigin="anonymous"></script>
+  <script>
+    Sentry.init({ dsn: 'https://cac7ad3274cc41ac85089a7aba47d291@sentry.io/1526392' });
+  </script>
+  <!-- End Sentry -->
+
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -157,7 +164,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-database.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-functions.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-auth.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-messaging.js"></script>
+
     <!-- <script>
       // Initialize Firebase
       var config = {
