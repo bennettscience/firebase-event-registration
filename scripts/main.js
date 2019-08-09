@@ -588,96 +588,96 @@ window.onload = function() {
 	window.pdReg = new PDReg();
 };
 
-const messaging = firebase.messaging(),
-	database = firebase.database(),
-	pushBtn = document.getElementById('push-button');
+// const messaging = firebase.messaging(),
+// 	database = firebase.database(),
+// 	pushBtn = document.getElementById('push-button');
 
-let userToken = null;
-let isSubscribed = false;
+// let userToken = null;
+// let isSubscribed = false;
 
-function initializePush() {
-	userToken = localStorage.getItem('pushToken');
+// function initializePush() {
+// 	userToken = localStorage.getItem('pushToken');
 
-	isSubscribed = userToken !== null;
-	updateBtn();
+// 	isSubscribed = userToken !== null;
+// 	updateBtn();
 
-	pushBtn.addEventListener('click', () => {
-		pushBtn.disabled = true;
+// 	pushBtn.addEventListener('click', () => {
+// 		pushBtn.disabled = true;
 
-		if (isSubscribed) return unsubscribeUser();
+// 		if (isSubscribed) return unsubscribeUser();
 
-		return subscribeUser();
-	});
-}
+// 		return subscribeUser();
+// 	});
+// }
 
-function updateBtn() {
-	if (Notification.permission === 'denied') {
-		pushBtn.textContent = 'Subscription blocked';
-		return;
-	}
+// function updateBtn() {
+// 	if (Notification.permission === 'denied') {
+// 		pushBtn.textContent = 'Subscription blocked';
+// 		return;
+// 	}
 
-	pushBtn.textContent = isSubscribed ? 'Unsubscribe' : 'Subscribe';
-	pushBtn.disabled = false;
-}
+// 	pushBtn.textContent = isSubscribed ? 'Unsubscribe' : 'Subscribe';
+// 	pushBtn.disabled = false;
+// }
 
-function subscribeUser() {
-	messaging
-		.requestPermission()
-		.then(() => messaging.getToken())
-		.then(token => {
-			updateSubscriptionOnServer(token);
-			isSubscribed = true;
-			userToken = token;
-			localStorage.setItem('pushToken', token);
-			updateBtn();
-		})
-		.catch(err => console.log('Denied', err));
-}
+// function subscribeUser() {
+// 	messaging
+// 		.requestPermission()
+// 		.then(() => messaging.getToken())
+// 		.then(token => {
+// 			updateSubscriptionOnServer(token);
+// 			isSubscribed = true;
+// 			userToken = token;
+// 			localStorage.setItem('pushToken', token);
+// 			updateBtn();
+// 		})
+// 		.catch(err => console.log('Denied', err));
+// }
 
-function updateSubscriptionOnServer(token) {
-	if (isSubscribed) {
-		return database
-			.ref('device_ids')
-			.on('value')
-			.then(snap => {
-				snap.forEach(device => {
-					if (device.val() === token) {
-						device.ref.remove();
-					}
-				});
-			});
-	}
+// function updateSubscriptionOnServer(token) {
+// 	if (isSubscribed) {
+// 		return database
+// 			.ref('device_ids')
+// 			.on('value')
+// 			.then(snap => {
+// 				snap.forEach(device => {
+// 					if (device.val() === token) {
+// 						device.ref.remove();
+// 					}
+// 				});
+// 			});
+// 	}
 
-	database
-		.ref('device_ids')
-		.on('value')
-		.then(snapshots => {
-			let deviceExists = false;
+// 	database
+// 		.ref('device_ids')
+// 		.on('value')
+// 		.then(snapshots => {
+// 			let deviceExists = false;
 
-			snapshots.forEach(childSnapshot => {
-				if (childSnapshot.val() === token) {
-					deviceExists = true;
-					return console.log('Device already registered.');
-				}
-			});
+// 			snapshots.forEach(childSnapshot => {
+// 				if (childSnapshot.val() === token) {
+// 					deviceExists = true;
+// 					return console.log('Device already registered.');
+// 				}
+// 			});
 
-			if (!deviceExists) {
-				M.toast({ html: 'Successfully subscribed to reminders' });
-				return database.ref('device_ids').push(token);
-			}
-		});
-}
+// 			if (!deviceExists) {
+// 				M.toast({ html: 'Successfully subscribed to reminders' });
+// 				return database.ref('device_ids').push(token);
+// 			}
+// 		});
+// }
 
-function unsubscribeUser() {
-	messaging
-		.deleteToken(userToken)
-		.then(() => {
-			updateSubscriptionOnServer(userToken);
-			isSubscribed = false;
-			userToken = null;
-			localStorage.removeItem('pushToken');
-			updateBtn();
-			M.toast({ html: 'Successfully unsubscribed from notifications.' });
-		})
-		.catch(err => console.log('Error unsubscribing', err));
-}
+// function unsubscribeUser() {
+// 	messaging
+// 		.deleteToken(userToken)
+// 		.then(() => {
+// 			updateSubscriptionOnServer(userToken);
+// 			isSubscribed = false;
+// 			userToken = null;
+// 			localStorage.removeItem('pushToken');
+// 			updateBtn();
+// 			M.toast({ html: 'Successfully unsubscribed from notifications.' });
+// 		})
+// 		.catch(err => console.log('Error unsubscribing', err));
+// }
