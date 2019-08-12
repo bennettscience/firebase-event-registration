@@ -478,12 +478,12 @@ PDReg.prototype.getAllClasses = function() {
 			if (course.members.hasOwnProperty(uid)) {
 				this.buildUserClasses(course);
 			} else {
-				if ((course.type === 'In Person' && course.start > today) || course.type === 'Online') {
+				if ((course.type === 'In Person' && course.start > today) || course.type === 'Online' && course.active) {
 					this.buildAllClasses(course);
 				}
 			}
 		} else {
-			if ((course.type === 'In Person' && course.start > today) || course.type === 'Online') {
+			if ((course.type === 'In Person' && course.start > today) || course.type === 'Online' && course.active) {
 				this.buildAllClasses(course);
 			}
 		}
