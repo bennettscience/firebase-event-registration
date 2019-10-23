@@ -286,6 +286,7 @@ Dashboard.prototype.getCurrentUserLocation = function(user) {
 
 // Update the select course on click
 Dashboard.prototype.updateSession = function(id) {
+	let course;
 	currentUser = firebase.auth().currentUser.email;
 	// start a form
 	let form = document.createElement('form');
@@ -297,7 +298,7 @@ Dashboard.prototype.updateSession = function(id) {
 	// get the course from Firebase.
 	course = firebase.database().ref('courses/' + id).once('value' , snap => {
 
-		for(el in fields) {
+		for(var el in fields) {
 
 			var d = document.createElement('div');
 
@@ -310,15 +311,32 @@ Dashboard.prototype.updateSession = function(id) {
 				var l = document.createElement('label');
 				l.setAttribute('for', fields[el]);
 				l.setAttribute('class', 'active');
-				l.innerText = fields[el];
+				l.innerText = fields[el].charAt(0).toUpperCase() + fields[el].substr(1);
 
+				if(fields[el] === 'desc') {
+					l.innerText = 'Description';
+				}
+				
+				
 				if(fields[el] === 'seats') {
 					l.innerText = `Remaining ${fields[el]}`;
 					i.setAttribute('type', 'number');
 				} else {
 					i.setAttribute('type', 'text');
 				}
+				
+				if(fields[el] === 'loc') {
+					l.innerText = 'Location';
+				}
+				
+				if(fields[el] === 'poc') {
+					l.innerText = 'Point of Contact';
+				}
 
+				if(fields[el] === 'pocEmail') {
+					l.innerText = 'Point of Contact Email';
+				}
+				
 				i.value = snap.val()[fields[el]];
 				d.appendChild(i);
 				d.appendChild(l);
@@ -335,7 +353,7 @@ Dashboard.prototype.updateSession = function(id) {
 				label.setAttribute('for', fields[el]);
 				label.setAttribute('class', 'active');
 
-				label.innerText = fields[el];
+				label.innerText = fields[el].charAt(0).toUpperCase() + fields[el].substr(1);
         
 				var i = document.createElement('input');
 				i.setAttribute('type', 'date');
@@ -355,7 +373,7 @@ Dashboard.prototype.updateSession = function(id) {
         
 				var tl = document.createElement('label');
 				tl.setAttribute('for', `${ fields[el] }-time`);
-				tl.innerText = `${ fields[el] } time`;
+				tl.innerText = `${ fields[el].charAt(0).toUpperCase() + fields[el].substr(1) } Time`;
        
 				timeDiv.appendChild(t);
 				timeDiv.appendChild(tl);
@@ -367,22 +385,43 @@ Dashboard.prototype.updateSession = function(id) {
 		s.setAttribute('class', 'btn');
 		s.setAttribute('id', 'update-submit');
 		s.setAttribute('type', 'submit');
-		s.innerText = 'Submit';
+		s.innerText = 'Update';
 		form.appendChild(s);
 
 		var c = document.createElement('button');
-		c.innerText = 'Cancel';
+		c.innerText = 'Cancel Changes';
 		c.setAttribute('class', 'btn red');
 		c.setAttribute('value', 'cancel');
 		c.setAttribute('onclick','return this.parentNode.remove()');
 		form.appendChild(c);
 
+		var destroy = document.createElement('button');
+		destroy.setAttribute('class', 'btn black');
+		destroy.setAttribute('id', 'destroy-course');
+		destroy.innerText = 'Remove Session';
+		destroy.addEventListener('click', destroyCourse);
+		destroy.dataset.coursetitle = snap.val().title;
+		destroy.dataset.courseid = snap.key;
+		destroy.dataset.tooltip = 'DANGER ZONE';
+		form.appendChild(destroy);
+
 	});
 	document.querySelector('#placeholder').appendChild(form);
-	// container.setAttribute('height', '100%')
 	form.addEventListener('submit', postSessionUpdate);
 }.bind(this);
 
+const destroyCourse = function(e) {
+	e.preventDefault();
+	const title = e.target.dataset.coursetitle;
+	let req = prompt('Type the exact name of the course you wish to delete. This cannot be undone.');
+	console.log(req);
+	if (req.toLowerCase() === title.toLowerCase()) {
+		alert('The course has been permanently deleted.');
+	} else {
+		alert('Failure: The course titles didn\'t match!');
+		return false;
+	}
+};
 const postSessionUpdate = function(event) {
 	event.preventDefault();
 	const form = document.querySelector('.course-update');
@@ -404,9 +443,6 @@ const postSessionUpdate = function(event) {
 
 	delete data['start-time'];
 	delete data['end-time'];
-
-	// console.log(JSON.stringify(data, null, "  "));
-
 
 	// send it to Firebase
 	firebase.database().ref('courses/' + data.id).update(data, function(error) {
