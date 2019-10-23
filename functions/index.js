@@ -25,7 +25,6 @@ exports.onlineRegConfirmation = functions.database
 		let mailOpts = {};
 		const user = snap.val();
 		mailOpts.to = user.email;
-		// console.log('The user is ', user);
 
 		const course = snap.ref.parent.parent;
 
@@ -40,11 +39,10 @@ exports.onlineRegConfirmation = functions.database
 						el.title
 					}. This is an online course, so please visit the <a href='${
 						el.redirect
-					}' target='_blank'>Canvas login page</a> to begin.</p><p>If you have trouble, please <a href='mailto:${
+					}' target='_blank'>course page</a> to begin.</p><p>If you have trouble, please <a href='mailto:${
 						el.pocEmail
 					}'>contact the course facilitator</a> for more help.</p><p>---</p><p>Elkhart Professional Development</p>`;
 
-					// console.log(mailOpts);
 					return mailTransport.sendMail(mailOpts);
 				} else {
 					return null;
@@ -81,18 +79,6 @@ exports.countRegistrations = functions.database
 			});
 	});
 
-// If the number of likes gets deleted, recount the number of likes
-// exports.recountlikes = functions.database.ref('/courses/{courseId}').onDelete((snap) => {
-//   const counterRef = snap.ref;
-//   const collectionRef = counterRef.parent.child('seats');
-//
-//   // Return the promise from counterRef.set() so our function
-//   // waits for this async event to complete before it exits.
-//   return collectionRef.once('value')
-//       .then((messagesData) => counterRef.set(messagesData.numChildren()));
-// });
-
-// TODO: Return promise if no emails are sent
 exports.twoDayReminder = functions.https.onRequest(async (req, res) => {
 	let today = Date.now();
 	let future = today + (36 * 60 * 60 * 1000);
