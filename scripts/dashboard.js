@@ -62,11 +62,20 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
 	// Get all the courses listed
 	return promise.then(function(snap) {
 		var courses = [];
+		let submitter;
 
 		// Get sessions with teachers signed up
 		snap.forEach(function(c){
 
-			if(c.val().pocEmail.split('@')[0] == firebase.auth().currentUser.email.split('@')[0]) {
+			if(c.val().hasOwnProperty('submittedBy')) {
+				submitter = c.val().submittedBy.split('@')[0];
+			}
+
+			// Check the submitter AND the POC to display a course
+			if(
+				c.val().pocEmail.split('@')[0] == firebase.auth().currentUser.email.split('@')[0] ||
+        submitter == firebase.auth().currentUser.email.split('@')[0]
+			) {
 				let course = {};
 				course.id = c.key;
 				course.start = c.val().start;
