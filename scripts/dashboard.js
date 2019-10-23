@@ -252,6 +252,22 @@ Dashboard.prototype.findAdminCourses = function(filter) {
 				});
 
 				// Now that there's an array of teachers for the building, sort them by last name
+				// sort the users by last name
+				let compare = function (a, b) {
+					let nameA = a.name.split(' ')[1].toLowerCase();
+					let nameB = b.name.split(' ')[1].toLowerCase();
+
+					let diff = 0;
+					if (nameA > nameB) {
+						diff = 1;
+					} else if (nameA < nameB) {
+						diff = -1;
+					} else {
+						diff = 0;
+					}
+					return diff;
+				};
+				
 				teachers.sort(compare);
 
 				// If the registrations length is > 0, write a new child to the doc.
