@@ -79,6 +79,47 @@ exports.countRegistrations = functions.database
 			});
 	});
 
+exports.destroyCourse = functions.database.ref('/courses/{courseId}').onWrite(change => {
+	// get the course ID and check that it is set to false
+	const before = change.before.val();
+	const after = change.after.val();
+
+	if(before.active === after.active) {
+		return null;
+	}
+
+	// const members = change.after.ref.child('members');
+	let course = change.after.val();
+
+	if(!course.active) {
+		console.log('This course has been cancelled!');
+
+		// Get all email addresses for registered users
+		let userKeys = Object.keys(course.members);
+
+		userKeys.forEach((el) => {
+			return removeUserCourse(el, change.after.key);
+		})
+
+		return change.after.ref.update({'timeCancelled': Date.now() });
+		console.log('All user courses have been deactivated');
+
+	};
+
+	// return true
+	// Loop the /regs/ ref and find each user's ID
+	// Go to the `users/{uid}/{courseId}` and remove the node
+});
+
+function removeUserCourse(userId, courseId) {
+	return ref.child(`users/${userId}/regs/${courseId}`).remove();
+}
+
+// restore a course that has been deleted
+function restoreUserCourse(userId, courseId, data) {
+	return ref.child(`users/${userId}/regs/${courseId}`).update(data);
+}
+
 exports.twoDayReminder = functions.https.onRequest(async (req, res) => {
 	let today = Date.now();
 	let future = today + (36 * 60 * 60 * 1000);
