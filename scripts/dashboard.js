@@ -429,15 +429,27 @@ Dashboard.prototype.updateSession = function(id) {
 const destroyCourse = function(e) {
 	e.preventDefault();
 	const title = e.target.dataset.coursetitle;
+	const courseId = e.target.dataset.courseid;
+	let data = {};
+	let form = document.querySelector('.course-update');
 	let req = prompt('Type the exact name of the course you wish to delete. This cannot be undone.');
 	console.log(req);
 	if (req.toLowerCase() === title.toLowerCase()) {
-		alert('The course has been permanently deleted.');
+
+		firebase.database().ref(`courses/${courseId}`).update({'active': false}, function(error) {
+			if(error) {
+				alert('There was an error cancelling. Please submit a work order.');
+			} else {
+				alert('The workshop has been cancelled. Attendees will be automatically notified.');
+			}
+			form.remove();
+		});
 	} else {
 		alert('Failure: The course titles didn\'t match!');
 		return false;
 	}
-};
+}.bind(this);
+
 const postSessionUpdate = function(event) {
 	event.preventDefault();
 	const form = document.querySelector('.course-update');
@@ -466,7 +478,7 @@ const postSessionUpdate = function(event) {
 			alert('Something went wrong!' + error);
 		} else {
 			alert('The course updated!');
-			return $('.course-update').remove();
+			return form.remove();
 		}
 	});
 }.bind(this);
