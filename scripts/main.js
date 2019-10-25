@@ -394,6 +394,8 @@ PDReg.prototype.hideUserClasses = function() {
 PDReg.prototype.buildAllClasses = function(course) {
 	var parentDiv = document.getElementById('allCourses');
 
+	console.log(`Building ${course}`);
+
 	if (!parentDiv.querySelector('[id=\'' + course.key + '\']')) {
 		var container = document.createElement('div');
 		container.innerHTML = PDReg.CLASS_TEMPLATE;
@@ -473,7 +475,7 @@ PDReg.prototype.getAllClasses = function() {
 	var setClass = function(snapshot) {
 		var course = snapshot.val();
 		course.key = snapshot.key;
-
+		
 		if (course.members) {
 			if (course.members.hasOwnProperty(uid)) {
 				this.buildUserClasses(course);
@@ -483,7 +485,7 @@ PDReg.prototype.getAllClasses = function() {
 				}
 			}
 		} else {
-			if ((course.type === 'In Person' && course.start > today) || course.type === 'Online' && course.active) {
+			if ((course.type === 'In Person' && course.start > today && course.active) || course.type === 'Online' && course.active) {
 				this.buildAllClasses(course);
 			}
 		}
