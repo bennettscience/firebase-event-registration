@@ -80,6 +80,7 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
 				course.id = c.key;
 				course.start = c.val().start;
 				course.title = c.val().title;
+				course.active = c.val().active;
 
 				if(c.val().members !== undefined) {
 					course.users = c.val().members;
@@ -112,9 +113,10 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
     
 		// For each course...
 		for(course of courses) {
+			let status;
 
 			// Destructure the course object for easier handling
-			var { id, title, users } = course;
+			var { active, id, start, title, users } = course;
 
 			// Map the teachers in the course into an array for looping
 			if(Object.values(users)) {
@@ -162,22 +164,26 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
 			}));
 
 			// Store the results in Session for CSV download.
-			sessionStorage.setItem(`users-${course.id}`, JSON.stringify(userArray));
+			sessionStorage.setItem(`users-${id}`, JSON.stringify(userArray));
 
 			// Create a container to hold the results
 			// No need to check for empty arrays at this point
 			var container = document.createElement('div');
 			container.classList.add('course');
-			container.setAttribute('data-id', course.id);
+			container.setAttribute('data-id', id);
+
+			console.log(id);
+
+			status = (active) ? 'Active' : 'Cancelled';
 
 			// Set a template literal loop inside the forEach to make variable assignment simple
 			// See more at https://gist.github.com/wiledal/3c5b63887cc8a010a330b89aacff2f2e
 			container.innerHTML =
         `
-            <span class="wkshp-title" onclick="Dashboard.prototype.updateSession('${ course.id}')" data-id="${course.id}"><h5><i class="material-icons">edit</i>${ course.title } - (${userArray.length})</h5></span>
-            <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
+            <span class="wkshp-title" onclick="Dashboard.prototype.updateSession('${id}')" data-id="${id}"><h5><i class="material-icons">edit</i>${title} [${status}] - (${userArray.length})</h5></span>
+            <span class="wkshp-date"><h6>${ smallFormat(start) }</h6></span>
             <a data-name="Send email" class="email" href="${emailString}" title="Send email"><i class="small material-icons">email</i></a>
-            <i data-name="Download registrations" onclick="download_csv('users-${course.id}')" class="download small material-icons">cloud_download</i>
+            <i data-name="Download registrations" onclick="download_csv('users-${id}')" class="download small material-icons">cloud_download</i>
             <div class="teachers">
               <div class="list">
               ${ userArray.map((item) =>
@@ -302,6 +308,7 @@ Dashboard.prototype.getCurrentUserLocation = function(user) {
 
 // Update the select course on click
 Dashboard.prototype.updateSession = function(id) {
+	let course;
 	currentUser = firebase.auth().currentUser.email;
 	// start a form
 	let form = document.createElement('form');
@@ -313,7 +320,7 @@ Dashboard.prototype.updateSession = function(id) {
 	// get the course from Firebase.
 	course = firebase.database().ref('courses/' + id).once('value' , snap => {
 
-		for(el in fields) {
+		for(var el in fields) {
 
 			var d = document.createElement('div');
 
@@ -326,15 +333,32 @@ Dashboard.prototype.updateSession = function(id) {
 				var l = document.createElement('label');
 				l.setAttribute('for', fields[el]);
 				l.setAttribute('class', 'active');
-				l.innerText = fields[el];
+				l.innerText = fields[el].charAt(0).toUpperCase() + fields[el].substr(1);
 
+				if(fields[el] === 'desc') {
+					l.innerText = 'Description';
+				}
+				
+				
 				if(fields[el] === 'seats') {
 					l.innerText = `Remaining ${fields[el]}`;
 					i.setAttribute('type', 'number');
 				} else {
 					i.setAttribute('type', 'text');
 				}
+				
+				if(fields[el] === 'loc') {
+					l.innerText = 'Location';
+				}
+				
+				if(fields[el] === 'poc') {
+					l.innerText = 'Point of Contact';
+				}
 
+				if(fields[el] === 'pocEmail') {
+					l.innerText = 'Point of Contact Email';
+				}
+				
 				i.value = snap.val()[fields[el]];
 				d.appendChild(i);
 				d.appendChild(l);
@@ -351,7 +375,7 @@ Dashboard.prototype.updateSession = function(id) {
 				label.setAttribute('for', fields[el]);
 				label.setAttribute('class', 'active');
 
-				label.innerText = fields[el];
+				label.innerText = fields[el].charAt(0).toUpperCase() + fields[el].substr(1);
         
 				var i = document.createElement('input');
 				i.setAttribute('type', 'date');
@@ -371,7 +395,7 @@ Dashboard.prototype.updateSession = function(id) {
         
 				var tl = document.createElement('label');
 				tl.setAttribute('for', `${ fields[el] }-time`);
-				tl.innerText = `${ fields[el] } time`;
+				tl.innerText = `${ fields[el].charAt(0).toUpperCase() + fields[el].substr(1) } Time`;
        
 				timeDiv.appendChild(t);
 				timeDiv.appendChild(tl);
@@ -383,20 +407,52 @@ Dashboard.prototype.updateSession = function(id) {
 		s.setAttribute('class', 'btn');
 		s.setAttribute('id', 'update-submit');
 		s.setAttribute('type', 'submit');
-		s.innerText = 'Submit';
+		s.innerText = 'Update';
 		form.appendChild(s);
 
 		var c = document.createElement('button');
-		c.innerText = 'Cancel';
+		c.innerText = 'Cancel Changes';
 		c.setAttribute('class', 'btn red');
 		c.setAttribute('value', 'cancel');
 		c.setAttribute('onclick','return this.parentNode.remove()');
 		form.appendChild(c);
 
+		var destroy = document.createElement('button');
+		destroy.setAttribute('class', 'btn black');
+		destroy.setAttribute('id', 'destroy-course');
+		destroy.innerText = 'Remove Session';
+		destroy.addEventListener('click', destroyCourse);
+		destroy.dataset.coursetitle = snap.val().title;
+		destroy.dataset.courseid = snap.key;
+		destroy.dataset.tooltip = 'DANGER ZONE';
+		form.appendChild(destroy);
+
 	});
 	document.querySelector('#placeholder').appendChild(form);
-	// container.setAttribute('height', '100%')
 	form.addEventListener('submit', postSessionUpdate);
+}.bind(this);
+
+const destroyCourse = function(e) {
+	e.preventDefault();
+	const title = e.target.dataset.coursetitle;
+	const courseId = e.target.dataset.courseid;
+	let form = document.querySelector('.course-update');
+	let req = prompt('Type the exact name of the course you wish to delete. This cannot be undone.');
+	console.log(req);
+	if (req.toLowerCase() === title.toLowerCase()) {
+
+		this.firebase.database().ref(`courses/${courseId}`).update({'active': false}, function(error) {
+			if(error) {
+				alert('There was an error cancelling. Please submit a work order.');
+			} else {
+				alert('The workshop has been cancelled. Attendees will be automatically notified.');
+			}
+			form.remove();
+		});
+	} else {
+		alert('Failure: The course titles didn\'t match!');
+		return false;
+	}
 }.bind(this);
 
 const postSessionUpdate = function(event) {
@@ -421,16 +477,13 @@ const postSessionUpdate = function(event) {
 	delete data['start-time'];
 	delete data['end-time'];
 
-	// console.log(JSON.stringify(data, null, "  "));
-
-
 	// send it to Firebase
 	firebase.database().ref('courses/' + data.id).update(data, function(error) {
 		if(error) {
 			alert('Something went wrong!' + error);
 		} else {
 			alert('The course updated!');
-			return $('.course-update').remove();
+			return form.remove();
 		}
 	});
 }.bind(this);
