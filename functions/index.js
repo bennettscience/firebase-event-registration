@@ -82,7 +82,7 @@ exports.destroyCourse = functions.database.ref('/courses/{courseId}/active').onU
 	const active = change.after.val();
 
 	// Store the course data for use in the email to be sent
-	const course = await change.after.ref.once('value');
+	const course = await change.after.ref.parent.once('value');
 
 	// There is no change to the key
 	if(before === active) {
@@ -92,7 +92,7 @@ exports.destroyCourse = functions.database.ref('/courses/{courseId}/active').onU
 	if(!active) {
 		let emails = [];
 		// get the emails for the users in the course
-		let members = await change.after.ref.child(`members`).once('value');
+		let members = await change.after.ref.parent.child(`members`).once('value');
 
 		members.forEach(member => {
 			emails.push(member.val().email)
@@ -106,11 +106,11 @@ exports.destroyCourse = functions.database.ref('/courses/{courseId}/active').onU
 
 		// Remove the course from user profiles
 		userKeys.forEach((el) => {
-			removeUserCourse(el, change.after.key);
+			removeUserCourse(el, course.key);
 		})
 
 		// Finish the function and update the cancelled time
-		return change.after.ref.update({'timeCancelled': Date.now() });
+		return change.after.ref.parent.update({'timeCancelled': Date.now() });
 	}
 
 });
@@ -134,7 +134,7 @@ async function sendCancellationEmail(emails, title, contact) {
 	return mailTransport.sendMail(mailOpts);
 }
 
-async function removeUserCourse(userId, courseId) {
+function removeUserCourse(userId, courseId) {
 	return ref.child(`users/${userId}/regs/${courseId}`).remove();
 }
 
