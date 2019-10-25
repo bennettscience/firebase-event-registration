@@ -80,6 +80,7 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
 				course.id = c.key;
 				course.start = c.val().start;
 				course.title = c.val().title;
+				course.active = c.val().active;
 
 				if(c.val().members !== undefined) {
 					course.users = c.val().members;
@@ -112,9 +113,10 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
     
 		// For each course...
 		for(course of courses) {
+			let status;
 
 			// Destructure the course object for easier handling
-			var { id, title, users } = course;
+			var { active, id, start, title, users } = course;
 
 			// Map the teachers in the course into an array for looping
 			if(Object.values(users)) {
@@ -162,22 +164,26 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
 			}));
 
 			// Store the results in Session for CSV download.
-			sessionStorage.setItem(`users-${course.id}`, JSON.stringify(userArray));
+			sessionStorage.setItem(`users-${id}`, JSON.stringify(userArray));
 
 			// Create a container to hold the results
 			// No need to check for empty arrays at this point
 			var container = document.createElement('div');
 			container.classList.add('course');
-			container.setAttribute('data-id', course.id);
+			container.setAttribute('data-id', id);
+
+			console.log(id);
+
+			status = (active) ? 'Active' : 'Cancelled';
 
 			// Set a template literal loop inside the forEach to make variable assignment simple
 			// See more at https://gist.github.com/wiledal/3c5b63887cc8a010a330b89aacff2f2e
 			container.innerHTML =
         `
-            <span class="wkshp-title" onclick="Dashboard.prototype.updateSession('${ course.id}')" data-id="${course.id}"><h5><i class="material-icons">edit</i>${ course.title } - (${userArray.length})</h5></span>
-            <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
+            <span class="wkshp-title" onclick="Dashboard.prototype.updateSession('${id}')" data-id="${id}"><h5><i class="material-icons">edit</i>${title} [${status}] - (${userArray.length})</h5></span>
+            <span class="wkshp-date"><h6>${ smallFormat(start) }</h6></span>
             <a data-name="Send email" class="email" href="${emailString}" title="Send email"><i class="small material-icons">email</i></a>
-            <i data-name="Download registrations" onclick="download_csv('users-${course.id}')" class="download small material-icons">cloud_download</i>
+            <i data-name="Download registrations" onclick="download_csv('users-${id}')" class="download small material-icons">cloud_download</i>
             <div class="teachers">
               <div class="list">
               ${ userArray.map((item) =>
@@ -430,13 +436,12 @@ const destroyCourse = function(e) {
 	e.preventDefault();
 	const title = e.target.dataset.coursetitle;
 	const courseId = e.target.dataset.courseid;
-	let data = {};
 	let form = document.querySelector('.course-update');
 	let req = prompt('Type the exact name of the course you wish to delete. This cannot be undone.');
 	console.log(req);
 	if (req.toLowerCase() === title.toLowerCase()) {
 
-		firebase.database().ref(`courses/${courseId}/active`).update(false, function(error) {
+		this.firebase.database().ref(`courses/${courseId}`).update({'active': false}, function(error) {
 			if(error) {
 				alert('There was an error cancelling. Please submit a work order.');
 			} else {
