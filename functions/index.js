@@ -67,9 +67,6 @@ exports.countRegistrations = functions.database
 		} else {
 			return null;
 		}
-
-		// Return the promise from countRef.transaction() so our function
-		// waits for this async event to complete before it exits.
 		return countRef
 			.transaction(current => {
 				return (current || 0) + increment;
@@ -79,39 +76,65 @@ exports.countRegistrations = functions.database
 			});
 	});
 
-exports.destroyCourse = functions.database.ref('/courses/{courseId}').onWrite(change => {
+exports.destroyCourse = functions.database.ref('/courses/{courseId}/active').onUpdate(async (change, context) => {
 	// get the course ID and check that it is set to false
 	const before = change.before.val();
-	const after = change.after.val();
+	const active = change.after.val();
 
-	if(before.active === after.active) {
+	// Store the course data for use in the email to be sent
+	const course = await change.after.ref.once('value');
+
+	// There is no change to the key
+	if(before === active) {
 		return null;
 	}
 
-	// const members = change.after.ref.child('members');
-	let course = change.after.val();
+	if(!active) {
+		let emails = [];
+		// get the emails for the users in the course
+		let members = await change.after.ref.child(`members`).once('value');
 
-	if(!course.active) {
-		console.log('This course has been cancelled!');
-
-		// Get all email addresses for registered users
-		let userKeys = Object.keys(course.members);
-
-		userKeys.forEach((el) => {
-			return removeUserCourse(el, change.after.key);
+		members.forEach(member => {
+			emails.push(member.val().email)
 		})
 
+		// Wait for all emails to be sent
+		await sendCancellationEmail(emails, course.val().title, course.val().pocEmail);
+
+		// Get all user keys for registered users
+		let userKeys = Object.keys(members.val());
+
+		// Remove the course from user profiles
+		userKeys.forEach((el) => {
+			removeUserCourse(el, change.after.key);
+		})
+
+		// Finish the function and update the cancelled time
 		return change.after.ref.update({'timeCancelled': Date.now() });
-		console.log('All user courses have been deactivated');
+	}
 
-	};
-
-	// return true
-	// Loop the /regs/ ref and find each user's ID
-	// Go to the `users/{uid}/{courseId}` and remove the node
 });
 
-function removeUserCourse(userId, courseId) {
+async function sendCancellationEmail(emails, title, contact) {
+	let mailOpts = {};
+	mailOpts.from = '"Elkhart PD" <pd@elkhart.k12.in.us>';
+	mailOpts.subject = 'Notice: PD Cancelled';
+	mailOpts.to = "pd@elkhart.k12.in.us";
+	mailOpts.bcc = emails.join(',');
+
+	mailOpts.html = `
+		<p>This is an automated notice that <b>${title}</b> has been cancelled by the organizer.</p>
+		<p>There is no need for action on your part - the course has been removed from your account automatically. Communication about rescheduling will come from the organizer.</p>
+		<p>If you have questions, you can email <a href="mailto:${contact}">${contact}</a> directly.
+		<br />
+		<br />
+		<b>Elkhart Professional Development</b>
+	`;
+
+	return mailTransport.sendMail(mailOpts);
+}
+
+async function removeUserCourse(userId, courseId) {
 	return ref.child(`users/${userId}/regs/${courseId}`).remove();
 }
 
