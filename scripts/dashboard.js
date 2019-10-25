@@ -436,7 +436,7 @@ const destroyCourse = function(e) {
 	console.log(req);
 	if (req.toLowerCase() === title.toLowerCase()) {
 
-		firebase.database().ref(`courses/${courseId}`).update({'active': false}, function(error) {
+		firebase.database().ref(`courses/${courseId}/active`).update(false, function(error) {
 			if(error) {
 				alert('There was an error cancelling. Please submit a work order.');
 			} else {
