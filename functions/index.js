@@ -117,6 +117,9 @@ exports.destroyCourse = functions.database.ref('/courses/{courseId}/active').onU
 
 async function sendCancellationEmail(emails, title, contact) {
 	let mailOpts = {};
+
+	emails.push(contact);
+
 	mailOpts.from = '"Elkhart PD" <pd@elkhart.k12.in.us>';
 	mailOpts.subject = 'Notice: PD Cancelled';
 	mailOpts.to = "pd@elkhart.k12.in.us";
