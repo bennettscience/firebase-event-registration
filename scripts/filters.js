@@ -283,7 +283,9 @@ $('#date').on('click', function() {
 let courseForm = document.querySelector('#course-form');
 let submitBadge = document.querySelector('#submit-badge');
 
-courseForm.addEventListener('click', function(e) {
+courseForm.addEventListener('click', updateSubmitBadge);
+
+function updateSubmitBadge(e) {
 
 	if(e.target.classList.contains('filled-in')) {
 
@@ -292,7 +294,15 @@ courseForm.addEventListener('click', function(e) {
 		(els.length > 0) ? submitBadge.style.display = 'inline' : submitBadge.style.display = 'none';
     
 		submitBadge.innerText = els.length;
-
+    
 	}
+  
+}
 
-});
+function loadSubmitBadge() {
+	var els = courseForm.querySelectorAll('input[type=\'checkbox\']:checked');
+  
+	(els.length > 0) ? submitBadge.style.display = 'inline' : submitBadge.style.display = 'none';
+  
+	submitBadge.innerText = els.length;
+}

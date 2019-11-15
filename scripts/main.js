@@ -393,6 +393,7 @@ PDReg.prototype.hideUserClasses = function() {
  */
 PDReg.prototype.buildAllClasses = function(course) {
 	var parentDiv = document.getElementById('allCourses');
+	const urlParams = new URLSearchParams(window.location.search);
 
 	console.log(`Building ${course}`);
 
@@ -413,6 +414,16 @@ PDReg.prototype.buildAllClasses = function(course) {
 			div.classList.add('hidden');
 		}
 		parentDiv.appendChild(div);
+
+		if(urlParams.has('course')) {
+			if(urlParams.get('course') === course.key) {
+				document.querySelector(`input[name='course'][value='${course.key}']`).checked = true;
+				window.location.hash = `#${course.key}`;
+				// set the submit badge quantity
+				loadSubmitBadge();
+
+			}
+		}
 
 		div.querySelector('.card-title').textContent = course.title;
 		div.querySelector('.date').textContent = format(course.start) + ' - ' + formatEnd(course.end);
@@ -579,10 +590,6 @@ PDReg.prototype.cancel = function(e) {
 	this.database.ref('courses/' + id).on('value', buildCourse);
 };
 
-// PDReg().prototype.toggleCourseType = function() {
-//   this.ref =
-// }
-
 /**
  *  Load the PDReg Class and initialize Firebase.
  */
@@ -590,96 +597,3 @@ window.onload = function() {
 	window.pdReg = new PDReg();
 };
 
-// const messaging = firebase.messaging(),
-// 	database = firebase.database(),
-// 	pushBtn = document.getElementById('push-button');
-
-// let userToken = null;
-// let isSubscribed = false;
-
-// function initializePush() {
-// 	userToken = localStorage.getItem('pushToken');
-
-// 	isSubscribed = userToken !== null;
-// 	updateBtn();
-
-// 	pushBtn.addEventListener('click', () => {
-// 		pushBtn.disabled = true;
-
-// 		if (isSubscribed) return unsubscribeUser();
-
-// 		return subscribeUser();
-// 	});
-// }
-
-// function updateBtn() {
-// 	if (Notification.permission === 'denied') {
-// 		pushBtn.textContent = 'Subscription blocked';
-// 		return;
-// 	}
-
-// 	pushBtn.textContent = isSubscribed ? 'Unsubscribe' : 'Subscribe';
-// 	pushBtn.disabled = false;
-// }
-
-// function subscribeUser() {
-// 	messaging
-// 		.requestPermission()
-// 		.then(() => messaging.getToken())
-// 		.then(token => {
-// 			updateSubscriptionOnServer(token);
-// 			isSubscribed = true;
-// 			userToken = token;
-// 			localStorage.setItem('pushToken', token);
-// 			updateBtn();
-// 		})
-// 		.catch(err => console.log('Denied', err));
-// }
-
-// function updateSubscriptionOnServer(token) {
-// 	if (isSubscribed) {
-// 		return database
-// 			.ref('device_ids')
-// 			.on('value')
-// 			.then(snap => {
-// 				snap.forEach(device => {
-// 					if (device.val() === token) {
-// 						device.ref.remove();
-// 					}
-// 				});
-// 			});
-// 	}
-
-// 	database
-// 		.ref('device_ids')
-// 		.on('value')
-// 		.then(snapshots => {
-// 			let deviceExists = false;
-
-// 			snapshots.forEach(childSnapshot => {
-// 				if (childSnapshot.val() === token) {
-// 					deviceExists = true;
-// 					return console.log('Device already registered.');
-// 				}
-// 			});
-
-// 			if (!deviceExists) {
-// 				M.toast({ html: 'Successfully subscribed to reminders' });
-// 				return database.ref('device_ids').push(token);
-// 			}
-// 		});
-// }
-
-// function unsubscribeUser() {
-// 	messaging
-// 		.deleteToken(userToken)
-// 		.then(() => {
-// 			updateSubscriptionOnServer(userToken);
-// 			isSubscribed = false;
-// 			userToken = null;
-// 			localStorage.removeItem('pushToken');
-// 			updateBtn();
-// 			M.toast({ html: 'Successfully unsubscribed from notifications.' });
-// 		})
-// 		.catch(err => console.log('Error unsubscribing', err));
-// }
