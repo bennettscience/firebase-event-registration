@@ -320,8 +320,9 @@ PDReg.CLASS_TEMPLATE =
   '<input name="course" class="filled-in" value="" id="" type="checkbox" />' +
   '<span class="sort-title card-title grey-text text-darken-4"></span>' +
   '</label>' +
-  '<div class="date grey-text text-darken-1"></div>' +
+  '<div class="date grey-text text-darken-1"><i class="material-icons">share</i></div>' +
   '<div class="code hidden"><i class="material-icons prefix">lock</i><div class="input-field inline"><input name="code" type="text" value="" /><label for="code">Registration code</label></div></div>' +
+  '<a class="course-share-link" href=""><i class="material-icons">link</i></a>' +
   '</div>' +
   '<div class="card-action">' +
   '<a class="btn btn-flat blue lighten-2 white-text activator">More Information</a>' +
@@ -426,6 +427,7 @@ PDReg.prototype.buildAllClasses = function(course) {
 		}
 
 		div.querySelector('.card-title').textContent = course.title;
+		div.querySelector('.course-share-link').href = `https://pd.elkhart.k12.in.us/?course=${course.key}`;
 		div.querySelector('.date').textContent = format(course.start) + ' - ' + formatEnd(course.end);
 		div.querySelector('.card-desc').innerHTML = course.desc;
 		div.querySelector('.card-image').innerHTML = '<img src=\'' + getBg() + '\' />\'';
