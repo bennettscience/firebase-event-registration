@@ -303,7 +303,8 @@ PDReg.prototype.register = function(e) {
 PDReg.USER_TEMPLATE = `
   <div class="info">
     <span class="title"></span>
-    <span class="date"></span>
+	<span class="date"></span>
+	<span class="link"></span>
 	<span class="location"></span>
 	<span class="description"></span>
     <span class="contact"></span>
@@ -355,18 +356,18 @@ PDReg.prototype.buildUserClasses = function(course) {
 		container.setAttribute('id', 'user_' + course.key);
 		container.setAttribute('class', 'collection-item');
 		container.getElementsByTagName('a')[0].setAttribute('id', 'cancel_' + course.key);
+		container.querySelector('.title').textContent = course.title;
 
-		console.log(course.redirect);
 		if (course.redirect) {
-			container.querySelector('.title').innerHTML = `<a href='${course.redirect}' target='_blank'>${
-				course.title
-			}</a>`;
+			container.querySelector('.link').innerHTML = `Join: <b><a href='${course.redirect}' target='_blank'>${
+				course.redirect
+			}</a></b>`;
 		} else {
 			container.querySelector('.title').textContent = course.title;
 		}
 		container.querySelector('.date').textContent = `${start} - ${end}`;
 		container.querySelector('.location').textContent = course.loc;
-		container.querySelector('.description').textContent = course.desc;
+		container.querySelector('.description').innerHTML = course.desc;
 		container.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}?subject=${course.title}'>${
 			course.poc
 		}</a>`;
