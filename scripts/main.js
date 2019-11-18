@@ -320,7 +320,7 @@ PDReg.CLASS_TEMPLATE =
   '<input name="course" class="filled-in" value="" id="" type="checkbox" />' +
   '<span class="sort-title card-title grey-text text-darken-4"></span>' +
   '</label>' +
-  '<div class="date grey-text text-darken-1"><i class="material-icons">share</i></div>' +
+  '<div class="date grey-text text-darken-1"></div>' +
   '<div class="code hidden"><i class="material-icons prefix">lock</i><div class="input-field inline"><input name="code" type="text" value="" /><label for="code">Registration code</label></div></div>' +
   '</div>' +
   '<div class="card-action">' +
@@ -409,11 +409,12 @@ PDReg.prototype.buildAllClasses = function(course) {
 		div.getElementsByTagName('input')[1].setAttribute('id', 'code-' + course.key);
 		div.getElementsByTagName('label')[1].setAttribute('for', 'code-' + course.key);
 		div.setAttribute('data-dan', course.dan);
-		div.setAttribute('data-date', course.start);
-		div.setAttribute('data-title', course.title);
-		if (course.type == 'Online') {
-			div.classList.add('hidden');
+
+		if(course.type === 'In Person') {
+			div.setAttribute('data-date', course.start);
 		}
+		
+		div.setAttribute('data-title', course.title);
 		parentDiv.appendChild(div);
 
 		div.querySelector('.card-title').textContent = course.title;
@@ -422,7 +423,12 @@ PDReg.prototype.buildAllClasses = function(course) {
 		// Add an event listener when the element is created
 		div.querySelector('.course-share-link').addEventListener('click', copyToClipboard);
 		
-		div.querySelector('.date').textContent = format(course.start) + ' - ' + formatEnd(course.end);
+		if(course.type === 'In Person') {
+			div.querySelector('.date').textContent = format(course.start) + ' - ' + formatEnd(course.end);
+		} else {
+			div.querySelector('.date').textContent = 'Online, start any time!';
+		}
+
 		div.querySelector('.card-desc').innerHTML = course.desc;
 		div.querySelector('.card-image').innerHTML = '<img src=\'' + getBg() + '\' />\'';
 		div.querySelector('.seats').textContent = 'Seats: ' + course.seats;

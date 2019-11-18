@@ -183,10 +183,10 @@ $('#slide-out-button').on('click', function() {
 	$('#slide-out').sidenav('open');
 });
 
-$('#course-toggle').on('change', function() {
-	console.log('clicked toggle');
-	$('div.class-container').toggleClass('hidden');
-});
+// $('#course-toggle').on('change', function() {
+// 	console.log('clicked toggle');
+// 	$('div.class-container').toggleClass('hidden');
+// });
 
 // Format dates for sessions displayed in main container
 function format(date) {
