@@ -588,6 +588,9 @@ h1, h2, h3, p
     a:hover
       background-color: #2196f3 !important
 
+    .course-share-link:hover
+      background-color: transparent !important
+
   .card-image
     max-height: 40% !important
 
@@ -596,6 +599,21 @@ h1, h2, h3, p
     .card-title
       font-size: 1.6rem
       line-height: 1.6rem
+
+    .blink
+      animation: blink-1 0.6s 1s both
+
+    @keyframes blink-1
+      0%,
+      50%,
+      100%
+        opacity: 1;
+      
+      25%,
+      75%
+        opacity: 0;
+
+
 
   .content
     max-height: 60%

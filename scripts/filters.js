@@ -306,3 +306,14 @@ function loadSubmitBadge() {
   
 	submitBadge.innerText = els.length;
 }
+
+async function copyToClipboard(e) {
+	e.preventDefault();
+
+	try {
+		await navigator.clipboard.writeText(e.target.parentNode.getAttribute('href'));
+		alert('Workshop URL copied to clipboard');
+	} catch (err) {
+		alert('Failed to copy: ', err);
+	}
+}

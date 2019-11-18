@@ -477,12 +477,27 @@ h1, h2, h3, p {
 .card .card-action a:hover {
   background-color: #2196f3 !important; }
 
+.card .card-action .course-share-link:hover {
+  background-color: transparent !important; }
+
 .card .card-image {
   max-height: 40% !important; }
 
 .card .card-content .card-title {
   font-size: 1.6rem;
   line-height: 1.6rem; }
+
+.card .card-content .blink {
+  animation: blink-1 0.6s 1s both; }
+
+@keyframes blink-1 {
+  0%,
+  50%,
+  100% {
+    opacity: 1; }
+  25%,
+  75% {
+    opacity: 0; } }
 
 .card .content {
   max-height: 60%; }
