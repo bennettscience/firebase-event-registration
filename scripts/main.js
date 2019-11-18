@@ -416,19 +416,9 @@ PDReg.prototype.buildAllClasses = function(course) {
 		}
 		parentDiv.appendChild(div);
 
-		if(urlParams.has('course')) {
-			if(urlParams.get('course') === course.key) {
-				document.querySelector(`input[name='course'][value='${course.key}']`).checked = true;
-				window.location.hash = `#${course.key}`;
-				// set the submit badge quantity
-				loadSubmitBadge();
-
-			}
-		}
-
 		div.querySelector('.card-title').textContent = course.title;
 		div.querySelector('.course-share-link').href = `https://pd.elkhart.k12.in.us/?course=${course.key}`;
-
+		
 		// Add an event listener when the element is created
 		div.querySelector('.course-share-link').addEventListener('click', copyToClipboard);
 		
@@ -445,15 +435,24 @@ PDReg.prototype.buildAllClasses = function(course) {
 			id: course.key,
 			code: course.code,
 		});
-
+		
 		if (course.code !== 'Code') {
 			div.querySelector('.code').classList.remove('hidden');
 		}
-
+		
 		if (course.seats <= 0) {
 			console.log(div);
 			div.querySelector('#card-' + course.key).setAttribute('disabled', true);
 			div.querySelector('.card-title').innerHTML += ' - Session full';
+		}
+	}
+	if (urlParams.has('course')) {
+		if (urlParams.get('course') === course.key) {
+			document.querySelector(`input[name='course'][value='${course.key}']`).checked = true;
+			window.location.hash = `#${course.key}`;
+			// set the submit badge quantity
+			loadSubmitBadge();
+
 		}
 	}
 };
