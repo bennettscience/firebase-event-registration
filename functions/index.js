@@ -187,7 +187,7 @@ exports.twoDayReminder = functions.https.onRequest(async (req, res) => {
 				<ul>
 					<li>Workshop: ${item.title}</li>
 					<li>Location: ${item.loc}</li>
-					<li>Start time: ${new Date(item.start).toLocaleTimeString()}</li>
+					<li>Start time: ${new Date(item.start).toLocaleString('en-US', { timeZone: 'America/New_York', 'timeStyle': 'short' })}</li>
 				</ul>
 				<p>Please visit the <b><a href="https//pd.elkhart.k12.in.us">Elkhart PD website</a></b> for more details or to cancel your registration if you can no longer attend.</p>
 				<br />
@@ -243,7 +243,7 @@ exports.oneWeekReminder = functions.https.onRequest(async (req, res) => {
 				<ul>
 					<li>Workshop: ${item.title}</li>
 					<li>Location: ${item.loc}</li>
-					<li>Start time: ${new Date(item.start).toLocaleTimeString()}</li>
+					<li>Start time: ${new Date(item.start).toLocaleString('en-US', { timeZone: 'America/New_York', 'timeStyle': 'short' })}</li>
 				</ul>
 				<p>Please visit the <b><a href="https//pd.elkhart.k12.in.us">Elkhart PD website</a></b> for more details or to cancel your registration if you can no longer attend.</p>
 				<br />
