@@ -296,7 +296,8 @@ input.toggle:checked + label:after {
     box-sizing: border-box;
     border-bottom: 1px solid #e0e0e0; }
     #user-courses #user-courses-list .collection-item .info {
-      display: inline-block; }
+      display: inline-block;
+      max-width: 75%; }
       #user-courses #user-courses-list .collection-item .info .title {
         font-size: 1.2rem;
         font-weight: 800; }
