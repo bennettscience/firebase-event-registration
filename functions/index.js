@@ -32,14 +32,15 @@ exports.onlineRegConfirmation = functions.database
 			.once('value')
 			.then(snap => {
 				var el = snap.val();
-				if (el.type === 'Online') {
+				// The redirect key is only present on online courses. Send a welcome email.
+				if (el.redirect) {
 					mailOpts.from = '<pd@elkhart.k12.in.us> Elkhart PD';
 					mailOpts.subject = `Your registration for ${el.title}`;
 					mailOpts.html = `<p>Thank you for registering for ${
 						el.title
-					}. This is an online course, so please visit the <a href='${
+					}. This is an online event, so please visit the <a href='${
 						el.redirect
-					}' target='_blank'>course page</a> to begin.</p><p>If you have trouble, please <a href='mailto:${
+					}' target='_blank'>course link</a> to begin or join the video call.</p><p>If you have trouble, please <a href='mailto:${
 						el.pocEmail
 					}'>contact the course facilitator</a> for more help.</p><p>---</p><p>Elkhart Professional Development</p>`;
 
