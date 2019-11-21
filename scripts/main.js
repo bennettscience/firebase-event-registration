@@ -397,7 +397,7 @@ PDReg.prototype.buildAllClasses = function(course) {
 	var parentDiv = document.getElementById('allCourses');
 	const urlParams = new URLSearchParams(window.location.search);
 
-	console.log(`Building ${course}`);
+	console.log(course);
 
 	if (!parentDiv.querySelector('[id=\'' + course.key + '\']')) {
 		var container = document.createElement('div');
@@ -503,12 +503,12 @@ PDReg.prototype.getAllClasses = function() {
 			if (course.members.hasOwnProperty(uid)) {
 				this.buildUserClasses(course);
 			} else {
-				if ((course.type === 'In Person' && course.start > today) || course.type === 'Online' && course.active) {
+				if (((course.type === 'In Person' || course.type === 'Online') && course.start > today) && course.active === true) {
 					this.buildAllClasses(course);
 				}
 			}
 		} else {
-			if ((course.type === 'In Person' && course.start > today && course.active) || course.type === 'Online' && course.active) {
+			if (((course.type === 'In Person' || course.type === 'Online') && course.start > today && course.active) && course.active === true) {
 				this.buildAllClasses(course);
 			}
 		}
