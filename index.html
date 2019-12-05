@@ -10,7 +10,7 @@
   <script>
     Sentry.init({ 
       dsn: 'https://cac7ad3274cc41ac85089a7aba47d291@sentry.io/1526392',
-      release: "ecs-pd@2.0.1"
+      release: "ecs-pd@2.0.2"
     });
   </script>
   <!-- End Sentry -->
@@ -22,86 +22,90 @@
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-TRD2J67');</script>
   <!-- End Google Tag Manager -->
-
+  
   <!-- scripts -->
-
+  <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-app.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-database.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-functions.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-auth.js"></script>
+  
   <!-- App Styling -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-
+  
   <!-- Materialize Stylesheets-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
+  
   <link rel="stylesheet" href="styles/main.min.css">
-
+  
 </head>
 
 <body>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-  <div id="slide-out" class="hidden sidenav sidenav-fixed">
-    <ul>
-      <li>
-        <div class="help">
-          <a href="mailto:pd@elkhart.k12.in.us?subject=PD%20site%20help&body=Please%20describe%20what%20didn&#39t%20work%2E%0A%0ADid%20you%20see%20any%20errors%3F"><i class="material-icons white-text">help</i></a>
-        </div>
-        <div class="user-view">
-          <div class="background">
-            <img src="https://c1.staticflickr.com/9/8579/15899932525_cce383f209_b.jpg">
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div id="slide-out" class="hidden sidenav sidenav-fixed">
+      <ul>
+        <li>
+          <div class="help">
+            <a href="mailto:pd@elkhart.k12.in.us?subject=PD%20site%20help&body=Please%20describe%20what%20didn&#39t%20work%2E%0A%0ADid%20you%20see%20any%20errors%3F"><i class="material-icons white-text">help</i></a>
           </div>
-          <div id="user-pic" class="circle"></div>
-          <div id="string-name" class="white-text name"></div>
-          <div id="user-email" class="white-text email"></div>
-          <button id="sign-out-button" class="waves-effect waves-light btn red lighten-2">
-            Sign out
-          </button>
-          <!-- <button id="push-button" class="waves-effect waves-light btn red" disabled>Subscribe</button> -->
-          <button id="change-school-button" class="waves-effect waves-light btn blue darken-2 white-text"><i class='material-icons'>arrow_drop_down</i><span id="user-location"></span></button>
-        </div>
-      </li>
-      <li><a id="admin-button" class="hidden btn red waves-effect waves-light" href="/dashboard.html"><i class="material-icons white-text">lock_open</i>Presenters/Admin</a></li>
-
-      <li id="sorting">
-        <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
-        <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
-        <a id="collection" class="btn-flat waves-effect waves-light">Show Your Courses <span class="badge blue white-text" id="user-courses-badge"></span></a>
-      </li>
-      <li id="user-input" class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li> <!-- Danielson Filter START -->
-            <a class="collapsible-header">Danielson Filters<i class="material-icons">arrow_drop_down</i></a>
-            <div class="collapsible-body" id="dan-filters">
-              <form name="filter-form" id="filter-form" action="" method="">
-                <label for='1a'><input name='filterStatus' type='checkbox' value='1a' id='1a' class='filled-in' /><span>1a Demonstrating Knowledge of Content and Pedagogy</span></label>
-                <label for='1b'><input name='filterStatus' type='checkbox' value='1b' id='1b' class='filled-in' /><span>1b Demonstrating Knowledge of Students</span></label>
-                <label for='1c'><input name='filterStatus' type='checkbox' value='1c' id='1c' class='filled-in' /><span>1c Setting Instructional Outcomes</span></label>
-                <label for='1d'><input name='filterStatus' type='checkbox' value='1d' id='1d' class='filled-in' /><span>1d Demonstrating Knowledge of Resources</span></label>
-                <label for='1e'><input name='filterStatus' type='checkbox' value='1e' id='1e' class='filled-in' /><span>1e Designing Coherent Instruction</span></label>
-                <label for='1f'><input name='filterStatus' type='checkbox' value='1f' id='1f' class='filled-in' /><span>1f Designing Student Assessments</span></label>
-                <label for='2a'><input name='filterStatus' type='checkbox' value='2a' id='2a' class='filled-in' /><span>2a Creating an Environment of Respect and Report</span></label>
-                <label for='2b'><input name='filterStatus' type='checkbox' value='2b' id='2b' class='filled-in' /><span>2b Establishing a culture for Learning</span></label>
-                <label for='2c'><input name='filterStatus' type='checkbox' value='2c' id='2c' class='filled-in' /><span>2c Managing Classroom Procedures</span></label>
-                <label for='2d'><input name='filterStatus' type='checkbox' value='2d' id='2d' class='filled-in' /><span>2d Managing Student Behavior</span></label>
-                <label for='2e'><input name='filterStatus' type='checkbox' value='2e' id='2e' class='filled-in' /><span>2e Organizing Physical Space</span></label>
-                <label for='3a'><input name='filterStatus' type='checkbox' value='3a' id='3a' class='filled-in' /><span>3a Communicating with Students</span></label>
-                <label for='3b'><input name='filterStatus' type='checkbox' value='3b' id='3b' class='filled-in' /><span>3b Using Questioning and Discussion Techniques</span></label>
-                <label for='3c'><input name='filterStatus' type='checkbox' value='3c' id='3c' class='filled-in' /><span>3c Engaging Students in Learning</span></label>
-                <label for='3d'><input name='filterStatus' type='checkbox' value='3d' id='3d' class='filled-in' /><span>3d Using Assessment in Instruction</span></label>
-                <label for='3e'><input name='filterStatus' type='checkbox' value='3e' id='3e' class='filled-in' /><span>3e Demonstrating Flexibility and Responsiveness</span></label>
-                <label for='4a'><input name='filterStatus' type='checkbox' value='4a' id='4a' class='filled-in' /><span>4a Reflecting on Teaching</span></label>
-                <label for='4b'><input name='filterStatus' type='checkbox' value='4b' id='4b' class='filled-in' /><span>4b Maintaining Accurate Records</span></label>
-                <label for='4c'><input name='filterStatus' type='checkbox' value='4c' id='4c' class='filled-in' /><span>4c Communicating with Families</span></label>
-                <label for='4d'><input name='filterStatus' type='checkbox' value='4d' id='4d' class='filled-in' /><span>4d Participating in the Professional Community</span></label>
-                <label for='4e'><input name='filterStatus' type='checkbox' value='4e' id='4e' class='filled-in' /><span>4e Growing and Developing Professionally</span></label>
-                <label for='4f'><input name='filterStatus' type='checkbox' value='4f' id='4f' class='filled-in' /><span>4f Showing Professionalism</span></label>
-              </form>
+          <div class="user-view">
+            <div class="background">
+              <img src="https://c1.staticflickr.com/9/8579/15899932525_cce383f209_b.jpg">
             </div>
-          </li>
-        </ul>
-      </li>
-    </ul> <!-- End sidebar nav -->
+            <div id="user-pic" class="circle"></div>
+            <div id="string-name" class="white-text name"></div>
+            <div id="user-email" class="white-text email"></div>
+            <button id="sign-out-button" class="waves-effect waves-light btn red lighten-2">
+              Sign out
+            </button>
+            <!-- <button id="push-button" class="waves-effect waves-light btn red" disabled>Subscribe</button> -->
+            <button id="change-school-button" class="waves-effect waves-light btn blue darken-2 white-text"><i class='material-icons'>arrow_drop_down</i><span id="user-location"></span></button>
+          </div>
+        </li>
+        <li><a id="admin-button" class="hidden btn red waves-effect waves-light" href="/dashboard.html"><i class="material-icons white-text">lock_open</i>Presenters/Admin</a></li>
+        
+        <li id="sorting">
+          <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
+          <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
+          <a id="collection" class="btn-flat waves-effect waves-light">Show Your Courses <span class="badge blue white-text" id="user-courses-badge"></span></a>
+        </li>
+        <li id="user-input" class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+            <li> <!-- Danielson Filter START -->
+              <a class="collapsible-header">Danielson Filters<i class="material-icons">arrow_drop_down</i></a>
+              <div class="collapsible-body" id="dan-filters">
+                <form name="filter-form" id="filter-form" action="" method="">
+                  <label for='1a'><input name='filterStatus' type='checkbox' value='1a' id='1a' class='filled-in' /><span>1a Demonstrating Knowledge of Content and Pedagogy</span></label>
+                  <label for='1b'><input name='filterStatus' type='checkbox' value='1b' id='1b' class='filled-in' /><span>1b Demonstrating Knowledge of Students</span></label>
+                  <label for='1c'><input name='filterStatus' type='checkbox' value='1c' id='1c' class='filled-in' /><span>1c Setting Instructional Outcomes</span></label>
+                  <label for='1d'><input name='filterStatus' type='checkbox' value='1d' id='1d' class='filled-in' /><span>1d Demonstrating Knowledge of Resources</span></label>
+                  <label for='1e'><input name='filterStatus' type='checkbox' value='1e' id='1e' class='filled-in' /><span>1e Designing Coherent Instruction</span></label>
+                  <label for='1f'><input name='filterStatus' type='checkbox' value='1f' id='1f' class='filled-in' /><span>1f Designing Student Assessments</span></label>
+                  <label for='2a'><input name='filterStatus' type='checkbox' value='2a' id='2a' class='filled-in' /><span>2a Creating an Environment of Respect and Report</span></label>
+                  <label for='2b'><input name='filterStatus' type='checkbox' value='2b' id='2b' class='filled-in' /><span>2b Establishing a culture for Learning</span></label>
+                  <label for='2c'><input name='filterStatus' type='checkbox' value='2c' id='2c' class='filled-in' /><span>2c Managing Classroom Procedures</span></label>
+                  <label for='2d'><input name='filterStatus' type='checkbox' value='2d' id='2d' class='filled-in' /><span>2d Managing Student Behavior</span></label>
+                  <label for='2e'><input name='filterStatus' type='checkbox' value='2e' id='2e' class='filled-in' /><span>2e Organizing Physical Space</span></label>
+                  <label for='3a'><input name='filterStatus' type='checkbox' value='3a' id='3a' class='filled-in' /><span>3a Communicating with Students</span></label>
+                  <label for='3b'><input name='filterStatus' type='checkbox' value='3b' id='3b' class='filled-in' /><span>3b Using Questioning and Discussion Techniques</span></label>
+                  <label for='3c'><input name='filterStatus' type='checkbox' value='3c' id='3c' class='filled-in' /><span>3c Engaging Students in Learning</span></label>
+                  <label for='3d'><input name='filterStatus' type='checkbox' value='3d' id='3d' class='filled-in' /><span>3d Using Assessment in Instruction</span></label>
+                  <label for='3e'><input name='filterStatus' type='checkbox' value='3e' id='3e' class='filled-in' /><span>3e Demonstrating Flexibility and Responsiveness</span></label>
+                  <label for='4a'><input name='filterStatus' type='checkbox' value='4a' id='4a' class='filled-in' /><span>4a Reflecting on Teaching</span></label>
+                  <label for='4b'><input name='filterStatus' type='checkbox' value='4b' id='4b' class='filled-in' /><span>4b Maintaining Accurate Records</span></label>
+                  <label for='4c'><input name='filterStatus' type='checkbox' value='4c' id='4c' class='filled-in' /><span>4c Communicating with Families</span></label>
+                  <label for='4d'><input name='filterStatus' type='checkbox' value='4d' id='4d' class='filled-in' /><span>4d Participating in the Professional Community</span></label>
+                  <label for='4e'><input name='filterStatus' type='checkbox' value='4e' id='4e' class='filled-in' /><span>4e Growing and Developing Professionally</span></label>
+                  <label for='4f'><input name='filterStatus' type='checkbox' value='4f' id='4f' class='filled-in' /><span>4f Showing Professionalism</span></label>
+                </form>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul> <!-- End sidebar nav -->
     </div>
     <div class="hidden" id="search-wrap">
       <nav class="blue">
@@ -118,73 +122,54 @@
         </div>
       </nav>
     </div>
-    </div> <!-- /#sidebar-wrap -->
-    <div id="wrap">
-      <div id="account-error-splash" class="hidden">
-        <h2>Sorry, you can't use that account.</h2>
-        <p>This page is locked for Elkhart Community Schools employees only. Please sign out of this account using the button on the left and sign back in with an ECS email account instead.</p>
-      </div>
-      <div class="hidden" id="login-splash">
-        <img src='https://newscdn.weigelbroadcasting.com/79qZX-1527177142-109961-blog-elkhartschoolslogo.jpg' />
-        <p>Please log in with your ECS Google account.</p>
-        <button id="sign-in-button" class="waves-effect waves-light btn btn-large blue">
-          <i class="material-icons large white-text prefix large">account_circle</i>Google Sign In
-        </button>
-      </div>
-      <div id="user-building-splash" class="input-field hidden">
-        <span id="user-building-prompt"><i class="material-icons large">school</i>Pick your location</span>
-        <select id="user-building-select"></select>
-        <button class="btn btn-large waves-effect waves-light blue" id="user-building-splash-submit">Submit<i class="material-icons right large">check</i></button>
-      </div>
-      <main>
-        <form id="course-form" action="#">
-          <input hidden type="text" name="name" value="" />
-          <input hidden type="text" name="userName" value="" />
-          <input hidden type="text" name="email" value="" />
-
-           <div id="allCourses"></div>
-           <button class="btn btn-large waves-effect waves-light teal darken-1 hidden" type="submit" id="submit" name="action">Submit
-            <span class="badge white" id="submit-badge" ></span> 
-            <i class="material-icons right">send</i>
-           </button>
-           <button class="btn btn-large btn-floating blue" type="submit" id="mobile-submit" name="action"><span class="badge badge-light">2</span><i class="material-icons right large">send</i></button>
-        </form>
-      </main> <!-- /main #content-wrap -->
-    </div>  <!-- /#wrap -->
-    <div id="user-courses-wrap" class="hidden">
-      <span id="hide-user-courses">close<i class="material-icons">close</i></span>
-      <div id="user-courses">
-        <div id="user-courses-head"></div>
-        <hr />
-        <div id="user-courses-list"></div>
-      </div>
+  </div> <!-- /#sidebar-wrap -->
+  <div id="wrap">
+    <div id="account-error-splash" class="hidden">
+      <h2>Sorry, you can't use that account.</h2>
+      <p>This page is locked for Elkhart Community Schools employees only. Please sign out of this account using the button on the left and sign back in with an ECS email account instead.</p>
     </div>
-
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-app.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-database.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-functions.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-auth.js"></script>
-
-    <!-- <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyCXmPVmNY1VyPM7uliVzsC5YoyttSTQcuk",
-        authDomain: "elkhart-pd-signup.firebaseapp.com",
-        databaseURL: "https://elkhart-pd-signup.firebaseio.com",
-        projectId: "elkhart-pd-signup",
-        storageBucket: "elkhart-pd-signup.appspot.com",
-        messagingSenderId: "697421799429"
-      };
-      firebase.initializeApp(config);
-    </script> -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-
-
-    <script src="/__/firebase/init.js"></script>
-    <script src="scripts/filters.js"></script>
-    <script src="scripts/main.js"></script>
+    <div class="hidden" id="login-splash">
+      <img src='https://newscdn.weigelbroadcasting.com/79qZX-1527177142-109961-blog-elkhartschoolslogo.jpg' />
+      <p>Please log in with your ECS Google account.</p>
+      <button id="sign-in-button" class="waves-effect waves-light btn btn-large blue">
+        <i class="material-icons large white-text prefix large">account_circle</i>Google Sign In
+      </button>
+    </div>
+    <div id="user-building-splash" class="input-field hidden">
+      <span id="user-building-prompt"><i class="material-icons large">school</i>Pick your location</span>
+      <select id="user-building-select"></select>
+      <button class="btn btn-large waves-effect waves-light blue" id="user-building-splash-submit">Submit<i class="material-icons right large">check</i></button>
+    </div>
+    <main>
+      <form id="course-form" action="#">
+        <input hidden type="text" name="name" value="" />
+        <input hidden type="text" name="userName" value="" />
+        <input hidden type="text" name="email" value="" />
+        
+        <div id="allCourses"></div>
+        <button class="btn btn-large waves-effect waves-light teal darken-1 hidden" type="submit" id="submit" name="action">Submit
+          <span class="badge white" id="submit-badge" ></span> 
+          <i class="material-icons right">send</i>
+        </button>
+        <button class="btn btn-large btn-floating blue" type="submit" id="mobile-submit" name="action"><span class="badge badge-light">2</span><i class="material-icons right large">send</i></button>
+      </form>
+    </main> <!-- /main #content-wrap -->
+  </div>  <!-- /#wrap -->
+  <div id="user-courses-wrap" class="hidden">
+    <span id="hide-user-courses">close<i class="material-icons">close</i></span>
+    <div id="user-courses">
+      <div id="user-courses-head"></div>
+      <hr />
+      <div id="user-courses-list"></div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  
+  <script src="/__/firebase/init.js"></script>
+  <script src="scripts/filters.js"></script>
+  <script src="scripts/main.js"></script>
   </body>
   </html>
