@@ -1,4 +1,6 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-console */
+/* eslint-disable no-undef */
 'use strict';
 let codes = [];
 
@@ -256,7 +258,7 @@ PDReg.prototype.register = function(e) {
 	}.bind(this);
 
 	var postTheClass = function(classes) {
-		var promises = [];
+		// var promises = [];
 		classes.forEach(function(item) {
 			firebase
 				.database()
@@ -313,7 +315,7 @@ PDReg.USER_TEMPLATE = `
 `;
 
 // Model for classes available for registration.
-PDReg.CLASS_TEMPLATE =
+PDReg.CLASS_TEMPLATE = 
   '<div class="card large class-container">' +
   '<div class="card-image"></div>' +
   '<div class="card-content">' +
@@ -394,63 +396,77 @@ PDReg.prototype.hideUserClasses = function() {
  * @param  {Object} course JSON object with course data to create a DOM element
  */
 PDReg.prototype.buildAllClasses = function(course) {
-	var parentDiv = document.getElementById('allCourses');
+	var parentDiv = document.querySelector('#allCourses');
 	const urlParams = new URLSearchParams(window.location.search);
-
-	console.log(course);
 
 	if (!parentDiv.querySelector('[id=\'' + course.key + '\']')) {
 		var container = document.createElement('div');
-		container.innerHTML = PDReg.CLASS_TEMPLATE;
-		var div = container.children[0];
-		div.setAttribute('id', course.key);
-		div.getElementsByTagName('input')[0].setAttribute('value', course.key);
-		div.getElementsByTagName('input')[0].setAttribute('id', 'card-' + course.key);
-		div.getElementsByTagName('label')[0].setAttribute('for', 'card-' + course.key);
-		div.getElementsByTagName('input')[1].setAttribute('id', 'code-' + course.key);
-		div.getElementsByTagName('label')[1].setAttribute('for', 'code-' + course.key);
-		div.setAttribute('data-dan', course.dan);
+		container.innerHTML = `
+				<div class="card-image">
+					<img src="${getBg()}" />
+				</div>
+				<div class="card-content">
+					<label for="card-${course.key}">
+						<input name="course" class="filled-in" value="${course.key}" id="card-${course.key}" type="checkbox" />
+						<span class="sort-title card-title grey-text text-darken-4">${course.title}</span>
+					</label>
+					<div class="date grey-text text-darken-1">
+						${(course.type === 'In Person') ? format(course.start) + ' - ' + format(course.end) : 'Online, start any time!'}
+					</div>
+					<div class="code hidden">
+						<i class="material-icons prefix">lock</i>
+						<div class="input-field inline">
+							<input name="code" id="code-${course.key}" type="text" value="" />
+							<label for="code-${course.key}">Registration code</label>
+						</div>
+					</div>
+				</div>
+				<div class="card-action">
+					<a class="btn btn-flat blue lighten-2 white-text activator" data-title="${course.title}">See More</a>
+					<a class="btn btn-flat course-share-link">
+						<i class="material-icons right" data-target="link-${course.key}">link</i>
+					</a>
+					<input name="share" id="link-${course.key}" type="text" value="https://pd.elkhart.k12.in.us/?course=${course.key}" autofocus="autofocus" />
+				</div>
+				<div class="card-reveal">
+					<span class="card-title grey-text- text-darken-4"><i class="material-icons right">close</i></span>
+					<span class="card-desc">${course.desc}</span>
+					<hr />
+					<div class="details">
+						<span class="seats">Seats: ${course.seats}</span>
+						<span class="contact">Contact: <a href="mailto:${course.pocEmail}?subject=${course.title}">${course.poc}</a></span>
+						<span class="location">Location: ${course.loc}</span>
+					</div>
+				</div>
+		`;
+
+		container.setAttribute('id', course.key);
+		container.setAttribute('class', 'card large class-container');
+		container.dataset.title = course.title;
+		container.dataset.dan = course.dan;
 
 		if(course.type === 'In Person') {
-			div.setAttribute('data-date', course.start);
+			container.dataset.date = course.start;
 		}
-		
-		div.setAttribute('data-title', course.title);
-		parentDiv.appendChild(div);
 
-		div.querySelector('.card-title').textContent = course.title;
-		div.querySelector('.course-share-link').href = `https://pd.elkhart.k12.in.us/?course=${course.key}`;
-		
+		parentDiv.appendChild(container);
 		// Add an event listener when the element is created
-		div.querySelector('.course-share-link').addEventListener('click', copyToClipboard);
-		
-		if(course.type === 'In Person') {
-			div.querySelector('.date').textContent = format(course.start) + ' - ' + formatEnd(course.end);
-		} else {
-			div.querySelector('.date').textContent = 'Online, start any time!';
-		}
+		container.querySelector(`#link-${course.key}`).style.display = 'none';
+		container.querySelector('.course-share-link').addEventListener('click', copyToClipboard);
 
-		div.querySelector('.card-desc').innerHTML = course.desc;
-		div.querySelector('.card-image').innerHTML = '<img src=\'' + getBg() + '\' />\'';
-		div.querySelector('.seats').textContent = 'Seats: ' + course.seats;
-		div.querySelector('.contact').innerHTML = `Contact: <a href='mailto:${course.pocEmail}?subject=${course.title}'>${
-			course.poc
-		}</a>`;
-		div.querySelector('.location').textContent = 'Location: ' + course.loc;
-		div.querySelector('.activator').setAttribute('data-title', course.title);
 		codes.push({
 			id: course.key,
 			code: course.code,
 		});
 		
 		if (course.code !== 'Code') {
-			div.querySelector('.code').classList.remove('hidden');
+			container.querySelector('.code').classList.remove('hidden');
 		}
 		
 		if (course.seats <= 0) {
 			console.log(div);
-			div.querySelector('#card-' + course.key).setAttribute('disabled', true);
-			div.querySelector('.card-title').innerHTML += ' - Session full';
+			container.querySelector('#card-' + course.key).setAttribute('disabled', true);
+			container.querySelector('.card-title').innerHTML += ' - Session full';
 		}
 	}
 	if (urlParams.has('course')) {
@@ -487,7 +503,7 @@ PDReg.prototype.checkSetup = function() {
 PDReg.prototype.getAllClasses = function() {
 	this.database = firebase.database();
 	var uid = firebase.auth().currentUser.uid;
-	var courses = [];
+
 	var today = new Date().toISOString();
 	document.getElementById('allCourses').innerHTML = '';
 
