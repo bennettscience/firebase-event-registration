@@ -283,6 +283,8 @@ $('#date').on('click', function() {
 let courseForm = document.querySelector('#course-form');
 let submitBadge = document.querySelector('#submit-badge');
 
+submitBadge.style.display = 'none';
+
 courseForm.addEventListener('click', updateSubmitBadge);
 
 function updateSubmitBadge(e) {
@@ -302,7 +304,7 @@ function updateSubmitBadge(e) {
 function loadSubmitBadge() {
 	var els = courseForm.querySelectorAll('input[type=\'checkbox\']:checked');
   
-	(els.length > 0) ? submitBadge.style.display = 'inline' : submitBadge.style.display = 'none';
+	(els.length > 0) ? submitBadge.style.display = 'inline' : null;
   
 	submitBadge.innerText = els.length;
 }
