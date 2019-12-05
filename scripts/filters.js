@@ -309,11 +309,15 @@ function loadSubmitBadge() {
 
 async function copyToClipboard(e) {
 	e.preventDefault();
+	let el = e.target;
 
 	try {
 		await navigator.clipboard.writeText(e.target.parentNode.getAttribute('href'));
 		alert('Workshop URL copied to clipboard');
 	} catch (err) {
-		alert('Failed to copy: ', err);
+		// alert('Failed to copy: ', err);
+		console.log(`#link-${el.dataset.target}`);
+		document.querySelector(`#${el.dataset.target}`).style.display = 'block';
+		
 	}
 }
