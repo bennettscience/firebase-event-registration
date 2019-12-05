@@ -33,7 +33,7 @@ exports.onlineRegConfirmation = functions.database
 			.then(snap => {
 				var el = snap.val();
 				// The redirect key is only present on online courses. Send a welcome email.
-				if (el.redirect) {
+				if (el.type === "Online") {
 					mailOpts.from = '<pd@elkhart.k12.in.us> Elkhart PD';
 					mailOpts.subject = `Your registration for ${el.title}`;
 					mailOpts.html = `<p>Thank you for registering for ${
@@ -190,7 +190,7 @@ exports.twoDayReminder = functions.https.onRequest(async (req, res) => {
 					<li>Location: ${item.loc}</li>
 					<li>Start time: ${new Date(item.start).toLocaleString('en-US', { timeZone: 'America/New_York', 'timeStyle': 'short' })}</li>
 				</ul>
-				<p>Please visit the <b><a href="https//pd.elkhart.k12.in.us">Elkhart PD website</a></b> for more details or to cancel your registration if you can no longer attend.</p>
+				<p>Please visit the <b><a href="https://pd.elkhart.k12.in.us">Elkhart PD website</a></b> for more details or to cancel your registration if you can no longer attend.</p>
 				<br />
 				<b>Elkhart Professional Development</b>
 			`;
@@ -246,7 +246,7 @@ exports.oneWeekReminder = functions.https.onRequest(async (req, res) => {
 					<li>Location: ${item.loc}</li>
 					<li>Start time: ${new Date(item.start).toLocaleString('en-US', { timeZone: 'America/New_York', 'timeStyle': 'short' })}</li>
 				</ul>
-				<p>Please visit the <b><a href="https//pd.elkhart.k12.in.us">Elkhart PD website</a></b> for more details or to cancel your registration if you can no longer attend.</p>
+				<p>Please visit the <b><a href="https://pd.elkhart.k12.in.us">Elkhart PD website</a></b> for more details or to cancel your registration if you can no longer attend.</p>
 				<br />
 				<b>Elkhart Professional Development</b>
 			`;
