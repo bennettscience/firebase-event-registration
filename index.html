@@ -4,49 +4,49 @@
   <title>Elkhart PD</title>
   <link rel="manifest" href="manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  
   <!-- Sentry error tracking -->
   <!-- <script src="https://browser.sentry-cdn.com/5.6.0/bundle.min.js" integrity="sha384-9aGOmRDrtIQRcZmYbrNQmfS1dW44OCMtOlQ3JFUYCdCpxTJQ8vK+//K35AKgZh96" crossorigin="anonymous"></script>
-  <script>
-    Sentry.init({ 
-      dsn: 'https://cac7ad3274cc41ac85089a7aba47d291@sentry.io/1526392',
-      release: "ecs-pd@2.0.3"
-    });
-  </script> -->
-  <!-- End Sentry -->
-
-  <!-- Google Tag Manager -->
-  <!-- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-TRD2J67');</script> -->
-  <!-- End Google Tag Manager -->
+    <script>
+      Sentry.init({ 
+        dsn: 'https://cac7ad3274cc41ac85089a7aba47d291@sentry.io/1526392',
+        release: "ecs-pd@2.0.3"
+      });
+    </script> -->
+    <!-- End Sentry -->
+    
+    <!-- Google Tag Manager -->
+    <!-- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TRD2J67');</script> -->
+    <!-- End Google Tag Manager -->
+    
+    <!-- scripts -->
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-app.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-database.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-functions.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-auth.js"></script>
+    
+    <!-- App Styling -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    
+    <!-- Materialize Stylesheets-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <link rel="stylesheet" href="styles/main.min.css">
+    
+  </head>
   
-  <!-- scripts -->
-  <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-app.js"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-database.js"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-functions.js"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-auth.js"></script>
-  
-  <!-- App Styling -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-  
-  <!-- Materialize Stylesheets-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  
-  <link rel="stylesheet" href="styles/main.min.css">
-  
-</head>
-
-<body>
-  <!-- Google Tag Manager (noscript) -->
-  <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
-    <!-- End Google Tag Manager (noscript) -->
-    <div class="hidden" id="search-wrap"></div>
-    <!-- Dropdown menu items -->
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
+      <!-- End Google Tag Manager (noscript) -->
+      <div class="hidden" id="search-wrap"></div>
+      <!-- Dropdown menu items -->
       <ul id="user-dropdown" class="dropdown-content">
         <li><span id="user-email" class="email"></span></li>
         <li>
@@ -62,7 +62,8 @@
         <li><a href="#" id="sign-out-button" class="red white-text">Sign out</a></li>
       </ul>
       <!-- end nav drodown -->
-      <nav class="blue nav-wrapper">
+      <div class="navbar-fixed">
+        <nav class="blue nav-wrapper">
           <a href="#" class="brand-logo">ECS PD</a>
           <ul class="right hide-on-med-and-down">
             <li>
@@ -83,62 +84,67 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down"></ul>
           </form>
         </div>
-      </nav>
-  </div> <!-- /#sidebar-wrap -->
-  <div id="container">
-    <!-- filtering buttons above the main session container-->
-    <div class="row">
-      <div id="sorting">
-          <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
-          <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
+      </nav>  
+    </div>
+    <div class="container">
+      <!-- filtering buttons above the main session container-->
+      <div class="row">
+        <div class="col s3">
+          <div id="sorting">
+            <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
+            <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
+          </div>
+        </div>
+        <div class="col s9">
+          <main>
+            <form id="course-form" action="#">
+              <input hidden type="text" name="name" value="" />
+              <input hidden type="text" name="userName" value="" />
+              <input hidden type="text" name="email" value="" />
+              
+              <div id="allCourses"></div>
+              <button class="btn btn-large waves-effect waves-light teal darken-1 hidden" type="submit" id="submit" name="action">Submit
+                <span class="badge white" id="submit-badge" ></span> 
+                <i class="material-icons right">send</i>
+              </button>
+              <button class="btn btn-large btn-floating blue" type="submit" id="mobile-submit" name="action"><span class="badge badge-light">2</span><i class="material-icons right large">send</i></button>
+            </form>
+          </main> <!-- /main #content-wrap -->
+        </div>
+      </div>
+      <div id="account-error-splash" class="hidden">
+        <h2>Sorry, you can't use that account.</h2>
+        <p>This page is locked for Elkhart Community Schools employees only. Please sign out of this account using the button on the left and sign back in with an ECS email account instead.</p>
+      </div>
+      <div class="hidden" id="login-splash">
+        <img src='https://newscdn.weigelbroadcasting.com/79qZX-1527177142-109961-blog-elkhartschoolslogo.jpg' />
+        <p>Please log in with your ECS Google account.</p>
+        <button id="sign-in-button" class="waves-effect waves-light btn btn-large blue">
+          <i class="material-icons large white-text prefix large">account_circle</i>Google Sign In
+        </button>
+      </div>
+      <div id="user-building-splash" class="input-field hidden">
+        <span id="user-building-prompt"><i class="material-icons large">school</i>Pick your location</span>
+        <select id="user-building-select"></select>
+        <button class="btn btn-large waves-effect waves-light blue" id="user-building-splash-submit">Submit<i class="material-icons right large">check</i></button>
+      </div>
+    </div>  <!-- /.container -->
+    <div id="user-courses-wrap" class="hidden">
+      <span id="hide-user-courses">close<i class="material-icons">close</i></span>
+      <div id="user-courses">
+        <div id="user-courses-head"></div>
+        <hr />
+        <div id="user-courses-list"></div>
       </div>
     </div>
-    <div id="account-error-splash" class="hidden">
-      <h2>Sorry, you can't use that account.</h2>
-      <p>This page is locked for Elkhart Community Schools employees only. Please sign out of this account using the button on the left and sign back in with an ECS email account instead.</p>
-    </div>
-    <div class="hidden" id="login-splash">
-      <img src='https://newscdn.weigelbroadcasting.com/79qZX-1527177142-109961-blog-elkhartschoolslogo.jpg' />
-      <p>Please log in with your ECS Google account.</p>
-      <button id="sign-in-button" class="waves-effect waves-light btn btn-large blue">
-        <i class="material-icons large white-text prefix large">account_circle</i>Google Sign In
-      </button>
-    </div>
-    <div id="user-building-splash" class="input-field hidden">
-      <span id="user-building-prompt"><i class="material-icons large">school</i>Pick your location</span>
-      <select id="user-building-select"></select>
-      <button class="btn btn-large waves-effect waves-light blue" id="user-building-splash-submit">Submit<i class="material-icons right large">check</i></button>
-    </div>
-    <main>
-      <form id="course-form" action="#">
-        <input hidden type="text" name="name" value="" />
-        <input hidden type="text" name="userName" value="" />
-        <input hidden type="text" name="email" value="" />
-        
-        <div id="allCourses"></div>
-        <button class="btn btn-large waves-effect waves-light teal darken-1 hidden" type="submit" id="submit" name="action">Submit
-          <span class="badge white" id="submit-badge" ></span> 
-          <i class="material-icons right">send</i>
-        </button>
-        <button class="btn btn-large btn-floating blue" type="submit" id="mobile-submit" name="action"><span class="badge badge-light">2</span><i class="material-icons right large">send</i></button>
-      </form>
-    </main> <!-- /main #content-wrap -->
-  </div>  <!-- /#wrap -->
-  <div id="user-courses-wrap" class="hidden">
-    <span id="hide-user-courses">close<i class="material-icons">close</i></span>
-    <div id="user-courses">
-      <div id="user-courses-head"></div>
-      <hr />
-      <div id="user-courses-list"></div>
-    </div>
-  </div>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-  
-  <script src="/__/firebase/init.js"></script>
-  <script src="scripts/filters.js"></script>
-  <script src="scripts/main.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    
+    <script src="/__/firebase/init.js"></script>
+    <script src="scripts/filters.js"></script>
+    <script src="scripts/main.js"></script>
   </body>
   </html>
+  

@@ -19,41 +19,34 @@ html, body {
   padding: 0;
   height: 100%;
   width: 100%; }
-
-#wrap {
-  display: grid;
-  grid-template-columns: repeat(12, [col-start] 1fr [col-end]);
-  grid-template-rows: 65px 1fr;
-  grid-gap: 15px;
-  margin: 0 15px; }
-  #wrap #admin-sidebar {
+  html #admin-sidebar, body #admin-sidebar {
     position: fixed;
     margin-top: 15px;
     margin-right: 10px;
     padding: 25px;
     background-color: rgba(0, 0, 0, 0.01);
     width: 300px; }
-    #wrap #admin-sidebar > .input-field {
+    html #admin-sidebar > .input-field, body #admin-sidebar > .input-field {
       margin-bottom: 30px; }
-      #wrap #admin-sidebar > .input-field input {
+      html #admin-sidebar > .input-field input, body #admin-sidebar > .input-field input {
         cursor: pointer; }
-    #wrap #admin-sidebar .back {
+    html #admin-sidebar .back, body #admin-sidebar .back {
       display: block;
       padding: 10px 0;
       font-size: 18px;
       line-height: 2.2;
       vertical-align: middle; }
-      #wrap #admin-sidebar .back i {
+      html #admin-sidebar .back i, body #admin-sidebar .back i {
         vertical-align: middle;
         padding-bottom: 5px; }
-  #wrap .datepicker-controls .select-month input {
+  html .datepicker-controls .select-month input, body .datepicker-controls .select-month input {
     width: 90px !important; }
-  #wrap #placeholder {
+  html #placeholder, body #placeholder {
     margin-top: 35px;
     position: relative;
     display: block;
     height: auto; }
-  #wrap #placeholder > .course {
+  html #placeholder > .course, body #placeholder > .course {
     display: grid;
     width: 90%;
     grid-template-columns: auto 25% 15%;
@@ -62,67 +55,41 @@ html, body {
     align-items: center;
     margin-bottom: 35px;
     position: relative; }
-    #wrap #placeholder > .course i {
+    html #placeholder > .course i, body #placeholder > .course i {
       vertical-align: middle; }
-    #wrap #placeholder > .course a.email {
+    html #placeholder > .course a.email, body #placeholder > .course a.email {
       grid-area: admin;
       position: relative;
       left: 0;
       color: #000; }
-    #wrap #placeholder > .course i.download {
+    html #placeholder > .course i.download, body #placeholder > .course i.download {
       grid-area: admin;
       position: relative;
       left: 35%;
       color: #000; }
-      #wrap #placeholder > .course i.download:hover {
+      html #placeholder > .course i.download:hover, body #placeholder > .course i.download:hover {
         cursor: pointer; }
-    #wrap #placeholder > .course .list {
+    html #placeholder > .course .list, body #placeholder > .course .list {
       display: table;
       table-layout: fixed; }
-    #wrap #placeholder > .course .list > div {
+    html #placeholder > .course .list > div, body #placeholder > .course .list > div {
       display: table-row;
       margin-left: 10%; }
-      #wrap #placeholder > .course .list > div span {
+      html #placeholder > .course .list > div span, body #placeholder > .course .list > div span {
         padding: 2px 0 0 55px; }
-    #wrap #placeholder > .course .teacher--name, #wrap #placeholder > .course teacher--building {
+    html #placeholder > .course .teacher--name, html #placeholder > .course teacher--building, body #placeholder > .course .teacher--name, body #placeholder > .course teacher--building {
       display: table-cell; }
-    #wrap #placeholder > .course .teacher--name {
+    html #placeholder > .course .teacher--name, body #placeholder > .course .teacher--name {
       font-weight: 700; }
-
-#slide-out, #fullscreen-sidebar {
-  display: block;
-  position: fixed;
-  z-index: 1000;
-  height: 100%; }
-  #slide-out .help, #fullscreen-sidebar .help {
-    display: block;
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    z-index: 10; }
-  #slide-out #filter-form, #fullscreen-sidebar #filter-form {
-    padding: 10px; }
-  #slide-out ul, #fullscreen-sidebar ul {
-    margin: 0; }
-  #slide-out label, #fullscreen-sidebar label {
-    color: #212121 !important; }
-  #slide-out .user-view, #fullscreen-sidebar .user-view {
+  html .user-view, body .user-view {
     padding: 32px; }
-  #slide-out #user-pic, #fullscreen-sidebar #user-pic {
-    display: block;
-    position: relative;
-    height: auto;
-    width: auto; }
-    #slide-out #user-pic img, #slide-out #user-pic i, #fullscreen-sidebar #user-pic img, #fullscreen-sidebar #user-pic i {
-      width: 128px;
-      height: 128px;
-      margin: 0 auto; }
-    #slide-out #user-pic i, #fullscreen-sidebar #user-pic i {
-      display: block;
-      text-align: center; }
 
 #sorting p {
   text-align: center; }
+
+#sorting #title, #sorting #date {
+  display: block;
+  margin: 10px 0 10px 0; }
 
 input.toggle {
   position: absolute;
@@ -527,13 +494,9 @@ h1, h2, h3, p {
   background: rgba(200, 200, 200, 0.6); }
 
 #user-pic {
-  position: relative;
-  display: inline;
-  background-repeat: no-repeat;
+  height: 100%;
   width: 40px;
-  height: 40px;
-  background-size: 40px;
-  border-radius: 20px; }
+  vertical-align: middle; }
   #user-pic img {
     height: inherit;
     width: inherit;
@@ -573,20 +536,15 @@ h1, h2, h3, p {
   top: -1px;
   margin-right: 5px; }
 
-@media (max-width: 996px) {
-  main {
-    grid-column: 1 / span 12;
-    margin-left: 0; }
-  #fullscreen-sidebar {
-    display: none; }
-  .fixed-action-btn {
-    display: block; }
-  #mobile-submit {
-    display: block; }
-  #submit {
-    display: none; }
-  .input-field input[type="search"] {
-    margin-left: 0px !important; }
-  #content-wrap {
-    width: 100%;
-    margin: 10px 0; } }
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%; }
+
+@media only screen and (min-width: 601px) {
+  .container {
+    width: 85%; } }
+
+@media only screen and (min-width: 993px) {
+  .container {
+    width: 70%; } }

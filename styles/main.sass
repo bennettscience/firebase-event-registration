@@ -29,14 +29,6 @@ html, body
   height: 100%
   width: 100%
 
-#wrap
-  display: grid
-  grid-template-columns: repeat(12, [col-start] 1fr [col-end])
-  grid-template-rows: 65px 1fr
-  grid-gap: 15px
-  margin: 0 15px
-  
-
   #admin-sidebar
     position: fixed
     margin-top: 15px
@@ -119,48 +111,16 @@ html, body
     .teacher--name
       font-weight: 700
 
-#slide-out, #fullscreen-sidebar
-  display: block
-  position: fixed
-  z-index: 1000
-  height: 100%
-
-  .help
-    display: block
-    position: absolute
-    top: 25px
-    right: 25px
-    z-index: 10
-
-  #filter-form
-    padding: 10px
-
-  ul
-    margin: 0
-
-  label
-    color: #212121 !important
-
   .user-view
     padding: 32px
 
-  #user-pic
+#sorting 
+  p
+    text-align: center
+
+  #title, #date
     display: block
-    position: relative
-    height: auto
-    width: auto
-
-    img, i
-      width: 128px
-      height: 128px
-      margin: 0 auto
-
-    i
-      display: block
-      text-align: center
-
-#sorting p
-  text-align: center
+    margin: 10px 0 10px 0
 
 input.toggle
   position: absolute
@@ -184,7 +144,6 @@ input.toggle + label
   user-select: none
   transition-duration: .2s
   transition-property: background-color, border
-
 
 input.toggle + label:before
   content: 'In Person'
@@ -654,15 +613,11 @@ h1, h2, h3, p
   margin: 5px auto
   padding: 10px
   background: rgba(200,200,200,0.6)
-
+  
 #user-pic
-  position: relative
-  display: inline
-  background-repeat: no-repeat
+  height: 100%
   width: 40px
-  height: 40px
-  background-size: 40px
-  border-radius: 20px
+  vertical-align: middle
   
   img 
     height: inherit
@@ -710,26 +665,16 @@ h1, h2, h3, p
   top: -1px
   margin-right: 5px
 
-@media (max-width: 996px)
-  main
-    grid-column: 1 / span 12
-    margin-left: 0
 
-  #fullscreen-sidebar
-    display: none
+.container 
+  margin: 0 auto
+  max-width: 1280px
+  width: 90%
 
-  .fixed-action-btn
-    display: block
+@media only screen and (min-width: 601px)
+  .container
+    width: 85%
 
-  #mobile-submit
-    display: block
-
-  #submit
-    display: none
-
-  .input-field input[type="search"]
-    margin-left: 0px !important
-
-  #content-wrap
-    width: 100%
-    margin: 10px 0
+@media only screen and (min-width: 993px)
+  .container
+    width: 70%
