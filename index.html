@@ -6,21 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Sentry error tracking -->
-  <script src="https://browser.sentry-cdn.com/5.6.0/bundle.min.js" integrity="sha384-9aGOmRDrtIQRcZmYbrNQmfS1dW44OCMtOlQ3JFUYCdCpxTJQ8vK+//K35AKgZh96" crossorigin="anonymous"></script>
+  <!-- <script src="https://browser.sentry-cdn.com/5.6.0/bundle.min.js" integrity="sha384-9aGOmRDrtIQRcZmYbrNQmfS1dW44OCMtOlQ3JFUYCdCpxTJQ8vK+//K35AKgZh96" crossorigin="anonymous"></script>
   <script>
     Sentry.init({ 
       dsn: 'https://cac7ad3274cc41ac85089a7aba47d291@sentry.io/1526392',
-      release: "ecs-pd@2.0.2"
+      release: "ecs-pd@2.0.3"
     });
-  </script>
+  </script> -->
   <!-- End Sentry -->
 
   <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  <!-- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-TRD2J67');</script>
+  })(window,document,'script','dataLayer','GTM-TRD2J67');</script> -->
   <!-- End Google Tag Manager -->
   
   <!-- scripts -->
@@ -42,8 +42,8 @@
 
 <body>
   <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
     <!-- End Google Tag Manager (noscript) -->
     <div id="slide-out" class="hidden sidenav sidenav-fixed">
       <ul>
@@ -51,22 +51,7 @@
           <div class="help">
             <a href="mailto:pd@elkhart.k12.in.us?subject=PD%20site%20help&body=Please%20describe%20what%20didn&#39t%20work%2E%0A%0ADid%20you%20see%20any%20errors%3F"><i class="material-icons white-text">help</i></a>
           </div>
-          <div class="user-view">
-            <div class="background">
-              <img src="https://c1.staticflickr.com/9/8579/15899932525_cce383f209_b.jpg">
-            </div>
-            <div id="user-pic" class="circle"></div>
-            <div id="string-name" class="white-text name"></div>
-            <div id="user-email" class="white-text email"></div>
-            <button id="sign-out-button" class="waves-effect waves-light btn red lighten-2">
-              Sign out
-            </button>
-            <!-- <button id="push-button" class="waves-effect waves-light btn red" disabled>Subscribe</button> -->
-            <button id="change-school-button" class="waves-effect waves-light btn blue darken-2 white-text"><i class='material-icons'>arrow_drop_down</i><span id="user-location"></span></button>
-          </div>
-        </li>
-        <li><a id="admin-button" class="hidden btn red waves-effect waves-light" href="/dashboard.html"><i class="material-icons white-text">lock_open</i>Presenters/Admin</a></li>
-        
+        </li>        
         <li id="sorting">
           <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
           <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
@@ -107,11 +92,33 @@
         </li>
       </ul> <!-- End sidebar nav -->
     </div>
-    <div class="hidden" id="search-wrap">
-      <nav class="blue">
-        <div class="nav-wrapper">
-          <a href="#" data-target="slide-out" class="btn btn-flat white-text sidenav-trigger" id="slide-out-button" class="white-text"><i class="material-icons">menu</i></a>
-          <a href="#" id="search-button" class="btn btn-flat white-text"><i class="material-icons">search</i></a>
+    <div class="hidden" id="search-wrap"></div>
+      <ul id="user-dropdown" class="dropdown-content">
+        <li><span id="user-email" class="email"></span></li>
+        <li>
+          <a id="change-school-button" href="#">
+            <span id="user-building">
+              <span id="user-location"></span>
+            </span>
+            </a>
+          </li>
+        <li><a href="#">My Sessions</a></li>
+        <li><a id="admin-button" class="hidden" href="/dashboard.html">Session Admin</a></li>
+        <li><a href="#" id="sign-out-button" class="red white-text">Sign out</a></li>
+      </ul>
+      <nav class="blue nav-wrapper">
+          <a href="#" class="brand-logo">ECS PD</a>
+          <ul class="right hide-on-med-and-down">
+            <li>
+              <a class="dropdown-trigger" href="#!" data-target="user-dropdown">
+                <span id="user-pic" class="circle"></span>
+                <span id="string-name" class="white-text name"></span>
+                <i class="material-icons right">arrow_drop_down</i>
+              </a>
+            </li>
+            <li><a href="#" id="search-button" class="btn btn-flat white-text"><i class="material-icons">search</i></a></li>
+          </ul>
+          
           <form id="search-form" class="hidden">
             <div class="input-field">
               <input id="search" type="search" placeholder="Search by title..." required />
@@ -121,7 +128,6 @@
           </form>
         </div>
       </nav>
-    </div>
   </div> <!-- /#sidebar-wrap -->
   <div id="wrap">
     <div id="account-error-splash" class="hidden">

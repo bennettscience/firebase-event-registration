@@ -121,18 +121,7 @@ html, body {
       display: block;
       text-align: center; }
 
-#string-name, #user-email {
-  text-align: center; }
-
-#sign-out-button, #push-button, #change-school-button {
-  display: block;
-  width: 80%;
-  margin: 3px auto; }
-
 #sorting p {
-  text-align: center; }
-
-#admin-button {
   text-align: center; }
 
 input.toggle {
@@ -537,15 +526,18 @@ h1, h2, h3, p {
   padding: 10px;
   background: rgba(200, 200, 200, 0.6); }
 
-#user-view #user-pic {
+#user-pic {
   position: relative;
-  display: inline-block;
-  background-image: url("/images/profile_placeholder.png");
+  display: inline;
   background-repeat: no-repeat;
   width: 40px;
   height: 40px;
   background-size: 40px;
   border-radius: 20px; }
+  #user-pic img {
+    height: inherit;
+    width: inherit;
+    vertical-align: middle; }
 
 @media screen and (max-width: 1166px) {
   main {
