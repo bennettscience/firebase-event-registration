@@ -3,13 +3,6 @@
  */
 
 $(document).ready(function() {
-	$('.sidenav').sidenav({
-		draggable: true,
-		edge: 'left',
-		preventScrolling: true,
-		isFixed: true,
-	});
-
 	var el = $('#user-building-select');
 	var schools = [
 		'Beardsley',
@@ -54,6 +47,16 @@ $(document).ready(function() {
 	$('#user-building-select').formSelect();
 
 	$('.collapsible').collapsible();
+
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+	const dropOptions = {
+		constrainWidth: false,
+		coverTrigger: false,
+	};
+	var dropdowns = document.querySelectorAll('.dropdown-trigger');
+	M.Dropdown.init(dropdowns, dropOptions);
 });
 
 $(document).keydown(function(e) {
