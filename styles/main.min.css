@@ -169,45 +169,6 @@ input.toggle:checked + label:after {
 #change-school-button i {
   vertical-align: middle; }
 
-#search-wrap {
-  grid-column: 1 / col-end 12;
-  grid-row: 1;
-  position: relative; }
-  #search-wrap nav {
-    position: fixed;
-    z-index: 999; }
-    #search-wrap nav .nav-wrapper a {
-      border-radius: 50%; }
-      #search-wrap nav .nav-wrapper a:hover {
-        background-color: inherit; }
-    #search-wrap nav .nav-wrapper i {
-      font-size: 2.5rem;
-      vertical-align: middle; }
-    #search-wrap nav .nav-wrapper:active {
-      background-color: inherit; }
-    #search-wrap nav .nav-wrapper:focus {
-      background-color: inherit; }
-    #search-wrap nav .nav-wrapper #search-button, #search-wrap nav .nav-wrapper #slide-out-button {
-      position: absolute;
-      display: block;
-      top: 0;
-      z-index: 1000; }
-    #search-wrap nav .nav-wrapper #search-button {
-      right: 1.5rem;
-      height: 64px;
-      width: 64px; }
-    #search-wrap nav #search-form {
-      display: block;
-      position: absolute;
-      width: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1000; }
-      #search-wrap nav #search-form .input-field input[type="search"] {
-        font-size: 32px;
-        line-height: 32px;
-        margin-left: 300px; }
-
 #user-courses-wrap {
   display: block;
   position: fixed;
@@ -466,18 +427,16 @@ h1, h2, h3, p {
   display: block; }
 
 #submit {
-  position: fixed;
-  bottom: 50px;
-  right: 50px;
-  z-index: 100; }
+  position: sticky;
+  top: 75px; }
   #submit .badge {
     border-radius: 50%;
     float: none;
     margin-left: 10px;
     margin-right: 15px; }
 
-.input-field input[type="search"] ~ .mdi-navigation-close, .input-field input[type="search"] ~ .material-icons {
-  right: 3rem; }
+.nav-wrapper .input-field input[type=search] {
+  height: auto !important; }
 
 #userCourseList-content {
   position: relative;
@@ -547,4 +506,4 @@ h1, h2, h3, p {
 
 @media only screen and (min-width: 993px) {
   .container {
-    width: 70%; } }
+    width: 90%; } }

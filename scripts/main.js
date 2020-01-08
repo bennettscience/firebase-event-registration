@@ -25,7 +25,6 @@ function PDReg() {
 	this.userCoursesBadge = document.getElementById('user-courses-badge');
 	this.userCourses = document.getElementById('user-courses-list');
 	this.allCourses = document.getElementById('allCourses');
-	this.search = document.getElementById('search-wrap');
 	this.userInput = document.getElementById('user-input');
 	this.subscribeButton = document.getElementById('push-button');
 	this.sorting = document.getElementById('sorting');
@@ -177,11 +176,8 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 						this.userEmail.classList.remove('hidden');
 						this.signOutButton.classList.remove('hidden');
 						this.courseForm.classList.remove('hidden');
-						this.search.classList.remove('hidden');
-						this.userInput.classList.remove('hidden');
-						// this.subscribeButton.classList.remove('hidden')
+
 						this.sorting.classList.remove('hidden');
-						this.sidebar.classList.remove('hidden');
 						this.registerBuilding.classList.add('hidden');
 						this.submitButton.classList.remove('hidden');
 
@@ -222,8 +218,7 @@ PDReg.prototype.register = function(e) {
 		if (form.elements[i].checked) {
 			var title = form.elements[i].parentElement.querySelector('.card-title').innerHTML;
 			var id = form.elements[i].value;
-			var code =
-        form.elements[i].parentElement.nextSibling.nextSibling.childNodes[1].childNodes[0].value;
+			var code = form.elements[i].parentNode.parentNode.querySelector('input[name=\'code\']').value;
 			if (code.length === 0) {
 				code = 'Code';
 			}
@@ -402,9 +397,6 @@ PDReg.prototype.buildAllClasses = function(course) {
 	if (!parentDiv.querySelector('[id=\'' + course.key + '\']')) {
 		var container = document.createElement('div');
 		container.innerHTML = `
-				<div class="card-image">
-					<img src="${getBg()}" />
-				</div>
 				<div class="card-content">
 					<label for="card-${course.key}">
 						<input name="course" class="filled-in" value="${course.key}" id="card-${course.key}" type="checkbox" />
@@ -441,7 +433,7 @@ PDReg.prototype.buildAllClasses = function(course) {
 		`;
 
 		container.setAttribute('id', course.key);
-		container.setAttribute('class', 'card large class-container');
+		container.setAttribute('class', 'card class-container');
 		container.dataset.title = course.title;
 		container.dataset.dan = course.dan;
 

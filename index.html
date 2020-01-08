@@ -45,7 +45,6 @@
     <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
       <!-- End Google Tag Manager (noscript) -->
-      <div class="hidden" id="search-wrap"></div>
       <!-- Dropdown menu items -->
       <ul id="user-dropdown" class="dropdown-content">
         <li><span id="user-email" class="email"></span></li>
@@ -63,38 +62,49 @@
       </ul>
       <!-- end nav drodown -->
       <div class="navbar-fixed">
-        <nav class="blue nav-wrapper">
-          <a href="#" class="brand-logo">ECS PD</a>
-          <ul class="right hide-on-med-and-down">
-            <li>
-              <a class="dropdown-trigger" href="#!" data-target="user-dropdown">
-                <span id="user-pic" class="circle"></span>
-                <span id="string-name" class="white-text name"></span>
-                <i class="material-icons right">arrow_drop_down</i>
-              </a>
-            </li>
-            <li><a href="#" id="search-button" class="btn btn-flat white-text"><i class="material-icons">search</i></a></li>
-          </ul>
-          
-          <form id="search-form" class="hidden">
-            <div class="input-field">
-              <input id="search" type="search" placeholder="Search by title..." required />
-              <i class="material-icons" id="search-clear">close</i>
+        <nav>
+          <div class="blue nav-wrapper">
+            <div class="container">
+              <a href="#" class="brand-logo">ECS PD</a>
+              <ul class="right hide-on-med-and-down">
+                <li>
+                  <form>
+                    <div class="input-field">
+                      <input id="search" type="search" placeholder="Search by title..." required />
+                      <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                      <i class="material-icons" id="search-clear">close</i>
+                    </div>
+                  </form>
+                </li>
+                <li>
+                  <a class="dropdown-trigger" href="#!" data-target="user-dropdown">
+                    <span id="user-pic" class="circle"></span>
+                    <span id="string-name" class="white-text name"></span>
+                    <i class="material-icons right">arrow_drop_down</i>
+                  </a>
+                </li>
+                <!-- <li><a href="#" id="search-button" class="btn btn-flat white-text"><i class="material-icons">search</i></a></li> -->
+              </ul>
             </div>
-            <ul id="nav-mobile" class="right hide-on-med-and-down"></ul>
-          </form>
-        </div>
-      </nav>  
-    </div>
-    <div class="container">
-      <!-- filtering buttons above the main session container-->
-      <div class="row">
-        <div class="col s3">
-          <div id="sorting">
-            <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
-            <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
           </div>
-        </div>
+        </nav>  
+      </div>
+      <div class="container">
+        <!-- filtering buttons above the main session container-->
+        <div class="row">
+          <div class="col s3">
+            <div class="section" id="sorting">
+              <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
+              <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
+            </div>
+            <div class="divider"></div>
+            <div class="section">
+              <button class="btn btn-large waves-effect waves-light teal darken-1 hidden" type="submit" id="submit" name="action">Submit
+                <span class="badge white" id="submit-badge" ></span> 
+                <i class="material-icons right">send</i>
+              </button>
+            </div>
+          </div>
         <div class="col s9">
           <main>
             <form id="course-form" action="#">
@@ -103,10 +113,6 @@
               <input hidden type="text" name="email" value="" />
               
               <div id="allCourses"></div>
-              <button class="btn btn-large waves-effect waves-light teal darken-1 hidden" type="submit" id="submit" name="action">Submit
-                <span class="badge white" id="submit-badge" ></span> 
-                <i class="material-icons right">send</i>
-              </button>
               <button class="btn btn-large btn-floating blue" type="submit" id="mobile-submit" name="action"><span class="badge badge-light">2</span><i class="material-icons right large">send</i></button>
             </form>
           </main> <!-- /main #content-wrap -->
@@ -128,15 +134,15 @@
         <select id="user-building-select"></select>
         <button class="btn btn-large waves-effect waves-light blue" id="user-building-splash-submit">Submit<i class="material-icons right large">check</i></button>
       </div>
-    </div>  <!-- /.container -->
-    <div id="user-courses-wrap" class="hidden">
-      <span id="hide-user-courses">close<i class="material-icons">close</i></span>
-      <div id="user-courses">
-        <div id="user-courses-head"></div>
-        <hr />
-        <div id="user-courses-list"></div>
+      <div id="user-courses-wrap" class="hidden">
+        <span id="hide-user-courses">close<i class="material-icons">close</i></span>
+        <div id="user-courses">
+          <div id="user-courses-head"></div>
+          <hr />
+          <div id="user-courses-list"></div>
+        </div>
       </div>
-    </div>
+    </div>  <!-- /.container -->
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

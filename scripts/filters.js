@@ -74,14 +74,14 @@ $(document).keydown(function(e) {
  *
  * @returns {String}  relative path to an image
  */
-function getBg() {
-	let base = 'img/';
-	let ext = '.png';
+// function getBg() {
+// 	let base = 'img/';
+// 	let ext = '.png';
 
-	let rand = Math.ceil(Math.random() * 7);
+// 	let rand = Math.ceil(Math.random() * 7);
 
-	return base + rand + ext;
-}
+// 	return base + rand + ext;
+// }
 
 /**
  * Filter by title
@@ -112,7 +112,6 @@ $('.input-field input').on('keyup', function() {
 	});
 
 	this.onblur = function() {
-		console.log(this.value);
 		window.dataLayer.push({ event: 'search', searchTerm: this.value });
 	};
 });
@@ -169,27 +168,15 @@ $('#search-clear').on('click', function() {
 		.find('input')
 		.val('');
 	$('#search-form')
-		.toggleClass('hidden')
 		.blur();
 	$('.class-container').show();
 });
 
 $('#search-button').on('click', function() {
 	$(this)
-		.next()
-		.toggleClass('hidden');
+		.next();
 	$('#search').focus();
 });
-
-$('#slide-out-button').on('click', function() {
-	console.log('clicked');
-	$('#slide-out').sidenav('open');
-});
-
-// $('#course-toggle').on('change', function() {
-// 	console.log('clicked toggle');
-// 	$('div.class-container').toggleClass('hidden');
-// });
 
 // Format dates for sessions displayed in main container
 function format(date) {
