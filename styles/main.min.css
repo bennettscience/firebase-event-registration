@@ -228,7 +228,8 @@ input.toggle:checked + label:after {
       display: inline;
       height: 100%;
       position: relative;
-      cursor: pointer; }
+      cursor: pointer;
+      color: #e86e36; }
       #user-courses #user-courses-list .collection-item .cancel i {
         display: inline-block;
         margin-left: 5px;
