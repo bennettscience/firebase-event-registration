@@ -63,16 +63,18 @@
       <!-- end nav drodown -->
       <div class="navbar-fixed">
         <nav>
-          <div class="blue nav-wrapper">
+          <div class="nav-wrapper">
             <div class="container">
               <!-- <a href="#" class="brand-logo">ECS PD</a> -->
               <ul class="left">
                 <li>
                   <form>
-                    <div class="input-field">
-                      <input id="search" type="search" placeholder="Search by title..." required />
-                      <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                      <i class="material-icons" id="search-clear">close</i>
+                    <div id="nav-search-wrapper" class="valign-wrapper">
+                      <div class="input-field">
+                        <input id="search" type="search" placeholder="Search by title..." required />
+                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                        <i class="material-icons" id="search-clear">close</i>
+                      </div>
                     </div>
                   </form>
                 </li>
@@ -88,10 +90,12 @@
                   </a>
                 </li>
                 <li>
-                  <a type="submit" id="submit" name="action">Register
-                    <span class="badge new white blue-text" data-badge-caption="" id="submit-badge" ></span> 
+                  <button class="blue darken-2 btn btn-large" type="submit" id="submit" name="action">Register
+                    <div id="submit-badge-wrap" class="valign-wrapper">
+                      <span class="white blue-text" data-badge-caption="" id="submit-badge"></span> 
+                    </div>
                     <i class="material-icons right">send</i>
-                  </a>
+                  </button>
                 </li>
                 <!-- <li><a href="#" id="search-button" class="btn btn-flat white-text"><i class="material-icons">search</i></a></li> -->
               </ul>

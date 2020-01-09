@@ -426,14 +426,40 @@ h1, h2, h3, p {
 .card .details > span {
   display: block; }
 
-nav ul #submit {
-  background-color: #1E88E5; }
+.nav-wrapper {
+  background-color: #1a73e8; }
 
-nav ul a:hover {
-  background-color: rgba(0, 0, 0, 0.2) !important; }
+nav ul #submit > i {
+  vertical-align: middle;
+  height: inherit;
+  line-height: inherit; }
 
-.nav-wrapper .input-field input[type=search] {
-  height: auto !important; }
+nav ul #submit > #submit-badge-wrap {
+  display: inline-block;
+  min-width: 3rem;
+  margin-left: 10px; }
+  nav ul #submit > #submit-badge-wrap #submit-badge {
+    display: block;
+    line-height: 22px;
+    border-radius: 2px; }
+
+nav ul .btn, nav ul .btn-large {
+  box-shadow: none !important; }
+  nav ul .btn:hover, nav ul .btn-large:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important; }
+
+.nav-wrapper #nav-search-wrapper {
+  width: 400px; }
+  .nav-wrapper #nav-search-wrapper .input-field {
+    width: inherit; }
+    .nav-wrapper #nav-search-wrapper .input-field input[type=search] {
+      height: auto !important;
+      line-height: 32px;
+      display: inline-block;
+      border-radius: 2px;
+      background-color: rgba(255, 255, 255, 0.12); }
+      .nav-wrapper #nav-search-wrapper .input-field input[type=search]:focus {
+        background-color: #FFF !important; }
 
 #userCourseList-content {
   position: relative;
