@@ -149,7 +149,6 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 							function(snaps) {
 								var admins = snaps[0];
 								var trainers = snaps[1];
-								console.log(admins.exists(), trainers.exists());
 								if (admins.exists() | trainers.exists()) {
 									this.adminButton.classList.remove('hidden');
 								}
@@ -223,7 +222,15 @@ PDReg.prototype.register = function(e) {
 				code = 'Code';
 			}
 			classes.push({ title, id, code });
-		}
+		} 
+	}
+
+	if(classes.length === 0) {
+		M.toast({
+			html:
+				'Please select at least one course to register for!',
+			classes: 'red',
+		});
 	}
 
 	var buildNewRegCourse = function(snapshot) {
@@ -233,18 +240,23 @@ PDReg.prototype.register = function(e) {
 		var parentDiv = document.getElementById('user-courses-list');
 
 		if (!parentDiv.querySelector('[id=\'user_' + course.key + '\']')) {
+			var start = format(course.start);
+			var end = formatEnd(course.end);
 			var container = document.createElement('div');
-			container.innerHTML = PDReg.USER_TEMPLATE;
+			container.innerHTML = `
+			<div class="info">
+				<span class="title">${course.title}</span>
+				<span class="date">${start} - ${end}</span>
+				<span class="link">${course.link}</span>
+				<span class="location">${course.loc}</span>
+				<span class="description">${course.desc}</span>
+				<span class="contact"><a href='mailto:${course.pocEmail}?subject=${course.title}'>${course.poc}</a></span>
+			</div>
+			<a class="cancel secondary-content">cancel</a>`;
+
 			container.setAttribute('id', 'user_' + course.key);
 			container.setAttribute('class', 'collection-item');
 			container.getElementsByTagName('a')[0].setAttribute('id', 'cancel_' + course.key);
-
-			container.querySelector('.title').textContent = course.title;
-			container.querySelector('.date').textContent = smallFormat(course.start);
-			container.querySelector('.location').textContent = course.loc;
-			container.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}'>${
-				course.poc
-			}</a>`;
 
 			parentDiv.appendChild(container);
 
@@ -301,8 +313,8 @@ PDReg.prototype.register = function(e) {
  *
  * @param  {Object} course Course object data as JSON to create DOM elements
  */
-PDReg.prototype.buildUserClasses = function(course) {
-	console.log(course);
+PDReg.prototype.buildUserCourse = function(course) {
+
 	var parentDiv = document.getElementById('user-courses-list');
 
 	if (!parentDiv.querySelector('[id=\'user_' + course.key + '\']')) {
@@ -318,7 +330,7 @@ PDReg.prototype.buildUserClasses = function(course) {
 				<span class="description">${course.desc}</span>
 				<span class="contact"><a href='mailto:${course.pocEmail}?subject=${course.title}'>${course.poc}</a></span>
 			</div>
-			<a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a>`;
+			<a class="cancel secondary-content">cancel</a>`;
 
 		container.setAttribute('id', 'user_' + course.key);
 		container.setAttribute('class', 'collection-item');
@@ -331,7 +343,6 @@ PDReg.prototype.buildUserClasses = function(course) {
 		} else {
 			container.querySelector('.title').textContent = course.title;
 		}
-
 
 		parentDiv.appendChild(container);
 
@@ -350,11 +361,12 @@ PDReg.prototype.hideUserClasses = function() {
 };
 
 /**
- * PDReg.prototype.buildAllClasses - Create DOM elements for all courses open for registration
+ * PDReg.prototype.buildCourse - Create DOM elements for all courses open for registration
  *
  * @param  {Object} course JSON object with course data to create a DOM element
  */
-PDReg.prototype.buildAllClasses = function(course) {
+PDReg.prototype.buildCourse = function(course) {
+
 	var parentDiv = document.querySelector('#allCourses');
 	const urlParams = new URLSearchParams(window.location.search);
 
@@ -363,7 +375,7 @@ PDReg.prototype.buildAllClasses = function(course) {
 		container.innerHTML = `
 				<div class="card-content">
 					<label for="card-${course.key}">
-						<input name="course" class="filled-in" value="${course.key}" id="card-${course.key}" type="checkbox" />
+						<input name="course" class="filled-in course-checkbox" value="${course.key}" id="card-${course.key}" type="checkbox" />
 						<span class="sort-title card-title grey-text text-darken-4">${course.title}</span>
 					</label>
 					<div class="date grey-text text-darken-1">
@@ -420,7 +432,6 @@ PDReg.prototype.buildAllClasses = function(course) {
 		}
 		
 		if (course.seats <= 0) {
-			console.log(div);
 			container.querySelector('#card-' + course.key).setAttribute('disabled', true);
 			container.querySelector('.card-title').innerHTML += ' - Session full';
 		}
@@ -473,15 +484,15 @@ PDReg.prototype.getAllClasses = function() {
 		
 		if (course.members) {
 			if (course.members.hasOwnProperty(uid)) {
-				this.buildUserClasses(course);
+				this.buildUserCourse(course);
 			} else {
 				if ((course.type === 'Online' || (course.type === 'In Person' && course.start > today)) && course.active === true) {
-					this.buildAllClasses(course);
+					this.buildCourse(course);
 				}
 			}
 		} else {
 			if ((course.type === 'Online' || (course.type === 'In Person' && course.start > today)) && course.active === true) {
-				this.buildAllClasses(course);
+				this.buildCourse(course);
 			}
 		}
 	}.bind(this);
@@ -490,6 +501,7 @@ PDReg.prototype.getAllClasses = function() {
 		document.getElementById('user-courses-badge').textContent = snapshot.numChildren();
 	});
 
+	// Listen to the ref and process any changes in the frontend
 	this.classesRef.orderByChild('start').on('child_added', setClass);
 };
 
@@ -503,7 +515,8 @@ PDReg.prototype.cancel = function(e) {
 	var uid = firebase.auth().currentUser.uid;
 	this.auth = firebase.auth().currentUser.email;
 
-	var id = e.target.parentNode.id.split('_')[1];
+	let userCourse = e.target.parentNode;
+	let id = userCourse.id.split('_')[1];
 
 	// All classes database and user registration child
 	this.classesRef = this.database.ref('courses/' + id + '/members/' + uid);
@@ -515,54 +528,10 @@ PDReg.prototype.cancel = function(e) {
 	this.classesRef.set(null);
 	this.userRef.set(null);
 
-	document.getElementById('user-courses-list').removeChild(document.getElementById('user_' + id));
-
-	var buildCourse = function(snap) {
-		var course = snap.val();
-		course.key = snap.key;
-		// reused from main object methods. Hacky, but it works.
-		//TODO: Refactor someday.
-		var parentDiv = document.getElementById('allCourses');
-
-		if (!parentDiv.querySelector('[id=\'' + course.key + '\']')) {
-			var container = document.createElement('div');
-			container.innerHTML = PDReg.CLASS_TEMPLATE;
-			var div = container.children[0];
-			div.setAttribute('id', course.key);
-			div.getElementsByTagName('input')[0].setAttribute('value', course.key);
-			div.getElementsByTagName('input')[0].setAttribute('id', 'card-' + course.key);
-			div.getElementsByTagName('label')[0].setAttribute('for', 'card-' + course.key);
-			div.getElementsByTagName('input')[1].setAttribute('id', 'code-' + course.key);
-			div.getElementsByTagName('label')[1].setAttribute('for', 'code-' + course.key);
-			div.setAttribute('data-dan', course.dan);
-			div.setAttribute('data-date', course.start);
-			div.setAttribute('data-title', course.title);
-			parentDiv.appendChild(div);
-
-			div.querySelector('.card-title').textContent = course.title;
-			div.querySelector('.date').textContent = format(course.start);
-			div.querySelector('.card-desc').innerHTML = course.desc;
-			div.querySelector('.card-image').innerHTML = '<img src=\'' + getBg() + '\' />\'';
-			div.querySelector('.seats').textContent = 'Seats: ' + course.seats;
-			div.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}'>${
-				course.poc
-			}</a>`;
-			div.querySelector('.location').textContent = 'Location: ' + course.loc;
-
-			codes.push({
-				id: course.key,
-				code: course.code,
-			});
-
-			if (course.code !== 'Code') {
-				div.querySelector('.code').classList.remove('hidden');
-			}
-		}
-	};
-
-	// TODO: This is hacky. Debug child element addition from events.
-	// document.getElementById(id).classList.remove('hidden')
-	// document.getElementById(id).getElementsByTagName('input')[0].checked = false;
+	// Don't limit removal of the child element by the parent selector
+	if(userCourse.parentNode) {
+		userCourse.parentNode.removeChild(userCourse);
+	}
 
 	this.database.ref('users/' + uid + '/regs').on(
 		'value',
@@ -571,7 +540,15 @@ PDReg.prototype.cancel = function(e) {
 		}.bind(this)
 	);
 
-	this.database.ref('courses/' + id).on('value', buildCourse);
+	// Listen to changes in the ref an update accordingly.
+	this.database.ref('courses/' + id).on(
+		'value', 
+		function(snapshot) { 
+			var course = snapshot.val();
+			course.key = snapshot.key;
+			this.buildCourse(course);
+		}.bind(this)
+	);
 };
 
 /**
