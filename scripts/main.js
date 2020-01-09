@@ -309,11 +309,20 @@ PDReg.prototype.buildUserClasses = function(course) {
 		var start = format(course.start);
 		var end = formatEnd(course.end);
 		var container = document.createElement('div');
-		container.innerHTML = PDReg.USER_TEMPLATE;
+		container.innerHTML = `
+			<div class="info">
+				<span class="title">${course.title}</span>
+				<span class="date">${start} - ${end}</span>
+				<span class="link">${course.link}</span>
+				<span class="location">${course.loc}</span>
+				<span class="description">${course.desc}</span>
+				<span class="contact"><a href='mailto:${course.pocEmail}?subject=${course.title}'>${course.poc}</a></span>
+			</div>
+			<a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a>`;
+
 		container.setAttribute('id', 'user_' + course.key);
 		container.setAttribute('class', 'collection-item');
 		container.getElementsByTagName('a')[0].setAttribute('id', 'cancel_' + course.key);
-		container.querySelector('.title').textContent = course.title;
 
 		if (course.redirect) {
 			container.querySelector('.link').innerHTML = `Join: <b><a href='${course.redirect}' target='_blank'>${
@@ -322,12 +331,7 @@ PDReg.prototype.buildUserClasses = function(course) {
 		} else {
 			container.querySelector('.title').textContent = course.title;
 		}
-		container.querySelector('.date').textContent = `${start} - ${end}`;
-		container.querySelector('.location').textContent = course.loc;
-		container.querySelector('.description').innerHTML = course.desc;
-		container.querySelector('.contact').innerHTML = `<a href='mailto:${course.pocEmail}?subject=${course.title}'>${
-			course.poc
-		}</a>`;
+
 
 		parentDiv.appendChild(container);
 
