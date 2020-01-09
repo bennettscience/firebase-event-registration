@@ -365,7 +365,8 @@ main {
         vertical-align: middle; }
       main #allCourses .class-container .code input {
         height: 1.5em;
-        padding: 5px 0 5px 5px; }
+        padding: 5px 0 5px 5px;
+        border-radius: 2px; }
         main #allCourses .class-container .code input .prefix {
           vertical-align: middle; }
     main #allCourses h2 {
@@ -397,7 +398,7 @@ h1, h2, h3, p {
   border: 1px solid #f3f3f3; }
 
 .card .card-action a:hover {
-  background-color: #2196f3 !important; }
+  background-color: rgba(0, 0, 0, 0.1) !important; }
 
 .card .card-action .course-share-link:hover {
   background-color: transparent !important; }

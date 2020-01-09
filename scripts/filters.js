@@ -73,20 +73,6 @@ $(document).keydown(function(e) {
 });
 
 /**
- * getBg - Get a random header background
- *
- * @returns {String}  relative path to an image
- */
-// function getBg() {
-// 	let base = 'img/';
-// 	let ext = '.png';
-
-// 	let rand = Math.ceil(Math.random() * 7);
-
-// 	return base + rand + ext;
-// }
-
-/**
  * Filter by title
  *
  * @event  keyup
@@ -226,7 +212,7 @@ $('body').on('keyup', '.code :input', function() {
 
 			// Validate the code
 			if (codes[key].code === $(this).val()) {
-				$(this).css('background-color', 'rgba(0,255,0,0.4)');
+				$(this).css('background-color', '#32C192');
 			} else {
 				$(this).css('background-color', 'white');
 			}
