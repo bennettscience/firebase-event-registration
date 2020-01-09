@@ -296,46 +296,6 @@ PDReg.prototype.register = function(e) {
 	);
 };
 
-// Model for registrations
-PDReg.USER_TEMPLATE = `
-  <div class="info">
-    <span class="title"></span>
-	<span class="date"></span>
-	<span class="link"></span>
-	<span class="location"></span>
-	<span class="description"></span>
-    <span class="contact"></span>
-  </div>
-  <a class="cancel secondary-content">cancel<i class="material-icons">cancel</i></a>
-`;
-
-// Model for classes available for registration.
-PDReg.CLASS_TEMPLATE = 
-  '<div class="card large class-container">' +
-  '<div class="card-image"></div>' +
-  '<div class="card-content">' +
-  '<label for="">' +
-  '<input name="course" class="filled-in" value="" id="" type="checkbox" />' +
-  '<span class="sort-title card-title grey-text text-darken-4"></span>' +
-  '</label>' +
-  '<div class="date grey-text text-darken-1"></div>' +
-  '<div class="code hidden"><i class="material-icons prefix">lock</i><div class="input-field inline"><input name="code" type="text" value="" /><label for="code">Registration code</label></div></div>' +
-  '</div>' +
-  '<div class="card-action">' +
-  '<a class="btn btn-flat blue lighten-2 white-text activator">See More</a>' +
-  '<a class="btn btn-flat course-share-link" href=""><i class="material-icons right">link</i></a>' +
-  '</div>' +
-  '<div class="card-reveal">' +
-  '<span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>' +
-  '<span class="card-desc"></span>' +
-  '<hr />' +
-  '<div class="details">' +
-  '<span class="seats"></span>' +
-  '<span class="contact"></span>' +
-  '<span class="location"></span>' +
-  '</div>';
-'</div>' + '</div>';
-
 /**
  * PDReg.prototype.buildUserClasses - Create all classes the user is registered for to populate the sidebar
  *
@@ -414,7 +374,7 @@ PDReg.prototype.buildAllClasses = function(course) {
 					</div>
 				</div>
 				<div class="card-action">
-					<a class="btn btn-flat blue lighten-2 white-text activator" data-title="${course.title}">See More</a>
+					<a class="btn btn-flat blue-text activator" data-title="${course.title}">See More</a>
 					<a class="btn btn-flat course-share-link">
 						<i class="material-icons right" data-target="link-${course.key}">link</i>
 					</a>
