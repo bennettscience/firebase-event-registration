@@ -512,15 +512,13 @@ h1, h2, h3, p
   .details > span
     display: block
 
-#submit
-  position: sticky
-  top: 75px
+nav
+  ul 
+    #submit 
+      background-color: #1E88E5
 
-  .badge 
-    border-radius: 50%
-    float: none
-    margin-left: 10px
-    margin-right: 15px
+    a:hover 
+      background-color: rgba(0,0,0,0.2) !important
 
 .nav-wrapper .input-field input[type=search]
   height: auto !important
@@ -557,10 +555,6 @@ h1, h2, h3, p
   main 
     grid-column: 1 / span 12
     margin-left: 0
-
-  .sidenav.sidenav-fixed 
-      // -webkit-transform: translate(-105%) !important
-      // transform: translate(-105%) !important
 
 @media screen and (max-width: 610px)
   header

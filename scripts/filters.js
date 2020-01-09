@@ -51,12 +51,15 @@ $(document).ready(function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+	// Load dropdown menu settings
 	const dropOptions = {
 		constrainWidth: false,
 		coverTrigger: false,
 	};
 	var dropdowns = document.querySelectorAll('.dropdown-trigger');
 	M.Dropdown.init(dropdowns, dropOptions);
+
+	loadSubmitBadge();
 });
 
 $(document).keydown(function(e) {
@@ -273,17 +276,16 @@ $('#date').on('click', function() {
 let courseForm = document.querySelector('#course-form');
 let submitBadge = document.querySelector('#submit-badge');
 
-submitBadge.style.display = 'none';
-
 courseForm.addEventListener('click', updateSubmitBadge);
 
 function updateSubmitBadge(e) {
 
+	// Watch for clicks on the input box only.
 	if(e.target.classList.contains('filled-in')) {
 
 		var els = courseForm.querySelectorAll('input[type=\'checkbox\']:checked');
     
-		(els.length > 0) ? submitBadge.style.display = 'inline' : submitBadge.style.display = 'none';
+		// (els.length > 0) ? submitBadge.style.display = 'inline' : submitBadge.style.display = 'none';
     
 		submitBadge.innerText = els.length;
     
@@ -294,9 +296,8 @@ function updateSubmitBadge(e) {
 function loadSubmitBadge() {
 	var els = courseForm.querySelectorAll('input[type=\'checkbox\']:checked');
   
-	(els.length > 0) ? submitBadge.style.display = 'inline' : null;
-  
-	submitBadge.innerText = els.length;
+	(els.length > 0) ? submitBadge.innerText = els.length : submitBadge.innerText = 0;
+
 }
 
 async function copyToClipboard(e) {
