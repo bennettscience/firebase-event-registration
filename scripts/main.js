@@ -24,16 +24,20 @@ function PDReg() {
 	this.hideUserCoursesButton = document.getElementById('hide-user-courses');
 	this.userCoursesBadge = document.getElementById('user-courses-badge');
 	this.userCourses = document.getElementById('user-courses-list');
-	this.allCourses = document.getElementById('allCourses');
+	this.courseContainer = document.querySelector('#course-container');
+	this.courses = document.querySelector('#courses');
 	this.userInput = document.getElementById('user-input');
 	this.subscribeButton = document.getElementById('push-button');
 	this.sorting = document.getElementById('sorting');
-	this.sidebar = document.getElementById('slide-out');
 	this.building = document.getElementById('user-building-select');
 	this.registerBuilding = document.getElementById('user-building-splash');
 	this.registerBuildingButton = document.getElementById('user-building-splash-submit');
 	this.changeSchoolButton = document.getElementById('change-school-button');
 	this.adminButton = document.getElementById('admin-button');
+
+	// parent row elements
+	this.loggedIn = document.querySelector('#logged-in');
+	this.loggedOut = document.querySelector('#logged-out');
 
 	// Do stuff when buttons are clicked
 	this.signOutButton.addEventListener('click', this.signOut.bind(this));
@@ -111,14 +115,16 @@ PDReg.prototype.registerUserBuilding = function() {
  */
 PDReg.prototype.onAuthStateChanged = function(user) {
 	if (!user) {
-		document.getElementById('login-splash').classList.remove('hidden');
+		// Show the login splash page
+		this.loggedOut.classList.remove('hidden'); // parent
+		this.loggedOut.querySelector('#login-splash').classList.remove('hidden'); // login
 
-		document.getElementById('user-building-splash').classList.add('hidden');
-		this.courseForm.classList.add('hidden');
-		this.search.classList.add('hidden');
+		// document.getElementById('user-building-splash').classList.add('hidden');
+		// this.courseForm.classList.add('hidden');
+		// this.search.classList.add('hidden');
 
-		this.sidebar.classList.add('hidden');
-		this.signInButton.classList.remove('hidden');
+		// this.sidebar.classList.add('hidden');
+		// this.signInButton.classList.remove('hidden');
 	} else {
 		return firebase
 			.database()
@@ -277,7 +283,7 @@ PDReg.prototype.register = function(e) {
 						.ref('courses/' + item['id'])
 						.once('value')
 						.then(function(snap) {
-							document.getElementById('allCourses').removeChild(document.getElementById(snap.key));
+							document.querySelector('#courses').removeChild(document.getElementById(snap.key));
 							M.toast({ html: 'Successfully registered for ' + item['title'] });
 							firebase
 								.database()
@@ -367,7 +373,7 @@ PDReg.prototype.hideUserClasses = function() {
  */
 PDReg.prototype.buildCourse = function(course) {
 
-	var parentDiv = document.querySelector('#allCourses');
+	var parentDiv = document.querySelector('#courses');
 	const urlParams = new URLSearchParams(window.location.search);
 
 	if (!parentDiv.querySelector('[id=\'' + course.key + '\']')) {
@@ -472,7 +478,7 @@ PDReg.prototype.getAllClasses = function() {
 	var uid = firebase.auth().currentUser.uid;
 
 	var today = new Date().toISOString();
-	document.getElementById('allCourses').innerHTML = '';
+	document.querySelector('#courses').innerHTML = '';
 
 	this.classesRef = this.database.ref('courses/');
 

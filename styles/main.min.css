@@ -176,14 +176,12 @@ html, body {
 #login-splash, #user-building-splash {
   font-size: 28px;
   font-family: sans-serif;
-  grid-column: 2 / span 10;
-  grid-row: 1;
   text-align: center; }
 
 #login-splash {
   backface-visibility: hidden; }
   #login-splash img {
-    width: 75%; }
+    width: 50%; }
   #login-splash #sign-in-button i {
     vertical-align: middle;
     margin-right: 25px; }
