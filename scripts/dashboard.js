@@ -1,4 +1,4 @@
-function Dashboard() {
+function Admin() {
 	this.teachers = document.querySelector('teachers');
 	this.runButton = document.getElementById('run-button');
 	this.course = document.querySelectorAll('.wkshp-title');
@@ -21,21 +21,21 @@ function Dashboard() {
 
 // The user should still be logged in, but if they aren't,
 // they can log in here.
-Dashboard.prototype.initFirebase = function() {
+Admin.prototype.initFirebase = function() {
 	this.auth = firebase.auth();
 	this.database = firebase.database();
 
 	this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 };
 
-Dashboard.prototype.onAuthStateChanged = function(user) {
+Admin.prototype.onAuthStateChanged = function(user) {
 	if(!user) {
 		this.signIn().bind(this);
 	}
 };
 
 // List all participants for a course if you're a trainer
-Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
+Admin.prototype.findTrainerCourses = function(filter, filterDate) {
 	let courseDb = this.database.ref('courses/');
 	const parent = document.getElementById('placeholder');
 	let dateInput = document.getElementById('date-select').value;
@@ -180,10 +180,19 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
 			// See more at https://gist.github.com/wiledal/3c5b63887cc8a010a330b89aacff2f2e
 			container.innerHTML =
         `
-            <span class="wkshp-title" onclick="Dashboard.prototype.updateSession('${id}')" data-id="${id}"><h5><i class="material-icons">edit</i>${title} [${status}] - (${userArray.length})</h5></span>
-            <span class="wkshp-date"><h6>${ smallFormat(start) }</h6></span>
-            <a data-name="Send email" class="email" href="${emailString}" title="Send email"><i class="small material-icons">email</i></a>
-            <i data-name="Download registrations" onclick="download_csv('users-${id}')" class="download small material-icons">cloud_download</i>
+            <span class="wkshp-title" data-id="${id}"><h5>${title} [${status}] - (${userArray.length})</h5></span>
+			<span class="wkshp-date"><h6>${ smallFormat(start) }</h6></span>
+			<ul class="admin-actions">
+				<li>
+					<a class="edit" data-id="${id}" href="#" onclick="Admin.prototype.updateSession('${id}');"><i class="material-icons">edit</i></a>
+				</li>
+				<li>
+					<a data-name="Send email" class="email" href="${emailString}" title="Send email"><i class="small material-icons">email</i></a>
+				</li>
+				<li>
+					<i data-name="Download registrations" onclick="download_csv('users-${id}')" class="download small material-icons">cloud_download</i>
+				</li>
+			</ul>
             <div class="teachers">
               <div class="list">
               ${ userArray.map((item) =>
@@ -199,7 +208,7 @@ Dashboard.prototype.findTrainerCourses = function(filter, filterDate) {
 	});
 };
 
-Dashboard.prototype.findAdminCourses = function(filter) {
+Admin.prototype.findAdminCourses = function(filter) {
 	const parent = document.getElementById('placeholder');
 	let userDb = this.database.ref('users/');
 	let courseDb = this.database.ref('courses/');
@@ -280,17 +289,17 @@ Dashboard.prototype.findAdminCourses = function(filter) {
 				if(teachers.length > 0) {
 
 					container.innerHTML =`
-                <span class="wkshp-title"><h5>${ course.title } - (${teachers.length})</h5></span>
-                <span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
-                <span class="email"></span>
-                <div class="teachers">
-                  <div class="list">
-                  ${teachers.map((item) =>
+						<span class="wkshp-title"><h5>${ course.title } - (${teachers.length})</h5></span>
+						<span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
+						<span class="email"></span>
+						<div class="teachers">
+						<div class="list">
+						${teachers.map((item) =>
 		`<li><a href="mailto:${item.email}">${item.name}</a></li>`
 	).join('')}
-                  </div>
-                </div>
-              `;
+						</div>
+						</div>
+					`;
 					parent.appendChild(container);
 				}
 			}
@@ -298,7 +307,7 @@ Dashboard.prototype.findAdminCourses = function(filter) {
 	});
 };
 
-Dashboard.prototype.getCurrentUserLocation = function(user) {
+Admin.prototype.getCurrentUserLocation = function(user) {
 	var currentUid = this.auth.uid;
 	this.database.ref('users/' + currentUid).on('value').then(function(snap) {
 		var building = snap.val().building;
@@ -307,7 +316,7 @@ Dashboard.prototype.getCurrentUserLocation = function(user) {
 };
 
 // Update the select course on click
-Dashboard.prototype.updateSession = function(id) {
+Admin.prototype.updateSession = function(id) {
 	let course;
 	currentUser = firebase.auth().currentUser.email;
 	// start a form
@@ -587,5 +596,5 @@ function exportCSVFile(headers, items, fileTitle) {
 }
 
 window.onload = function() {
-	window.dashboard = new Dashboard();
+	window.dashboard = new Admin();
 };

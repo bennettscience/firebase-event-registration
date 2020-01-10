@@ -17,11 +17,6 @@
 // $default-font:
 // $default-color:
 
-$col-count: 12
-$gutter-width: 15px
-
-$sidebar-width: (($col-count + $gutter-width) / $col-count) * 3
-
 html, body
   font-family: 'Roboto', 'Helvetica', sans-serif
   margin: 0
@@ -29,21 +24,10 @@ html, body
   height: 100%
   width: 100%
 
-#wrap
-  display: grid
-  grid-template-columns: repeat(12, [col-start] 1fr [col-end])
-  grid-template-rows: 65px 1fr
-  grid-gap: 15px
-  margin: 0 15px
-  
-
   #admin-sidebar
-    position: fixed
     margin-top: 15px
-    margin-right: 10px
     padding: 25px
     background-color: rgba(0,0,0,0.01)
-    width: 300px
 
     > .input-field
       margin-bottom: 30px
@@ -76,9 +60,9 @@ html, body
   #placeholder > .course
     display: grid
     width: 90%
-    grid-template-columns: auto 25% 15%
-    grid-template-rows: auto auto
-    grid-template-areas: "title date admin" "names . ."
+    grid-template-columns: auto 25%
+    grid-template-rows: auto auto auto
+    grid-template-areas: "title admin" "date ." "names ."
     align-items: center
     margin-bottom: 35px
     position: relative
@@ -87,20 +71,21 @@ html, body
     i 
       vertical-align: middle
 
-    a.email 
+    .admin-actions
       grid-area: admin
-      position: relative
-      left: 0
-      color: #000
-    
-    i.download
-      grid-area: admin
-      position: relative
-      left: 35%
-      color: #000
+
+      > li 
+        display: inline
+        margin-right: 15px
+
+        > a 
+          color: #000
 
       &:hover
         cursor: pointer
+
+    .teachers 
+      grid-area: names 
 
     .list
       display: table
@@ -110,137 +95,29 @@ html, body
       display: table-row
       margin-left: 10%
 
-      span
-        padding: 2px 0 0 55px
-
     .teacher--name, teacher--building
       display: table-cell
 
     .teacher--name
       font-weight: 700
 
-#slide-out, #fullscreen-sidebar
-  display: block
-  position: fixed
-  z-index: 1000
-  height: 100%
-
-  .help
-    display: block
-    position: absolute
-    top: 25px
-    right: 25px
-    z-index: 10
-
-  #filter-form
-    padding: 10px
-
-  ul
-    margin: 0
-
-  label
-    color: #212121 !important
+    .teacher--building
+      margin-left: 15px
 
   .user-view
     padding: 32px
 
-  #user-pic
+#sorting 
+  p
+    text-align: center
+
+  #title, #date
     display: block
-    position: relative
-    height: auto
-    width: auto
+    margin: 10px 0 10px 0
 
-    img, i
-      width: 128px
-      height: 128px
-      margin: 0 auto
-
-    i
-      display: block
-      text-align: center
-
-#string-name, #user-email
-  text-align: center
-
-#sign-out-button, #push-button, #change-school-button
-  display: block
-  width: 80%
-  margin: 3px auto
-
-#sorting p
-  text-align: center
-
-#admin-button
-  text-align: center
-
-input.toggle
-  position: absolute
-  left: -99999px
-
-input.toggle + label
-  position: relative
-  display: inline-block
-  width: 144px
-  height: 36px
-  text-indent: -99999px
-  cursor: pointer
-  color: transparent
-  background-color: #fff
-  border: 2px solid #ddd
-  border-radius: 20px
-  outline: none
-  -webkit-tap-highlight-color: transparent
-  -webkit-user-select: none
-  -moz-user-select: none
-  user-select: none
-  transition-duration: .2s
-  transition-property: background-color, border
-
-
-input.toggle + label:before
-  content: 'In Person'
-  position: absolute
-  top: 0px
-  right: 11px
-  text-indent: 0
-  font-size: 18px
-  line-height: 32px
-  color: #999
-  z-index: 3
-  text-transform: uppercase
-
-
-input.toggle + label:after
-  content: ''
-  position: absolute
-  top: -1px
-  left: -1px
-  z-index: 2
-  width: 34px
-  height: 34px
-  background-color: #64B5F6
-  // border: 1px solid #ddd
-  border-radius: 100px
-  transform: translate3d(0, 0, 0)
-  transition-duration: .2s
-  transition-property: transform, border
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2)
-
-
-input.toggle:checked + label
-  background-color: #fff
-  border: 2px solid #ddd
-
-
-input.toggle:checked + label:before
-  content: 'Online'
-  right: auto
-  left: 15px
-
-
-input.toggle:checked + label:after
-  border-color: #ddd
-  transform: translate3d(110px, 0, 0)
+  .btn i 
+    vertical-align: middle 
+    margin-right: 10px
 
   .sort
     text-align: center
@@ -261,57 +138,6 @@ input.toggle:checked + label:after
 
 #change-school-button i
   vertical-align: middle
-
-#search-wrap
-  grid-column: 1 / col-end 12
-  grid-row: 1
-  position: relative
-
-  nav
-    position: fixed
-    z-index: 999
-
-    .nav-wrapper
-
-      a
-        border-radius: 50%
-
-        &:hover
-          background-color: inherit
-
-      i
-        font-size: 2.5rem
-        vertical-align: middle
-
-      &:active
-        background-color: inherit
-
-      &:focus
-        background-color: inherit
-
-      #search-button, #slide-out-button
-        position: absolute
-        display: block
-        top: 0
-        z-index: 1000
-
-      #search-button
-        right: 1.5rem
-        height: 64px
-        width: 64px
-
-    #search-form
-      display: block
-      position: absolute
-      width: 100%
-      top: 0
-      left: 0
-      z-index: 1000
-
-      .input-field input[type="search"]
-        font-size: 32px
-        line-height: 32px
-        margin-left: 300px
 
 #user-courses-wrap
   display: block
@@ -377,6 +203,7 @@ input.toggle:checked + label:after
       height: 100%
       position: relative
       cursor: pointer
+      color: #e86e36
 
       i
         display: inline-block
@@ -386,8 +213,6 @@ input.toggle:checked + label:after
 #login-splash, #user-building-splash
   font-size: 28px
   font-family: sans-serif
-  grid-column: 2 / span 10
-  grid-row: 1
   text-align: center
 
 #login-splash
@@ -396,7 +221,7 @@ input.toggle:checked + label:after
   backface-visibility: hidden
 
   img
-    width: 75%
+    width: 50%
 
   #sign-in-button i
     vertical-align: middle
@@ -428,13 +253,8 @@ input.toggle:checked + label:after
       margin-right: 1rem
 
 main
-  grid-column: col-start 4 / col-end 12
-  grid-row: 2
-  margin-left: -15px
 
   &.admin
-    grid-row: 1 / span 2
-    margin-left: 0
 
     .wkshp-title
 
@@ -545,6 +365,7 @@ main
       .code input
         height: 1.5em
         padding: 5px 0 5px 5px
+        border-radius: 2px
 
         .prefix
           vertical-align: middle
@@ -572,11 +393,6 @@ h1, h2, h3, p
 .hidden
   display: none !important
 
-// input[type="checkbox"]:not(:checked)+label, input[type="checkbox"]:checked+label
-//   pointer-events: auto
-//   float: left
-//   top: 0.35em
-
 .class-container
   margin: 10px
   flex-grow: 1
@@ -587,7 +403,7 @@ h1, h2, h3, p
   .card-action
 
     a:hover
-      background-color: #2196f3 !important
+      background-color: rgba(0,0,0,0.1) !important
 
     .course-share-link:hover
       background-color: transparent !important
@@ -614,8 +430,6 @@ h1, h2, h3, p
       75%
         opacity: 0;
 
-
-
   .content
     max-height: 60%
 
@@ -625,31 +439,57 @@ h1, h2, h3, p
   .details > span
     display: block
 
-#submit
-  position: fixed
-  bottom: 50px
-  right: 50px
-  z-index: 100
+.nav-wrapper
+  background-color: #1a73e8
 
-  .badge 
-    border-radius: 50%
-    float: none
-    margin-left: 10px
-    margin-right: 15px
+nav
 
-// .input-field label
-//   transform: none
-//   -webkit-transform: none
-//   -moz-transform: none
-//   background: transparent !important
-//
-// input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-default):focus:not([readonly])+label, input[type=password]:not(.browser-default):focus:not([readonly])+label, input[type=email]:not(.browser-default):focus:not([readonly])+label, input[type=url]:not(.browser-default):focus:not([readonly])+label, input[type=time]:not(.browser-default):focus:not([readonly])+label, input[type=date]:not(.browser-default):focus:not([readonly])+label, input[type=datetime]:not(.browser-default):focus:not([readonly])+label, input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label, input[type=tel]:not(.browser-default):focus:not([readonly])+label, input[type=number]:not(.browser-default):focus:not([readonly])+label, input[type=search]:not(.browser-default):focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label
-//   opacity: 0
-//   background: transparent
-//   transition: 0.3s ease all
+  ul 
 
-.input-field input[type="search"] ~ .mdi-navigation-close, .input-field input[type="search"] ~ .material-icons
-  right: 3rem
+    #submit
+
+      > i 
+        vertical-align: middle;
+        height: inherit;
+        line-height: inherit;
+
+      > #submit-badge-wrap
+        display: inline-block
+        min-width: 3rem
+        margin-left: 10px
+
+        #submit-badge
+          display: block
+          line-height: 22px
+          border-radius: 2px
+    
+    .btn, .btn-large
+      box-shadow: none !important
+
+      &:hover 
+        background-color: rgba(0,0,0,0.1) !important
+
+.nav-wrapper 
+
+  #nav-search-wrapper
+    width: 400px
+
+    .input-field 
+      width: inherit
+
+      input[type=search]
+        height: auto !important
+        line-height: 32px
+        display: inline-block
+        border-radius: 2px
+        background-color: rgba(255,255,255,0.12)
+
+        &:focus 
+          background-color: #FFF !important
+
+
+// .input-field input[type="search"] ~ .mdi-navigation-close, .input-field input[type="search"] ~ .material-icons
+//   right: 3rem
 
 #userCourseList-content
   position: relative
@@ -665,25 +505,21 @@ h1, h2, h3, p
   margin: 5px auto
   padding: 10px
   background: rgba(200,200,200,0.6)
-
-#user-view #user-pic
-  position: relative
-  display: inline-block
-  background-image: url('/images/profile_placeholder.png')
-  background-repeat: no-repeat
+  
+#user-pic
+  height: 100%
   width: 40px
-  height: 40px
-  background-size: 40px
-  border-radius: 20px
+  vertical-align: middle
+  
+  img 
+    height: inherit
+    width: inherit
+    vertical-align: middle
 
 @media screen and (max-width: 1166px)
   main 
     grid-column: 1 / span 12
     margin-left: 0
-
-  .sidenav.sidenav-fixed 
-      // -webkit-transform: translate(-105%) !important
-      // transform: translate(-105%) !important
 
 @media screen and (max-width: 610px)
   header
@@ -717,26 +553,17 @@ h1, h2, h3, p
   top: -1px
   margin-right: 5px
 
-@media (max-width: 996px)
-  main
-    grid-column: 1 / span 12
-    margin-left: 0
 
-  #fullscreen-sidebar
-    display: none
+.container 
+  margin: 0 auto
+  max-width: 1280px
+  width: 90%
 
-  .fixed-action-btn
-    display: block
 
-  #mobile-submit
-    display: block
+@media only screen and (min-width: 601px)
+  .container
+    width: 85%
 
-  #submit
-    display: none
-
-  .input-field input[type="search"]
-    margin-left: 0px !important
-
-  #content-wrap
-    width: 100%
-    margin: 10px 0
+@media only screen and (min-width: 993px)
+  .container
+    width: 90%

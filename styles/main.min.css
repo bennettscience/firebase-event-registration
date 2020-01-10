@@ -19,238 +19,93 @@ html, body {
   padding: 0;
   height: 100%;
   width: 100%; }
-
-#wrap {
-  display: grid;
-  grid-template-columns: repeat(12, [col-start] 1fr [col-end]);
-  grid-template-rows: 65px 1fr;
-  grid-gap: 15px;
-  margin: 0 15px; }
-  #wrap #admin-sidebar {
-    position: fixed;
+  html #admin-sidebar, body #admin-sidebar {
     margin-top: 15px;
-    margin-right: 10px;
     padding: 25px;
-    background-color: rgba(0, 0, 0, 0.01);
-    width: 300px; }
-    #wrap #admin-sidebar > .input-field {
+    background-color: rgba(0, 0, 0, 0.01); }
+    html #admin-sidebar > .input-field, body #admin-sidebar > .input-field {
       margin-bottom: 30px; }
-      #wrap #admin-sidebar > .input-field input {
+      html #admin-sidebar > .input-field input, body #admin-sidebar > .input-field input {
         cursor: pointer; }
-    #wrap #admin-sidebar .back {
+    html #admin-sidebar .back, body #admin-sidebar .back {
       display: block;
       padding: 10px 0;
       font-size: 18px;
       line-height: 2.2;
       vertical-align: middle; }
-      #wrap #admin-sidebar .back i {
+      html #admin-sidebar .back i, body #admin-sidebar .back i {
         vertical-align: middle;
         padding-bottom: 5px; }
-  #wrap .datepicker-controls .select-month input {
+  html .datepicker-controls .select-month input, body .datepicker-controls .select-month input {
     width: 90px !important; }
-  #wrap #placeholder {
+  html #placeholder, body #placeholder {
     margin-top: 35px;
     position: relative;
     display: block;
     height: auto; }
-  #wrap #placeholder > .course {
+  html #placeholder > .course, body #placeholder > .course {
     display: grid;
     width: 90%;
-    grid-template-columns: auto 25% 15%;
-    grid-template-rows: auto auto;
-    grid-template-areas: "title date admin" "names . .";
+    grid-template-columns: auto 25%;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: "title admin" "date ." "names .";
     align-items: center;
     margin-bottom: 35px;
     position: relative; }
-    #wrap #placeholder > .course i {
+    html #placeholder > .course i, body #placeholder > .course i {
       vertical-align: middle; }
-    #wrap #placeholder > .course a.email {
-      grid-area: admin;
-      position: relative;
-      left: 0;
-      color: #000; }
-    #wrap #placeholder > .course i.download {
-      grid-area: admin;
-      position: relative;
-      left: 35%;
-      color: #000; }
-      #wrap #placeholder > .course i.download:hover {
+    html #placeholder > .course .admin-actions, body #placeholder > .course .admin-actions {
+      grid-area: admin; }
+      html #placeholder > .course .admin-actions > li, body #placeholder > .course .admin-actions > li {
+        display: inline;
+        margin-right: 15px; }
+        html #placeholder > .course .admin-actions > li > a, body #placeholder > .course .admin-actions > li > a {
+          color: #000; }
+      html #placeholder > .course .admin-actions:hover, body #placeholder > .course .admin-actions:hover {
         cursor: pointer; }
-    #wrap #placeholder > .course .list {
+    html #placeholder > .course .teachers, body #placeholder > .course .teachers {
+      grid-area: names; }
+    html #placeholder > .course .list, body #placeholder > .course .list {
       display: table;
       table-layout: fixed; }
-    #wrap #placeholder > .course .list > div {
+    html #placeholder > .course .list > div, body #placeholder > .course .list > div {
       display: table-row;
       margin-left: 10%; }
-      #wrap #placeholder > .course .list > div span {
-        padding: 2px 0 0 55px; }
-    #wrap #placeholder > .course .teacher--name, #wrap #placeholder > .course teacher--building {
+    html #placeholder > .course .teacher--name, html #placeholder > .course teacher--building, body #placeholder > .course .teacher--name, body #placeholder > .course teacher--building {
       display: table-cell; }
-    #wrap #placeholder > .course .teacher--name {
+    html #placeholder > .course .teacher--name, body #placeholder > .course .teacher--name {
       font-weight: 700; }
-
-#slide-out, #fullscreen-sidebar {
-  display: block;
-  position: fixed;
-  z-index: 1000;
-  height: 100%; }
-  #slide-out .help, #fullscreen-sidebar .help {
-    display: block;
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    z-index: 10; }
-  #slide-out #filter-form, #fullscreen-sidebar #filter-form {
-    padding: 10px; }
-  #slide-out ul, #fullscreen-sidebar ul {
-    margin: 0; }
-  #slide-out label, #fullscreen-sidebar label {
-    color: #212121 !important; }
-  #slide-out .user-view, #fullscreen-sidebar .user-view {
+    html #placeholder > .course .teacher--building, body #placeholder > .course .teacher--building {
+      margin-left: 15px; }
+  html .user-view, body .user-view {
     padding: 32px; }
-  #slide-out #user-pic, #fullscreen-sidebar #user-pic {
-    display: block;
-    position: relative;
-    height: auto;
-    width: auto; }
-    #slide-out #user-pic img, #slide-out #user-pic i, #fullscreen-sidebar #user-pic img, #fullscreen-sidebar #user-pic i {
-      width: 128px;
-      height: 128px;
-      margin: 0 auto; }
-    #slide-out #user-pic i, #fullscreen-sidebar #user-pic i {
-      display: block;
-      text-align: center; }
-
-#string-name, #user-email {
-  text-align: center; }
-
-#sign-out-button, #push-button, #change-school-button {
-  display: block;
-  width: 80%;
-  margin: 3px auto; }
 
 #sorting p {
   text-align: center; }
 
-#admin-button {
+#sorting #title, #sorting #date {
+  display: block;
+  margin: 10px 0 10px 0; }
+
+#sorting .btn i {
+  vertical-align: middle;
+  margin-right: 10px; }
+
+#sorting .sort {
   text-align: center; }
-
-input.toggle {
-  position: absolute;
-  left: -99999px; }
-
-input.toggle + label {
-  position: relative;
-  display: inline-block;
-  width: 144px;
-  height: 36px;
-  text-indent: -99999px;
-  cursor: pointer;
-  color: transparent;
-  background-color: #fff;
-  border: 2px solid #ddd;
-  border-radius: 20px;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  transition-duration: .2s;
-  transition-property: background-color, border; }
-
-input.toggle + label:before {
-  content: 'In Person';
-  position: absolute;
-  top: 0px;
-  right: 11px;
-  text-indent: 0;
-  font-size: 18px;
-  line-height: 32px;
-  color: #999;
-  z-index: 3;
-  text-transform: uppercase; }
-
-input.toggle + label:after {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  z-index: 2;
-  width: 34px;
-  height: 34px;
-  background-color: #64B5F6;
-  border-radius: 100px;
-  transform: translate3d(0, 0, 0);
-  transition-duration: .2s;
-  transition-property: transform, border;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2); }
-
-input.toggle:checked + label {
-  background-color: #fff;
-  border: 2px solid #ddd; }
-
-input.toggle:checked + label:before {
-  content: 'Online';
-  right: auto;
-  left: 15px; }
-
-input.toggle:checked + label:after {
-  border-color: #ddd;
-  transform: translate3d(110px, 0, 0); }
-  input.toggle:checked + label:after .sort {
-    text-align: center; }
-    input.toggle:checked + label:after .sort a {
-      display: inline-block;
-      width: 30%; }
-    input.toggle:checked + label:after .sort i {
-      color: rgba(250, 250, 250, 0.85) !important; }
-    input.toggle:checked + label:after .sort .cancel {
-      cursor: pointer; }
-      input.toggle:checked + label:after .sort .cancel label {
-        vertical-align: middle;
-        float: none; }
+  #sorting .sort a {
+    display: inline-block;
+    width: 30%; }
+  #sorting .sort i {
+    color: rgba(250, 250, 250, 0.85) !important; }
+  #sorting .sort .cancel {
+    cursor: pointer; }
+    #sorting .sort .cancel label {
+      vertical-align: middle;
+      float: none; }
 
 #change-school-button i {
   vertical-align: middle; }
-
-#search-wrap {
-  grid-column: 1 / col-end 12;
-  grid-row: 1;
-  position: relative; }
-  #search-wrap nav {
-    position: fixed;
-    z-index: 999; }
-    #search-wrap nav .nav-wrapper a {
-      border-radius: 50%; }
-      #search-wrap nav .nav-wrapper a:hover {
-        background-color: inherit; }
-    #search-wrap nav .nav-wrapper i {
-      font-size: 2.5rem;
-      vertical-align: middle; }
-    #search-wrap nav .nav-wrapper:active {
-      background-color: inherit; }
-    #search-wrap nav .nav-wrapper:focus {
-      background-color: inherit; }
-    #search-wrap nav .nav-wrapper #search-button, #search-wrap nav .nav-wrapper #slide-out-button {
-      position: absolute;
-      display: block;
-      top: 0;
-      z-index: 1000; }
-    #search-wrap nav .nav-wrapper #search-button {
-      right: 1.5rem;
-      height: 64px;
-      width: 64px; }
-    #search-wrap nav #search-form {
-      display: block;
-      position: absolute;
-      width: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1000; }
-      #search-wrap nav #search-form .input-field input[type="search"] {
-        font-size: 32px;
-        line-height: 32px;
-        margin-left: 300px; }
 
 #user-courses-wrap {
   display: block;
@@ -307,7 +162,8 @@ input.toggle:checked + label:after {
       display: inline;
       height: 100%;
       position: relative;
-      cursor: pointer; }
+      cursor: pointer;
+      color: #e86e36; }
       #user-courses #user-courses-list .collection-item .cancel i {
         display: inline-block;
         margin-left: 5px;
@@ -316,14 +172,12 @@ input.toggle:checked + label:after {
 #login-splash, #user-building-splash {
   font-size: 28px;
   font-family: sans-serif;
-  grid-column: 2 / span 10;
-  grid-row: 1;
   text-align: center; }
 
 #login-splash {
   backface-visibility: hidden; }
   #login-splash img {
-    width: 75%; }
+    width: 50%; }
   #login-splash #sign-in-button i {
     vertical-align: middle;
     margin-right: 25px; }
@@ -348,107 +202,104 @@ input.toggle:checked + label:after {
       font-size: 2.2rem;
       margin-right: 1rem; }
 
-main {
-  grid-column: col-start 4 / col-end 12;
-  grid-row: 2;
+main.admin .wkshp-title i {
+  vertical-align: top; }
+
+main.admin .wkshp-title:hover {
+  cursor: pointer; }
+
+main.admin .course-update {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  margin-bottom: 20px;
+  /* Position tooltip above the element */
+  /* Show tooltip content on hover */ }
+  main.admin .course-update #destroy-course {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0; }
+  main.admin .course-update [data-tooltip] {
+    position: relative;
+    z-index: 2;
+    cursor: pointer; }
+  main.admin .course-update [data-tooltip]:before,
+  main.admin .course-update [data-tooltip]:after {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none; }
+  main.admin .course-update [data-tooltip]:before {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    margin-bottom: 5px;
+    margin-left: -80px;
+    padding: 7px;
+    width: 160px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #ff0000;
+    color: #fff;
+    content: attr(data-tooltip);
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.2; }
+  main.admin .course-update [data-tooltip]:after {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    margin-left: -5px;
+    width: 0;
+    border-top: 5px solid #ff0000;
+    border-top: 5px solid #ff0000;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    content: " ";
+    font-size: 0;
+    line-height: 0; }
+  main.admin .course-update [data-tooltip]:hover:before,
+  main.admin .course-update [data-tooltip]:hover:after {
+    visibility: visible;
+    opacity: 1; }
+  main.admin .course-update .date {
+    margin-right: 10%; }
+  main.admin .course-update .date, main.admin .course-update .time {
+    width: 40%;
+    display: inline-block; }
+  main.admin .course-update #seats {
+    width: 40%; }
+    main.admin .course-update #seats .time {
+      float: right; }
+  main.admin .course-update #update-submit {
+    margin-right: 25px; }
+
+main #allCourses {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   margin-left: -15px; }
-  main.admin {
-    grid-row: 1 / span 2;
-    margin-left: 0; }
-    main.admin .wkshp-title i {
-      vertical-align: top; }
-    main.admin .wkshp-title:hover {
-      cursor: pointer; }
-    main.admin .course-update {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-      background: #fff;
-      margin-bottom: 20px;
-      /* Position tooltip above the element */
-      /* Show tooltip content on hover */ }
-      main.admin .course-update #destroy-course {
-        display: block;
-        position: absolute;
-        right: 0;
-        bottom: 0; }
-      main.admin .course-update [data-tooltip] {
-        position: relative;
-        z-index: 2;
-        cursor: pointer; }
-      main.admin .course-update [data-tooltip]:before,
-      main.admin .course-update [data-tooltip]:after {
-        visibility: hidden;
-        opacity: 0;
-        pointer-events: none; }
-      main.admin .course-update [data-tooltip]:before {
-        position: absolute;
-        bottom: 110%;
-        left: 50%;
-        margin-bottom: 5px;
-        margin-left: -80px;
-        padding: 7px;
-        width: 160px;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        background-color: #ff0000;
-        color: #fff;
-        content: attr(data-tooltip);
-        text-align: center;
-        font-size: 14px;
-        line-height: 1.2; }
-      main.admin .course-update [data-tooltip]:after {
-        position: absolute;
-        bottom: 110%;
-        left: 50%;
-        margin-left: -5px;
-        width: 0;
-        border-top: 5px solid #ff0000;
-        border-top: 5px solid #ff0000;
-        border-right: 5px solid transparent;
-        border-left: 5px solid transparent;
-        content: " ";
-        font-size: 0;
-        line-height: 0; }
-      main.admin .course-update [data-tooltip]:hover:before,
-      main.admin .course-update [data-tooltip]:hover:after {
-        visibility: visible;
-        opacity: 1; }
-      main.admin .course-update .date {
-        margin-right: 10%; }
-      main.admin .course-update .date, main.admin .course-update .time {
-        width: 40%;
-        display: inline-block; }
-      main.admin .course-update #seats {
-        width: 40%; }
-        main.admin .course-update #seats .time {
-          float: right; }
-      main.admin .course-update #update-submit {
-        margin-right: 25px; }
-  main #allCourses {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    margin-left: -15px; }
-    main #allCourses .class-container {
-      flex-grow: 1;
-      border: 1px solid #f3f3f3;
-      box-sizing: border-box;
-      margin: 7.5px 0 7.5px 15px; }
-      main #allCourses .class-container .code .prefix {
+  main #allCourses .class-container {
+    flex-grow: 1;
+    border: 1px solid #f3f3f3;
+    box-sizing: border-box;
+    margin: 7.5px 0 7.5px 15px; }
+    main #allCourses .class-container .code .prefix {
+      vertical-align: middle; }
+    main #allCourses .class-container .code input {
+      height: 1.5em;
+      padding: 5px 0 5px 5px;
+      border-radius: 2px; }
+      main #allCourses .class-container .code input .prefix {
         vertical-align: middle; }
-      main #allCourses .class-container .code input {
-        height: 1.5em;
-        padding: 5px 0 5px 5px; }
-        main #allCourses .class-container .code input .prefix {
-          vertical-align: middle; }
-    main #allCourses h2 {
-      position: relative; }
+  main #allCourses h2 {
+    position: relative; }
 
 .active:not(label) {
   background-color: rgba(0, 0, 0, 0.05); }
@@ -476,7 +327,7 @@ h1, h2, h3, p {
   border: 1px solid #f3f3f3; }
 
 .card .card-action a:hover {
-  background-color: #2196f3 !important; }
+  background-color: rgba(0, 0, 0, 0.1) !important; }
 
 .card .card-action .course-share-link:hover {
   background-color: transparent !important; }
@@ -509,19 +360,40 @@ h1, h2, h3, p {
 .card .details > span {
   display: block; }
 
-#submit {
-  position: fixed;
-  bottom: 50px;
-  right: 50px;
-  z-index: 100; }
-  #submit .badge {
-    border-radius: 50%;
-    float: none;
-    margin-left: 10px;
-    margin-right: 15px; }
+.nav-wrapper {
+  background-color: #1a73e8; }
 
-.input-field input[type="search"] ~ .mdi-navigation-close, .input-field input[type="search"] ~ .material-icons {
-  right: 3rem; }
+nav ul #submit > i {
+  vertical-align: middle;
+  height: inherit;
+  line-height: inherit; }
+
+nav ul #submit > #submit-badge-wrap {
+  display: inline-block;
+  min-width: 3rem;
+  margin-left: 10px; }
+  nav ul #submit > #submit-badge-wrap #submit-badge {
+    display: block;
+    line-height: 22px;
+    border-radius: 2px; }
+
+nav ul .btn, nav ul .btn-large {
+  box-shadow: none !important; }
+  nav ul .btn:hover, nav ul .btn-large:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important; }
+
+.nav-wrapper #nav-search-wrapper {
+  width: 400px; }
+  .nav-wrapper #nav-search-wrapper .input-field {
+    width: inherit; }
+    .nav-wrapper #nav-search-wrapper .input-field input[type=search] {
+      height: auto !important;
+      line-height: 32px;
+      display: inline-block;
+      border-radius: 2px;
+      background-color: rgba(255, 255, 255, 0.12); }
+      .nav-wrapper #nav-search-wrapper .input-field input[type=search]:focus {
+        background-color: #FFF !important; }
 
 #userCourseList-content {
   position: relative;
@@ -537,15 +409,14 @@ h1, h2, h3, p {
   padding: 10px;
   background: rgba(200, 200, 200, 0.6); }
 
-#user-view #user-pic {
-  position: relative;
-  display: inline-block;
-  background-image: url("/images/profile_placeholder.png");
-  background-repeat: no-repeat;
+#user-pic {
+  height: 100%;
   width: 40px;
-  height: 40px;
-  background-size: 40px;
-  border-radius: 20px; }
+  vertical-align: middle; }
+  #user-pic img {
+    height: inherit;
+    width: inherit;
+    vertical-align: middle; }
 
 @media screen and (max-width: 1166px) {
   main {
@@ -581,20 +452,15 @@ h1, h2, h3, p {
   top: -1px;
   margin-right: 5px; }
 
-@media (max-width: 996px) {
-  main {
-    grid-column: 1 / span 12;
-    margin-left: 0; }
-  #fullscreen-sidebar {
-    display: none; }
-  .fixed-action-btn {
-    display: block; }
-  #mobile-submit {
-    display: block; }
-  #submit {
-    display: none; }
-  .input-field input[type="search"] {
-    margin-left: 0px !important; }
-  #content-wrap {
-    width: 100%;
-    margin: 10px 0; } }
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%; }
+
+@media only screen and (min-width: 601px) {
+  .container {
+    width: 85%; } }
+
+@media only screen and (min-width: 993px) {
+  .container {
+    width: 90%; } }

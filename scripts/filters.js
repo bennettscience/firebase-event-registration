@@ -1,16 +1,24 @@
-/**
- * Load sideNav script from materialize.js
- */
+document.addEventListener('DOMContentLoaded', function() {
+	loadSchools();
+	
+	// Load dropdown menu settings
+	const dropOptions = {
+		constrainWidth: false,
+		coverTrigger: false,
+	};
+	var dropdowns = document.querySelectorAll('.dropdown-trigger');
+	M.Dropdown.init(dropdowns, dropOptions);
 
-$(document).ready(function() {
-	$('.sidenav').sidenav({
-		draggable: true,
-		edge: 'left',
-		preventScrolling: true,
-		isFixed: true,
-	});
+	// Load form selects
+	const selectOpts = {};
+	var selects = document.querySelectorAll('select');
+	M.FormSelect.init(selects, selectOpts);
 
-	var el = $('#user-building-select');
+	loadSubmitBadge();
+});
+
+function loadSchools() {
+	var el = document.querySelector('#user-building-select');
 	var schools = [
 		'Beardsley',
 		'Beck',
@@ -47,14 +55,11 @@ $(document).ready(function() {
 		var opt = document.createElement('option');
 		opt.text = sorted[i];
 		opt.value = sorted[i];
-		opt = '<option value="' + sorted[i] + '">' + sorted[i] + '</option>';
+		// opt = `<option value="${sorted[i]}">${sorted[i]}</option>`;
 		el.append(opt);
 	}
+}
 
-	$('#user-building-select').formSelect();
-
-	$('.collapsible').collapsible();
-});
 
 $(document).keydown(function(e) {
 	if (e.keyCode == 27) {
@@ -65,20 +70,6 @@ $(document).keydown(function(e) {
 		}
 	}
 });
-
-/**
- * getBg - Get a random header background
- *
- * @returns {String}  relative path to an image
- */
-function getBg() {
-	let base = 'img/';
-	let ext = '.png';
-
-	let rand = Math.ceil(Math.random() * 7);
-
-	return base + rand + ext;
-}
 
 /**
  * Filter by title
@@ -109,7 +100,6 @@ $('.input-field input').on('keyup', function() {
 	});
 
 	this.onblur = function() {
-		console.log(this.value);
 		window.dataLayer.push({ event: 'search', searchTerm: this.value });
 	};
 });
@@ -166,27 +156,15 @@ $('#search-clear').on('click', function() {
 		.find('input')
 		.val('');
 	$('#search-form')
-		.toggleClass('hidden')
 		.blur();
 	$('.class-container').show();
 });
 
 $('#search-button').on('click', function() {
 	$(this)
-		.next()
-		.toggleClass('hidden');
+		.next();
 	$('#search').focus();
 });
-
-$('#slide-out-button').on('click', function() {
-	console.log('clicked');
-	$('#slide-out').sidenav('open');
-});
-
-// $('#course-toggle').on('change', function() {
-// 	console.log('clicked toggle');
-// 	$('div.class-container').toggleClass('hidden');
-// });
 
 // Format dates for sessions displayed in main container
 function format(date) {
@@ -233,7 +211,7 @@ $('body').on('keyup', '.code :input', function() {
 
 			// Validate the code
 			if (codes[key].code === $(this).val()) {
-				$(this).css('background-color', 'rgba(0,255,0,0.4)');
+				$(this).css('background-color', '#32C192');
 			} else {
 				$(this).css('background-color', 'white');
 			}
@@ -283,17 +261,16 @@ $('#date').on('click', function() {
 let courseForm = document.querySelector('#course-form');
 let submitBadge = document.querySelector('#submit-badge');
 
-submitBadge.style.display = 'none';
-
 courseForm.addEventListener('click', updateSubmitBadge);
 
 function updateSubmitBadge(e) {
 
+	// Watch for clicks on the input box only.
 	if(e.target.classList.contains('filled-in')) {
 
 		var els = courseForm.querySelectorAll('input[type=\'checkbox\']:checked');
     
-		(els.length > 0) ? submitBadge.style.display = 'inline' : submitBadge.style.display = 'none';
+		// (els.length > 0) ? submitBadge.style.display = 'inline' : submitBadge.style.display = 'none';
     
 		submitBadge.innerText = els.length;
     
@@ -304,9 +281,8 @@ function updateSubmitBadge(e) {
 function loadSubmitBadge() {
 	var els = courseForm.querySelectorAll('input[type=\'checkbox\']:checked');
   
-	(els.length > 0) ? submitBadge.style.display = 'inline' : null;
-  
-	submitBadge.innerText = els.length;
+	(els.length > 0) ? submitBadge.innerText = els.length : submitBadge.innerText = 0;
+
 }
 
 async function copyToClipboard(e) {
