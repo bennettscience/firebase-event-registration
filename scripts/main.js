@@ -29,11 +29,14 @@ function PDReg() {
 	this.userInput = document.getElementById('user-input');
 	this.subscribeButton = document.getElementById('push-button');
 	this.sorting = document.getElementById('sorting');
-	this.building = document.getElementById('user-building-select');
-	this.registerBuilding = document.getElementById('user-building-splash');
-	this.registerBuildingButton = document.getElementById('user-building-splash-submit');
+	this.userBuildingSplash = document.querySelector('#user-building-splash');
+	this.userBuildingSelect = document.querySelector('#user-building-select');
+	this.userBuildingSubmit = document.querySelector('#user-building-splash-submit');
 	this.changeSchoolButton = document.getElementById('change-school-button');
 	this.adminButton = document.getElementById('admin-button');
+
+	// navigation
+	this.navbar = document.querySelector('.navbar-fixed');
 
 	// parent row elements
 	this.loggedIn = document.querySelector('#logged-in');
@@ -44,7 +47,7 @@ function PDReg() {
 	this.signInButton.addEventListener('click', this.signIn.bind(this));
 	this.userCoursesButton.addEventListener('click', this.showUserClasses.bind(this));
 	this.hideUserCoursesButton.addEventListener('click', this.hideUserClasses.bind(this));
-	this.registerBuildingButton.addEventListener('click', this.registerUserBuilding.bind(this));
+	this.userBuildingSubmit.addEventListener('click', this.registerUserBuilding.bind(this));
 	this.changeSchoolButton.addEventListener('click', this.changeSchool.bind(this));
 
 	// listen for the registration button
@@ -69,7 +72,12 @@ PDReg.prototype.initFirebase = function() {
  */
 PDReg.prototype.signOut = function() {
 	this.auth.signOut().then(() => {
-		console.log('signed out');
+		
+		// hide logged in elements
+		this.loggedIn.classList.add('hidden');
+		this.navbar.classList.add('hidden');
+		
+		this.loggedOut.classList.remove('hidden');
 	});
 };
 
@@ -115,16 +123,11 @@ PDReg.prototype.registerUserBuilding = function() {
  */
 PDReg.prototype.onAuthStateChanged = function(user) {
 	if (!user) {
+
 		// Show the login splash page
 		this.loggedOut.classList.remove('hidden'); // parent
 		this.loggedOut.querySelector('#login-splash').classList.remove('hidden'); // login
 
-		// document.getElementById('user-building-splash').classList.add('hidden');
-		// this.courseForm.classList.add('hidden');
-		// this.search.classList.add('hidden');
-
-		// this.sidebar.classList.add('hidden');
-		// this.signInButton.classList.remove('hidden');
 	} else {
 		return firebase
 			.database()
@@ -132,14 +135,13 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 			.once('value')
 			.then(
 				function(snap) {
+					this.loggedOut.classList.add('hidden');
 					const userData = snap.val();
 					if (user && !snap.hasChild('building')) {
-						document.getElementById('login-splash').classList.add('hidden');
-						document.getElementById('user-building-splash').classList.remove('hidden');
-						this.courseForm.classList.add('hidden');
-						this.search.classList.add('hidden');
-						this.sidebar.classList.add('hidden');
+						this.userBuildingSplash.classList.remove('hidden');
 					} else if (user && snap.hasChild('building')) {
+						this.navbar.classList.remove('hidden');
+						this.loggedIn.classList.remove('hidden');
 						Promise.all([
 							this.database
 								.ref('admins')
@@ -166,6 +168,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 						var stringName = user.displayName;
 						var userName = user.email.split('@')[0];
 						document.getElementById('user-location').textContent = userData.building;
+						
 						// Set the user's profile picture and name.
 						// this.userPic.setAttribute('src', profilePicUrl);
 						this.userEmail.textContent = user.email;
@@ -183,13 +186,8 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 						this.courseForm.classList.remove('hidden');
 
 						this.sorting.classList.remove('hidden');
-						this.registerBuilding.classList.add('hidden');
+						this.userBuildingSplash.classList.add('hidden');
 						this.submitButton.classList.remove('hidden');
-
-						// Hide sign-in button.
-						this.signInButton.classList.add('hidden');
-
-						document.getElementById('login-splash').classList.add('hidden');
 
 						// this.userClasses(userName);
 						this.getAllClasses();
