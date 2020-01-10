@@ -75,7 +75,7 @@ PDReg.prototype.signOut = function() {
 		
 		// hide logged in elements
 		this.loggedIn.classList.add('hidden');
-		this.navbar.classList.add('hidden');
+		this.navbar.add('hidden');
 		
 		this.loggedOut.classList.remove('hidden');
 	});
@@ -122,6 +122,7 @@ PDReg.prototype.registerUserBuilding = function() {
  * @param  {Object} user authenticated user object from the firebase auth API
  */
 PDReg.prototype.onAuthStateChanged = function(user) {
+	console.log(user);
 	if (!user) {
 
 		// Show the login splash page
@@ -135,13 +136,19 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 			.once('value')
 			.then(
 				function(snap) {
+
+					// Deal with the parent containers first.
 					this.loggedOut.classList.add('hidden');
+					this.loggedIn.classList.remove('hidden');
+
 					const userData = snap.val();
 					if (user && !snap.hasChild('building')) {
 						this.userBuildingSplash.classList.remove('hidden');
 					} else if (user && snap.hasChild('building')) {
 						this.navbar.classList.remove('hidden');
 						this.loggedIn.classList.remove('hidden');
+						this.courseContainer.classList.remove('hidden');
+						
 						Promise.all([
 							this.database
 								.ref('admins')
@@ -165,7 +172,6 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 
 						// User is signed in and registered with a building
 						// Get profile pic and user's name from the Firebase user object.
-						var stringName = user.displayName;
 						var userName = user.email.split('@')[0];
 						document.getElementById('user-location').textContent = userData.building;
 						
@@ -173,17 +179,13 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 						// this.userPic.setAttribute('src', profilePicUrl);
 						this.userEmail.textContent = user.email;
 
-						this.stringName.textContent = stringName;
-						this.courseForm['name'].value = stringName;
+						this.stringName.textContent = user.displayName;
+						this.courseForm['name'].value = user.displayName;
 						this.courseForm['email'].value = user.email;
 						this.courseForm['userName'].value = userName;
 
 						// Show user's profile and sign-out button.
-						this.stringName.classList.remove('hidden');
 						this.userPic.innerHTML = '<img class="circle" src="' + user.photoURL + '"/>';
-						this.userEmail.classList.remove('hidden');
-						this.signOutButton.classList.remove('hidden');
-						this.courseForm.classList.remove('hidden');
 
 						this.sorting.classList.remove('hidden');
 						this.userBuildingSplash.classList.add('hidden');
@@ -198,6 +200,9 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 };
 
 PDReg.prototype.changeSchool = function() {
+	this.courseContainer.classList.add('hidden');
+	this.sorting.classList.add('hidden');
+	this.userBuildingSplash.classList.remove('hidden');
 	var user = firebase.auth().currentUser;
 	this.database.ref('users/' + user.uid).update({ building: null });
 	this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
