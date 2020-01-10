@@ -71,12 +71,11 @@ PDReg.prototype.initFirebase = function() {
  * PDReg.prototype.signOut - Sign out of the current user
  */
 PDReg.prototype.signOut = function() {
+	// hide logged in elements
+	this.loggedIn.classList.add('hidden');
+	this.navbar.classList.add('hidden');
+	
 	this.auth.signOut().then(() => {
-		
-		// hide logged in elements
-		this.loggedIn.classList.add('hidden');
-		this.navbar.add('hidden');
-		
 		this.loggedOut.classList.remove('hidden');
 	});
 };
@@ -122,7 +121,7 @@ PDReg.prototype.registerUserBuilding = function() {
  * @param  {Object} user authenticated user object from the firebase auth API
  */
 PDReg.prototype.onAuthStateChanged = function(user) {
-	console.log(user);
+
 	if (!user) {
 
 		// Show the login splash page
@@ -148,7 +147,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 						this.navbar.classList.remove('hidden');
 						this.loggedIn.classList.remove('hidden');
 						this.courseContainer.classList.remove('hidden');
-						
+
 						Promise.all([
 							this.database
 								.ref('admins')
@@ -173,7 +172,7 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 						// User is signed in and registered with a building
 						// Get profile pic and user's name from the Firebase user object.
 						var userName = user.email.split('@')[0];
-						document.getElementById('user-location').textContent = userData.building;
+						document.querySelector('#user-location').textContent = userData.building;
 						
 						// Set the user's profile picture and name.
 						// this.userPic.setAttribute('src', profilePicUrl);
