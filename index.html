@@ -66,30 +66,28 @@
           <div class="nav-wrapper">
             <div class="container">
               <!-- <a href="#" class="brand-logo">ECS PD</a> -->
-              <ul class="left">
-                <li>
-                  <form>
-                    <div id="nav-search-wrapper" class="valign-wrapper">
-                      <div class="input-field">
-                        <input id="search" type="search" placeholder="Search by title..." required />
-                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons" id="search-clear">close</i>
-                      </div>
-                    </div>
-                  </form>
-                </li>
-              </ul>
-              <ul class="right hide-on-med-and-down">
-                <li>
-                </li>
-                <li>
+              <ul class="s12">
+                <li class="m12 l5">
                   <a class="dropdown-trigger" href="#!" data-target="user-dropdown">
                     <span id="user-pic" class="circle"></span>
                     <span id="string-name" class="white-text name"></span>
                     <i class="material-icons right">arrow_drop_down</i>
                   </a>
                 </li>
-                <li>
+                <ul>
+                  <li>
+                    <form>
+                      <div id="nav-search-wrapper" class="valign-wrapper">
+                        <div class="input-field hide-on-med-and-down">
+                          <input id="search" type="search" placeholder="Search by title..." required />
+                          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                          <i class="material-icons" id="search-clear">close</i>
+                        </div>
+                      </div>
+                    </form>
+                  </li>
+                </ul>
+                <li class="right">
                   <button class="blue darken-2 btn btn-large" type="submit" id="submit" name="action" form="course-form">Register
                     <div id="submit-badge-wrap" class="valign-wrapper">
                       <span class="white blue-text" data-badge-caption="" id="submit-badge"></span> 
@@ -106,7 +104,7 @@
       <div class="container">
         <!-- filtering buttons above the main session container-->
         <div id="logged-in" class="row hidden">
-          <div id="sorting" class="col s3 hidden">
+          <div id="sorting" class="col l3 hide-on-med-and-down hidden">
             <div class="section">
               <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
               <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
@@ -115,7 +113,7 @@
             <div class="section">
             </div>
           </div>
-          <div id="course-container" class="col s9">
+          <div id="course-container" class="col s9 m12">
             <main>
               <form id="course-form" action="submit">
                 <input hidden type="text" name="name" value="" />
