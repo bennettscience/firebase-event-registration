@@ -20,12 +20,9 @@ html, body {
   height: 100%;
   width: 100%; }
   html #admin-sidebar, body #admin-sidebar {
-    position: fixed;
     margin-top: 15px;
-    margin-right: 10px;
     padding: 25px;
-    background-color: rgba(0, 0, 0, 0.01);
-    width: 300px; }
+    background-color: rgba(0, 0, 0, 0.01); }
     html #admin-sidebar > .input-field, body #admin-sidebar > .input-field {
       margin-bottom: 30px; }
       html #admin-sidebar > .input-field input, body #admin-sidebar > .input-field input {
@@ -49,38 +46,37 @@ html, body {
   html #placeholder > .course, body #placeholder > .course {
     display: grid;
     width: 90%;
-    grid-template-columns: auto 25% 15%;
-    grid-template-rows: auto auto;
-    grid-template-areas: "title date admin" "names . .";
+    grid-template-columns: auto 25%;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: "title admin" "date ." "names .";
     align-items: center;
     margin-bottom: 35px;
     position: relative; }
     html #placeholder > .course i, body #placeholder > .course i {
       vertical-align: middle; }
-    html #placeholder > .course a.email, body #placeholder > .course a.email {
-      grid-area: admin;
-      position: relative;
-      left: 0;
-      color: #000; }
-    html #placeholder > .course i.download, body #placeholder > .course i.download {
-      grid-area: admin;
-      position: relative;
-      left: 35%;
-      color: #000; }
-      html #placeholder > .course i.download:hover, body #placeholder > .course i.download:hover {
+    html #placeholder > .course .admin-actions, body #placeholder > .course .admin-actions {
+      grid-area: admin; }
+      html #placeholder > .course .admin-actions > li, body #placeholder > .course .admin-actions > li {
+        display: inline;
+        margin-right: 15px; }
+        html #placeholder > .course .admin-actions > li > a, body #placeholder > .course .admin-actions > li > a {
+          color: #000; }
+      html #placeholder > .course .admin-actions:hover, body #placeholder > .course .admin-actions:hover {
         cursor: pointer; }
+    html #placeholder > .course .teachers, body #placeholder > .course .teachers {
+      grid-area: names; }
     html #placeholder > .course .list, body #placeholder > .course .list {
       display: table;
       table-layout: fixed; }
     html #placeholder > .course .list > div, body #placeholder > .course .list > div {
       display: table-row;
       margin-left: 10%; }
-      html #placeholder > .course .list > div span, body #placeholder > .course .list > div span {
-        padding: 2px 0 0 55px; }
     html #placeholder > .course .teacher--name, html #placeholder > .course teacher--building, body #placeholder > .course .teacher--name, body #placeholder > .course teacher--building {
       display: table-cell; }
     html #placeholder > .course .teacher--name, body #placeholder > .course .teacher--name {
       font-weight: 700; }
+    html #placeholder > .course .teacher--building, body #placeholder > .course .teacher--building {
+      margin-left: 15px; }
   html .user-view, body .user-view {
     padding: 32px; }
 
@@ -206,108 +202,104 @@ html, body {
       font-size: 2.2rem;
       margin-right: 1rem; }
 
-main {
-  grid-column: col-start 4 / col-end 12;
-  grid-row: 2;
+main.admin .wkshp-title i {
+  vertical-align: top; }
+
+main.admin .wkshp-title:hover {
+  cursor: pointer; }
+
+main.admin .course-update {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  margin-bottom: 20px;
+  /* Position tooltip above the element */
+  /* Show tooltip content on hover */ }
+  main.admin .course-update #destroy-course {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0; }
+  main.admin .course-update [data-tooltip] {
+    position: relative;
+    z-index: 2;
+    cursor: pointer; }
+  main.admin .course-update [data-tooltip]:before,
+  main.admin .course-update [data-tooltip]:after {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none; }
+  main.admin .course-update [data-tooltip]:before {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    margin-bottom: 5px;
+    margin-left: -80px;
+    padding: 7px;
+    width: 160px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #ff0000;
+    color: #fff;
+    content: attr(data-tooltip);
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.2; }
+  main.admin .course-update [data-tooltip]:after {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    margin-left: -5px;
+    width: 0;
+    border-top: 5px solid #ff0000;
+    border-top: 5px solid #ff0000;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    content: " ";
+    font-size: 0;
+    line-height: 0; }
+  main.admin .course-update [data-tooltip]:hover:before,
+  main.admin .course-update [data-tooltip]:hover:after {
+    visibility: visible;
+    opacity: 1; }
+  main.admin .course-update .date {
+    margin-right: 10%; }
+  main.admin .course-update .date, main.admin .course-update .time {
+    width: 40%;
+    display: inline-block; }
+  main.admin .course-update #seats {
+    width: 40%; }
+    main.admin .course-update #seats .time {
+      float: right; }
+  main.admin .course-update #update-submit {
+    margin-right: 25px; }
+
+main #allCourses {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   margin-left: -15px; }
-  main.admin {
-    grid-row: 1 / span 2;
-    margin-left: 0; }
-    main.admin .wkshp-title i {
-      vertical-align: top; }
-    main.admin .wkshp-title:hover {
-      cursor: pointer; }
-    main.admin .course-update {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-      background: #fff;
-      margin-bottom: 20px;
-      /* Position tooltip above the element */
-      /* Show tooltip content on hover */ }
-      main.admin .course-update #destroy-course {
-        display: block;
-        position: absolute;
-        right: 0;
-        bottom: 0; }
-      main.admin .course-update [data-tooltip] {
-        position: relative;
-        z-index: 2;
-        cursor: pointer; }
-      main.admin .course-update [data-tooltip]:before,
-      main.admin .course-update [data-tooltip]:after {
-        visibility: hidden;
-        opacity: 0;
-        pointer-events: none; }
-      main.admin .course-update [data-tooltip]:before {
-        position: absolute;
-        bottom: 110%;
-        left: 50%;
-        margin-bottom: 5px;
-        margin-left: -80px;
-        padding: 7px;
-        width: 160px;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        background-color: #ff0000;
-        color: #fff;
-        content: attr(data-tooltip);
-        text-align: center;
-        font-size: 14px;
-        line-height: 1.2; }
-      main.admin .course-update [data-tooltip]:after {
-        position: absolute;
-        bottom: 110%;
-        left: 50%;
-        margin-left: -5px;
-        width: 0;
-        border-top: 5px solid #ff0000;
-        border-top: 5px solid #ff0000;
-        border-right: 5px solid transparent;
-        border-left: 5px solid transparent;
-        content: " ";
-        font-size: 0;
-        line-height: 0; }
-      main.admin .course-update [data-tooltip]:hover:before,
-      main.admin .course-update [data-tooltip]:hover:after {
-        visibility: visible;
-        opacity: 1; }
-      main.admin .course-update .date {
-        margin-right: 10%; }
-      main.admin .course-update .date, main.admin .course-update .time {
-        width: 40%;
-        display: inline-block; }
-      main.admin .course-update #seats {
-        width: 40%; }
-        main.admin .course-update #seats .time {
-          float: right; }
-      main.admin .course-update #update-submit {
-        margin-right: 25px; }
-  main #allCourses {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    margin-left: -15px; }
-    main #allCourses .class-container {
-      flex-grow: 1;
-      border: 1px solid #f3f3f3;
-      box-sizing: border-box;
-      margin: 7.5px 0 7.5px 15px; }
-      main #allCourses .class-container .code .prefix {
+  main #allCourses .class-container {
+    flex-grow: 1;
+    border: 1px solid #f3f3f3;
+    box-sizing: border-box;
+    margin: 7.5px 0 7.5px 15px; }
+    main #allCourses .class-container .code .prefix {
+      vertical-align: middle; }
+    main #allCourses .class-container .code input {
+      height: 1.5em;
+      padding: 5px 0 5px 5px;
+      border-radius: 2px; }
+      main #allCourses .class-container .code input .prefix {
         vertical-align: middle; }
-      main #allCourses .class-container .code input {
-        height: 1.5em;
-        padding: 5px 0 5px 5px;
-        border-radius: 2px; }
-        main #allCourses .class-container .code input .prefix {
-          vertical-align: middle; }
-    main #allCourses h2 {
-      position: relative; }
+  main #allCourses h2 {
+    position: relative; }
 
 .active:not(label) {
   background-color: rgba(0, 0, 0, 0.05); }

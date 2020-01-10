@@ -25,12 +25,9 @@ html, body
   width: 100%
 
   #admin-sidebar
-    position: fixed
     margin-top: 15px
-    margin-right: 10px
     padding: 25px
     background-color: rgba(0,0,0,0.01)
-    width: 300px
 
     > .input-field
       margin-bottom: 30px
@@ -63,9 +60,9 @@ html, body
   #placeholder > .course
     display: grid
     width: 90%
-    grid-template-columns: auto 25% 15%
-    grid-template-rows: auto auto
-    grid-template-areas: "title date admin" "names . ."
+    grid-template-columns: auto 25%
+    grid-template-rows: auto auto auto
+    grid-template-areas: "title admin" "date ." "names ."
     align-items: center
     margin-bottom: 35px
     position: relative
@@ -74,20 +71,21 @@ html, body
     i 
       vertical-align: middle
 
-    a.email 
+    .admin-actions
       grid-area: admin
-      position: relative
-      left: 0
-      color: #000
-    
-    i.download
-      grid-area: admin
-      position: relative
-      left: 35%
-      color: #000
+
+      > li 
+        display: inline
+        margin-right: 15px
+
+        > a 
+          color: #000
 
       &:hover
         cursor: pointer
+
+    .teachers 
+      grid-area: names 
 
     .list
       display: table
@@ -97,14 +95,14 @@ html, body
       display: table-row
       margin-left: 10%
 
-      span
-        padding: 2px 0 0 55px
-
     .teacher--name, teacher--building
       display: table-cell
 
     .teacher--name
       font-weight: 700
+
+    .teacher--building
+      margin-left: 15px
 
   .user-view
     padding: 32px
@@ -255,13 +253,8 @@ html, body
       margin-right: 1rem
 
 main
-  grid-column: col-start 4 / col-end 12
-  grid-row: 2
-  margin-left: -15px
 
   &.admin
-    grid-row: 1 / span 2
-    margin-left: 0
 
     .wkshp-title
 
