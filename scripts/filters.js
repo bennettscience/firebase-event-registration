@@ -1,9 +1,24 @@
-/**
- * Load sideNav script from materialize.js
- */
+document.addEventListener('DOMContentLoaded', function() {
+	loadSchools();
+	
+	// Load dropdown menu settings
+	const dropOptions = {
+		constrainWidth: false,
+		coverTrigger: false,
+	};
+	var dropdowns = document.querySelectorAll('.dropdown-trigger');
+	M.Dropdown.init(dropdowns, dropOptions);
 
-$(document).ready(function() {
-	var el = $('#user-building-select');
+	// Load form selects
+	const selectOpts = {};
+	var selects = document.querySelectorAll('select');
+	M.FormSelect.init(selects, selectOpts);
+
+	loadSubmitBadge();
+});
+
+function loadSchools() {
+	var el = document.querySelector('#user-building-select');
 	var schools = [
 		'Beardsley',
 		'Beck',
@@ -40,27 +55,11 @@ $(document).ready(function() {
 		var opt = document.createElement('option');
 		opt.text = sorted[i];
 		opt.value = sorted[i];
-		opt = '<option value="' + sorted[i] + '">' + sorted[i] + '</option>';
+		// opt = `<option value="${sorted[i]}">${sorted[i]}</option>`;
 		el.append(opt);
 	}
+}
 
-	$('#user-building-select').formSelect();
-
-	$('.collapsible').collapsible();
-
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-	// Load dropdown menu settings
-	const dropOptions = {
-		constrainWidth: false,
-		coverTrigger: false,
-	};
-	var dropdowns = document.querySelectorAll('.dropdown-trigger');
-	M.Dropdown.init(dropdowns, dropOptions);
-
-	loadSubmitBadge();
-});
 
 $(document).keydown(function(e) {
 	if (e.keyCode == 27) {
