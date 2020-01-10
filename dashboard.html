@@ -24,33 +24,35 @@
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-    <div id="wrap" class="admin">
-      <div id="admin-sidebar" class="card">
-        <div class="input-field">
-          <select id="run-button-type">
-            <option value="trainer">Trainer</option>
-            <option value="admin">Administrator</option>
-          </select>
-          <label>Select Role</label>
-        </div>
-        <div class="input-field">
-          <select name="" id="range-select">
-            <option value="past">Past</option>
-            <option value="future">Upcoming</option>
-          </select>
-          <label>Date Range</label>
-        </div>
-        <div class="input-field">
-          <input type="text" value="" placeholder="MM/DD/YYYY" class="active datepicker" id="date-select"/>
-          <label>Specific date</label>
-        </div>
-        <button id="run-button" class="btn btn-primary">Find Courses</button>
-        <div class="back"><i class="material-icons blue-text inline-icon">arrow_left</i><a href="/">Back</a></div>
-      </div> <!-- /#admin-sidebar -->
-    <main class="admin">
-      <div id="course-update"></div>
-      <div id="placeholder"></div>
-    </main>
+    <div id="admin-wrap" class="admin container">
+    <div class="row">
+        <div id="admin-sidebar" class="card col s3">
+          <div class="input-field">
+            <select id="run-button-type">
+              <option value="trainer">Trainer</option>
+              <option value="admin">Administrator</option>
+            </select>
+            <label>Select Role</label>
+          </div>
+          <div class="input-field">
+            <select name="" id="range-select">
+              <option value="past">Past</option>
+              <option value="future">Upcoming</option>
+            </select>
+            <label>Date Range</label>
+          </div>
+          <div class="input-field">
+            <input type="text" value="" placeholder="MM/DD/YYYY" class="active datepicker" id="date-select"/>
+            <label>Specific date</label>
+          </div>
+          <button id="run-button" class="btn btn-primary">Find Courses</button>
+          <div class="back"><i class="material-icons blue-text inline-icon">arrow_left</i><a href="/">Back</a></div>
+        </div> <!-- /#admin-sidebar -->
+      <main class="admin col s8 push right">
+        <div id="course-update"></div>
+        <div id="placeholder"></div>
+      </main>
+    </div>
   </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
