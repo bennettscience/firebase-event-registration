@@ -428,7 +428,7 @@ PDReg.prototype.buildCourse = function(course) {
 		parentDiv.appendChild(container);
 		// Add an event listener when the element is created
 		container.querySelector(`#link-${course.key}`).style.display = 'none';
-		container.querySelector('.course-share-link').addEventListener('click', copyToClipboard);
+		container.querySelector('.course-share-link').addEventListener('click', getTargetUrl);
 
 		codes.push({
 			id: course.key,

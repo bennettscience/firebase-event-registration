@@ -285,17 +285,29 @@ function loadSubmitBadge() {
 
 }
 
-async function copyToClipboard(e) {
+async function getTargetUrl(e) {
 	e.preventDefault();
 	let el = e.target;
 
+	console.log(el);
+	console.log(el.dataset.target);
+
+	let url = document.querySelector(`#${el.dataset.target}`).value;
+
+	copyToClipboard(url, el);
+}
+
+function copyToClipboard(url, el) {
+
+	// This is async!
 	try {
-		await navigator.clipboard.writeText(e.target.parentNode.getAttribute('href'));
-		alert('Workshop URL copied to clipboard');
-	} catch (err) {
-		// alert('Failed to copy: ', err);
-		console.log(`#link-${el.dataset.target}`);
+		navigator.clipboard.writeText(url).then(
+			function() {
+				alert('Workshop URL copied to clipboard.');
+			}
+		);
+	} catch(err) {
 		document.querySelector(`#${el.dataset.target}`).style.display = 'block';
-		
 	}
+			
 }
