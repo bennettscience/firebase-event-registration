@@ -455,6 +455,11 @@ PDReg.prototype.buildCourse = function(course) {
 	}
 };
 
+window.onhashchange = function() {
+	console.log(window.pageYOffset);
+	window.scroll({top: window.pageYOffset - 70});
+};
+
 /**
  * PDReg.prototype.checkSetup - Display an error message if firebase is not configured correctly
  *
