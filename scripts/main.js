@@ -333,7 +333,7 @@ PDReg.prototype.buildUserCourse = function(course) {
 			<div class="info">
 				<span class="title">${course.title}</span>
 				<span class="date">${start} - ${end}</span>
-				<span class="link">${course.link}</span>
+				<span class="link">${course.redirect}</span>
 				<span class="location">${course.loc}</span>
 				<span class="description">${course.desc}</span>
 				<span class="contact"><a href='mailto:${course.pocEmail}?subject=${course.title}'>${course.poc}</a></span>
@@ -456,7 +456,6 @@ PDReg.prototype.buildCourse = function(course) {
 };
 
 window.onhashchange = function() {
-	console.log(window.pageYOffset);
 	window.scroll({top: window.pageYOffset - 70});
 };
 

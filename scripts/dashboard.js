@@ -41,7 +41,7 @@ Admin.prototype.findTrainerCourses = function(filter, filterDate) {
 	let dateInput = document.getElementById('date-select').value;
 	let promise;
 	let html;
-	let currentUser;
+	let currentUser = firebase.auth().currentUser.email;
 
 	let today = new Date().toISOString();
 
@@ -65,17 +65,17 @@ Admin.prototype.findTrainerCourses = function(filter, filterDate) {
 		let submitter;
 
 		// Get sessions with teachers signed up
-		snap.forEach(function(c){
+		snap.forEach(function(c) {
+			
+			// Convert the pocEmail field to an array to check for multiple presenters
+			let presenters = c.val().pocEmail.split(', ');
 
-			if(c.val().hasOwnProperty('submittedBy')) {
-				submitter = c.val().submittedBy.split('@')[0];
+			if('submittedBy' in c.val()) {
+				submitter = c.val().submittedBy;
 			}
 
 			// Check the submitter AND the POC to display a course
-			if(
-				c.val().pocEmail.split('@')[0] == firebase.auth().currentUser.email.split('@')[0] ||
-        submitter == firebase.auth().currentUser.email.split('@')[0]
-			) {
+			if(presenters.includes(currentUser) || submitter == currentUser) {
 				let course = {};
 				course.id = c.key;
 				course.start = c.val().start;

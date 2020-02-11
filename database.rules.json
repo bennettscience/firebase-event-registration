@@ -13,7 +13,7 @@
         "start"
       ],
       "$courseId": {
-        ".write": "(auth != null && root.child('courses').child($courseId).child('pocEmail').val() == auth.token.email)",
+        ".write": "((auth != null && root.child('courses').child($courseId).child('pocEmail').val() == auth.token.email) || (auth != null && root.child('courses').child($courseId).child('subittedBy').val() == auth.token.email))",
         "members": {
           "$uid": {
             ".validate": "root.child('courses').child($courseId).child('code').val() == newData.child('code').val()",
