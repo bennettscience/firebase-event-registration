@@ -191,7 +191,7 @@ Admin.prototype.findTrainerCourses = function() {
 			var emailString = 'mailto:' + currentUser + '?bcc=';
 
 			userArray.forEach(function(user) {
-				emailString += user.email + ';';
+				emailString += user.email + ',';
 			});
 
 			// Look up the user building
