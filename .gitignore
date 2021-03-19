@@ -18,3 +18,4 @@ database-debug.log
 ui-debug.log
 .sass-cache/
 .ruby-version
+.firebase/
