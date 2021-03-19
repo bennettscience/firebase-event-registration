@@ -10,3 +10,11 @@ node_modules
 .firebase/hosting..cache
 .vscode/
 .eslintrc.json
+functions/credentials.json
+functions/.runtimeconfig.json
+initial_class.json
+functions/database-debug.log
+database-debug.log
+ui-debug.log
+.sass-cache/
+.ruby-version

@@ -1,13 +1,24 @@
 {
-    "users": {
-
-    },
-    "courses": {
-      "Is9a2": {
-        "title": "CPI Referesher Course",
-        "date": "Mon Jan 22 2018 13:43:42 GMT-0500 (EST)",
-        "desc": "CPI is the crisis prevention training which teaches strategies to be able to de-escalate situations. The intent is to use de-escalating strategies as a means of preventing physical aggression.",
-        "seats": "40"        
+  "courses": {
+    "fv8Af": {
+      "active" : true,
+      "desc" : "This is a time for special area teachers to get together and discuss specific app purchases or changes for 2021-22. This is only for apps which are not on the core app list on the resource order sheet. Try to have one representative from each building so everyone has a voice.",
+      "end" : "2021-04-30T18:00:00.000Z",
+      "eventId" : "47673v3k36iub6s2m47rrv7ihk",
+      "loc" : "",
+      "poc" : "Holly Mecher",
+      "pocEmail" : "hmecher@elkhart.k12.in.us",
+      "redirect" : "https://www.google.com/calendar/event?eid=NDc2NzN2M2szNml1YjZzMm00N3JydjdpaGsgZWxraGFydC5rMTIuaW4udXNfajJnaDc4Yms1ZTViamU2bjZrMTlpanIyajhAZw",
+      "seats" : 100,
+      "start" : "2021-04-30T17:00:00.000Z",
+      "submittedBy" : "hmecher@elkhart.k12.in.us",
+      "title" : "Special Area App Discussion",
+      "type" : "Online (Google Meet)",
+      "members": {
+        "GQHF787hK9eIlB8EuvbnHswSOaz2": {
+          "name":"Elkhart PD", "email":"pd@elkhart.k12.in.us"}
+        }
       }
     }
-}
+  }
+

@@ -9,12 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	var dropdowns = document.querySelectorAll('.dropdown-trigger');
 	M.Dropdown.init(dropdowns, dropOptions);
 
-	// Load form selects
+	// // Load form selects
 	const selectOpts = {};
 	var selects = document.querySelectorAll('select');
 	M.FormSelect.init(selects, selectOpts);
-
-	loadSubmitBadge();
 });
 
 function loadSchools() {
@@ -61,12 +59,12 @@ function loadSchools() {
 }
 
 
-$(document).keydown(function(e) {
-	if (e.keyCode == 27) {
-		if ($('#user-courses-list').hasClass('hidden')) {
+document.addEventListener('keydown', function(e) {
+	if (e.key === 'Escape') {
+		if (document.querySelector('#user-courses-list').classList.contains('hidden')) {
 			return false;
 		} else {
-			$('#user-courses-wrap').addClass('hidden');
+			document.querySelector('#user-courses-wrap').classList.add('hidden');
 		}
 	}
 });
@@ -102,42 +100,6 @@ $('.input-field input').on('keyup', function() {
 	this.onblur = function() {
 		window.dataLayer.push({ event: 'search', searchTerm: this.value });
 	};
-});
-
-// Filter by Danielson category
-$('input[name=\'filterStatus\']').change(function() {
-	var classes = [];
-
-	$('input[name=\'filterStatus\']').each(function() {
-		if ($(this).is(':checked')) {
-			classes.push($(this).val());
-		}
-	});
-
-	if (classes == '') {
-		$('#allCourses .card').show();
-	} else {
-		$('#allCourses .card').hide();
-
-		$('#allCourses .card').each(function() {
-			var filter = [];
-			var show = false;
-			var card = $(this);
-
-			filter = card.data('dan').split(',');
-
-			var who = [];
-
-			for (var n = 0; n < classes.length; n++) {
-				if (filter.includes(classes[n])) {
-					show = true;
-				}
-			}
-			if (show) {
-				card.show();
-			}
-		});
-	}
 });
 
 /**
@@ -186,111 +148,35 @@ function formatEnd(date) {
 	return m;
 }
 
-// Frontend validation for session code
-// Turns code field green if the key is correct, case sensitive
-$('body').on('keyup', '.code :input', function() {
-	var row = $(this)
-		.closest('.card')
-		.prop('id');
-	var key = $(this).val();
-
-	for (var key in codes) {
-		if (codes[key].id === row) {
-			// validates the length of the user-input code. If >0, require the checkbox.
-			if ($(this).val().length > 0) {
-				$(this)
-					.closest('.card-content')
-					.find('input:checkbox')
-					.prop('required', true);
-			} else {
-				$(this)
-					.closest('.card-content')
-					.find('input:checkbox')
-					.prop('required', false);
-			}
-
-			// Validate the code
-			if (codes[key].code === $(this).val()) {
-				$(this).css('background-color', '#32C192');
-			} else {
-				$(this).css('background-color', 'white');
-			}
-		}
-	}
-});
-
-// Sort options - date, alphabetical
-$('#title').on('click', function() {
-	var divs = $('div.class-container');
-
-	var alphabeticalDivs = divs.sort(function(a, b) {
-		return String.prototype.localeCompare.call(
-			$(a)
-				.data('title')
-				.toLowerCase(),
-			$(b)
-				.data('title')
-				.toLowerCase(),
-		);
-	});
-
-	var container = $('#allCourses');
-	container
-		.detach()
-		.empty()
-		.append(alphabeticalDivs);
-	$('#course-form').append(container);
-});
-
-$('#date').on('click', function() {
-	var divs = $('div.class-container');
-
-	var dateDivs = divs.sort(function(a, b) {
-		return new Date($(a).data('date')) - new Date($(b).data('date'));
-	});
-
-	var container = $('#allCourses');
-	container
-		.detach()
-		.empty()
-		.append(dateDivs);
-	$('#course-form').append(container);
-});
-
-// Listen for course click and update the submit badge
+// Listen for course click and update the submit tooltop
 let courseForm = document.querySelector('#course-form');
-let submitBadge = document.querySelector('#submit-badge');
+let submitButton = document.querySelector('#submit');
 
-courseForm.addEventListener('click', updateSubmitBadge);
+if(courseForm) {
+	courseForm.addEventListener('click', updateSubmitTooltip);
+}
 
-function updateSubmitBadge(e) {
+function updateSubmitTooltip(e) {
+	let plural;
 
 	// Watch for clicks on the input box only.
 	if(e.target.classList.contains('filled-in')) {
-
 		var els = courseForm.querySelectorAll('input[type=\'checkbox\']:checked');
     
-		// (els.length > 0) ? submitBadge.style.display = 'inline' : submitBadge.style.display = 'none';
-    
-		submitBadge.innerText = els.length;
+		if(els.length > 0) {
+			(els.length === 1) ? plural = 'course' : plural = 'courses';
+			submitButton.dataset.tooltip = `Register for ${els.length} ${plural}`;
+		} else {
+			submitButton.dataset.tooltip = 'No courses selected.';
+		}
     
 	}
   
-}
-
-function loadSubmitBadge() {
-	var els = courseForm.querySelectorAll('input[type=\'checkbox\']:checked');
-  
-	(els.length > 0) ? submitBadge.innerText = els.length : submitBadge.innerText = 0;
-
 }
 
 async function getTargetUrl(e) {
 	e.preventDefault();
 	let el = e.target;
-
-	console.log(el);
-	console.log(el.dataset.target);
 
 	let url = document.querySelector(`#${el.dataset.target}`).value;
 

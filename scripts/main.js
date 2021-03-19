@@ -2,7 +2,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
 'use strict';
-let codes = [];
 
 /**
  * PDReg - Main function Class
@@ -51,6 +50,7 @@ function PDReg() {
 	this.changeSchoolButton.addEventListener('click', this.changeSchool.bind(this));
 
 	// listen for the registration button
+	this.submitButton.dataset.tooltip = 'No courses selected.';
 	this.courseForm.addEventListener('submit', this.register.bind(this));
 
 	this.initFirebase();
@@ -89,7 +89,18 @@ PDReg.prototype.signIn = function() {
 	provider.setCustomParameters({
 		hd: 'elkhart.k12.in.us',
 	});
-	this.auth.signInWithPopup(provider);
+	this.auth.signInWithPopup(provider).then(() => {
+		M.toast({
+			html: 'Signed in successfully',
+			classes: 'green'
+		});
+	}).catch((err) => {
+		let code = err.code;
+		M.toast({
+			html: `Error ${code}: ${err.message}`,
+			classes: 'red'
+		});
+	});
 };
 
 /**
@@ -176,22 +187,27 @@ PDReg.prototype.onAuthStateChanged = function(user) {
 						
 						// Set the user's profile picture and name.
 						// this.userPic.setAttribute('src', profilePicUrl);
-						this.userEmail.textContent = user.email;
+						// this.userEmail.innerHTML = `<i class="material-icons">email</i>${user.email}`;
 
 						this.stringName.textContent = user.displayName;
 						this.courseForm['name'].value = user.displayName;
 						this.courseForm['email'].value = user.email;
 						this.courseForm['userName'].value = userName;
 
-						// Show user's profile and sign-out button.
-						this.userPic.innerHTML = '<img class="circle" src="' + user.photoURL + '"/>';
-
 						this.sorting.classList.remove('hidden');
 						this.userBuildingSplash.classList.add('hidden');
 						this.submitButton.classList.remove('hidden');
 
 						// this.userClasses(userName);
+						console.log('loading courses');
 						this.getAllClasses();
+
+						setTimeout(() => {
+							this.handleScroll();
+						}, 1000);
+						// console.log('finished loading courses');
+						// console.log('handling scroll');
+						// this.handleScroll();
 					}
 				}.bind(this)
 			);
@@ -225,11 +241,7 @@ PDReg.prototype.register = function(e) {
 		if (form.elements[i].checked) {
 			var title = form.elements[i].parentElement.querySelector('.card-title').innerHTML;
 			var id = form.elements[i].value;
-			var code = form.elements[i].parentNode.parentNode.querySelector('input[name=\'code\']').value;
-			if (code.length === 0) {
-				code = 'Code';
-			}
-			classes.push({ title, id, code });
+			classes.push({ title, id });
 		} 
 	}
 
@@ -245,7 +257,7 @@ PDReg.prototype.register = function(e) {
 		var course = snapshot.val();
 		course.key = snapshot.key;
 
-		var parentDiv = document.getElementById('user-courses-list');
+		var parentDiv = document.querySelector('#user-courses-list');
 
 		if (!parentDiv.querySelector('[id=\'user_' + course.key + '\']')) {
 			var start = format(course.start);
@@ -255,7 +267,7 @@ PDReg.prototype.register = function(e) {
 			<div class="info">
 				<span class="title">${course.title}</span>
 				<span class="date">${start} - ${end}</span>
-				<span class="link">${course.link}</span>
+				<span class="link"><a href="${course.redirect}">View session calendar details</a></span>
 				<span class="location">${course.loc}</span>
 				<span class="description">${course.desc}</span>
 				<span class="contact"><a href='mailto:${course.pocEmail}?subject=${course.title}'>${course.poc}</a></span>
@@ -278,7 +290,7 @@ PDReg.prototype.register = function(e) {
 			firebase
 				.database()
 				.ref('courses/' + item['id'] + '/members/' + user.uid)
-				.set({ code: item['code'], email: user.email, name: user.displayName })
+				.set({ email: user.email, name: user.displayName })
 				.then(function() {
 					firebase
 						.database()
@@ -333,7 +345,7 @@ PDReg.prototype.buildUserCourse = function(course) {
 			<div class="info">
 				<span class="title">${course.title}</span>
 				<span class="date">${start} - ${end}</span>
-				<span class="link">${course.redirect}</span>
+				<span class="link"><a href="${course.redirect}">Add the session to your calendar</a></span>
 				<span class="location">${course.loc}</span>
 				<span class="description">${course.desc}</span>
 				<span class="contact"><a href='mailto:${course.pocEmail}?subject=${course.title}'>${course.poc}</a></span>
@@ -344,14 +356,6 @@ PDReg.prototype.buildUserCourse = function(course) {
 		container.setAttribute('class', 'collection-item');
 		container.getElementsByTagName('a')[0].setAttribute('id', 'cancel_' + course.key);
 
-		if (course.redirect) {
-			container.querySelector('.link').innerHTML = `Join: <b><a href='${course.redirect}' target='_blank'>${
-				course.redirect
-			}</a></b>`;
-		} else {
-			container.querySelector('.title').textContent = course.title;
-		}
-
 		parentDiv.appendChild(container);
 
 		container.querySelector('.cancel').addEventListener('click', this.cancel.bind(this));
@@ -360,7 +364,7 @@ PDReg.prototype.buildUserCourse = function(course) {
 
 PDReg.prototype.showUserClasses = function() {
 	document.getElementById('user-courses-head').innerHTML =
-    '<h2>' + firebase.auth().currentUser.displayName + '</h2>';
+    `<p>${firebase.auth().currentUser.displayName} - My Registrations</p>`;
 	document.getElementById('user-courses-wrap').classList.toggle('hidden');
 };
 
@@ -373,10 +377,9 @@ PDReg.prototype.hideUserClasses = function() {
  *
  * @param  {Object} course JSON object with course data to create a DOM element
  */
-PDReg.prototype.buildCourse = function(course) {
+PDReg.prototype.buildCourse = function(course, userIsRegistered) {
 
 	var parentDiv = document.querySelector('#courses');
-	const urlParams = new URLSearchParams(window.location.search);
 
 	if (!parentDiv.querySelector('[id=\'' + course.key + '\']')) {
 		var container = document.createElement('div');
@@ -386,32 +389,25 @@ PDReg.prototype.buildCourse = function(course) {
 						<input name="course" class="filled-in course-checkbox" value="${course.key}" id="card-${course.key}" type="checkbox" />
 						<span class="sort-title card-title grey-text text-darken-4">${course.title}</span>
 					</label>
-					<div class="date grey-text text-darken-1">
-						${(course.type === 'In Person') ? format(course.start) + ' - ' + format(course.end) : 'Online, start any time!'}
+					<span class="date">
+						<b>${format(course.start)} - ${formatEnd(course.end)}</b>
+					</span>
+						<span class="card-desc">${course.desc}</span>
 					</div>
-					<div class="code hidden">
-						<i class="material-icons prefix">lock</i>
-						<div class="input-field inline">
-							<input name="code" id="code-${course.key}" type="text" value="" />
-							<label for="code-${course.key}">Registration code</label>
-						</div>
-					</div>
-				</div>
-				<div class="card-action">
-					<a class="btn btn-flat blue-text activator" data-title="${course.title}">See More</a>
-					<a class="btn btn-flat course-share-link">
-						<i class="material-icons right" data-target="link-${course.key}">link</i>
+					<div class="card-action">
+					<a class="btn btn-flat blue-text activator" data-title="${course.title}">Session Details</a>
+					<a class="btn btn-flat blue-text course-share-link" data-target="link-${course.key}">
+						Copy course link
 					</a>
-					<input name="share" id="link-${course.key}" type="text" value="https://pd.elkhart.k12.in.us/?course=${course.key}" autofocus="autofocus" />
+					<input name="share" id="link-${course.key}" type="text" value="https://elkhart-pd-signup.web.app?course=${course.key}" autofocus="autofocus" />
 				</div>
 				<div class="card-reveal">
-					<span class="card-title grey-text- text-darken-4"><i class="material-icons right">close</i></span>
-					<span class="card-desc">${course.desc}</span>
-					<hr />
-					<div class="details">
+				<span class="card-title grey-text- text-darken-4"><i class="material-icons right">close</i></span>
+				<div class="details">
 						<span class="seats">Seats: ${course.seats}</span>
 						<span class="contact">Contact: <a href="mailto:${course.pocEmail}?subject=${course.title}">${course.poc}</a></span>
-						<span class="location">Location: ${course.loc}</span>
+						<span class="type">PD type: ${course.type}</span>
+						<span class="location">Location: ${(course.loc) ? course.loc : 'Virtual'}</span>
 					</div>
 				</div>
 		`;
@@ -419,44 +415,35 @@ PDReg.prototype.buildCourse = function(course) {
 		container.setAttribute('id', course.key);
 		container.setAttribute('class', 'card class-container');
 		container.dataset.title = course.title;
-		container.dataset.dan = course.dan;
-
-		if(course.type === 'In Person') {
-			container.dataset.date = course.start;
-		}
 
 		parentDiv.appendChild(container);
 		// Add an event listener when the element is created
 		container.querySelector(`#link-${course.key}`).style.display = 'none';
 		container.querySelector('.course-share-link').addEventListener('click', getTargetUrl);
 
-		codes.push({
-			id: course.key,
-			code: course.code,
-		});
-		
-		if (course.code !== 'Code') {
-			container.querySelector('.code').classList.remove('hidden');
-		}
 		
 		if (course.seats <= 0) {
-			container.querySelector('#card-' + course.key).setAttribute('disabled', true);
+			container.querySelector(`#card-${course.key}`).setAttribute('disabled', true);
 			container.querySelector('.card-title').innerHTML += ' - Session full';
 		}
-	}
-	if (urlParams.has('course')) {
-		if (urlParams.get('course') === course.key) {
-			document.querySelector(`input[name='course'][value='${course.key}']`).checked = true;
-			window.location.hash = `#${course.key}`;
-			// set the submit badge quantity
-			loadSubmitBadge();
 
+		if(userIsRegistered) {
+			container.querySelector(`#card-${course.key}`).setAttribute('disabled', true);
+			container.querySelector('.card-title').innerHTML += ' - Registered';
 		}
 	}
 };
 
-window.onhashchange = function() {
-	window.scroll({top: window.pageYOffset - 70});
+PDReg.prototype.handleScroll = function() {
+	let urlParams = new URLSearchParams(window.location.search);
+	if(urlParams.get('course')) {
+		let target = urlParams.get('course');
+		let el = document.getElementById(`${target}`);
+		if(!el) {
+			return;
+		}
+		window.scroll(0, el.offsetTop - 70);
+	}
 };
 
 /**
@@ -480,41 +467,42 @@ PDReg.prototype.checkSetup = function() {
  * @param  {String} userName The current signed in user
  */
 PDReg.prototype.getAllClasses = function() {
-	this.database = firebase.database();
-	var uid = firebase.auth().currentUser.uid;
+	return new Promise((resolve, reject) => {
 
-	var today = new Date().toISOString();
-	document.querySelector('#courses').innerHTML = '';
-
-	this.classesRef = this.database.ref('courses/');
-
-	this.userRef = this.database.ref('users/' + uid + '/regs');
-
-	var setClass = function(snapshot) {
-		var course = snapshot.val();
-		course.key = snapshot.key;
-		
-		if (course.members) {
-			if (course.members.hasOwnProperty(uid)) {
+		this.database = firebase.database();
+		var uid = firebase.auth().currentUser.uid;
+	
+		var today = new Date().toISOString();
+		document.querySelector('#courses').innerHTML = '';
+	
+		this.classesRef = this.database.ref('courses/');
+	
+		this.userRef = this.database.ref('users/' + uid + '/regs');
+	
+		var setClass = function(snapshot) {
+			let userIsRegistered = false;
+			var course = snapshot.val();
+			course.key = snapshot.key;
+			
+			if (course.members && course.members.hasOwnProperty(uid)) {
 				this.buildUserCourse(course);
-			} else {
-				if ((course.type === 'Online' || (course.type === 'In Person' && course.start > today)) && course.active === true) {
-					this.buildCourse(course);
-				}
+				userIsRegistered = true;
+			} 
+			if(course.start > today) {
+				this.buildCourse(course, userIsRegistered);
 			}
-		} else {
-			if ((course.type === 'Online' || (course.type === 'In Person' && course.start > today)) && course.active === true) {
-				this.buildCourse(course);
-			}
-		}
-	}.bind(this);
-
-	this.userRef.on('value', function(snapshot) {
-		document.getElementById('user-courses-badge').textContent = snapshot.numChildren();
+	
+		}.bind(this);
+	
+		this.userRef.on('value', function(snapshot) {
+			document.getElementById('user-courses-badge').textContent = snapshot.numChildren();
+		});
+	
+		// Listen to the ref and process any changes in the frontend
+		this.classesRef.orderByChild('start').on('child_added', setClass);
+		resolve('Done!');
+		reject('Something went wrong');
 	});
-
-	// Listen to the ref and process any changes in the frontend
-	this.classesRef.orderByChild('start').on('child_added', setClass);
 };
 
 /**

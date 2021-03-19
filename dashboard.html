@@ -1,67 +1,136 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <link rel="manifest" href="manifest.json">
+    <title>ECS PD Admin Dashboard</title>
+    <link rel="manifest" href="manifest.json" />
     <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-TRD2J67');</script>
-  <!-- End Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-TRD2J67');
+    </script>
+    <!-- End Google Tag Manager -->
     <!-- App Styling -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"
+    />
 
     <!-- Materialize Stylesheets-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
-    <link rel="stylesheet" href="styles/main.min.css">
+    <!-- Firebase scripts -->
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/firebasejs/5.3.1/firebase-app.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/firebasejs/5.3.1/firebase-database.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/firebasejs/5.3.1/firebase-functions.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/firebasejs/5.3.1/firebase-auth.js"
+    ></script>
+
+    <link rel="stylesheet" href="styles/main.min.css" />
     <title></title>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-TRD2J67"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <ul id="admin-dropdown" class="dropdown-content">
+      <li>
+        <a id="change-school-button" href="#">
+          <i class="material-icons">location_on</i>
+          <span id="user-building">
+            <span id="user-location"></span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="/"><i class="material-icons">arrow_back</i>Back to courses</a>
+      </li>
+      <li class="divider"></li>
+      <li>
+        <a href="#" id="sign-out-button" class="red white-text"
+          ><i class="material-icons">logout</i>Sign out</a
+        >
+      </li>
+    </ul>
+    <!-- end nav drodown -->
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper">
+          <div class="container">
+            <!-- <a href="#" class="brand-logo">ECS PD</a> -->
+            <ul class="s12">
+              <li class="m12 l5">
+                <a class="dropdown-trigger" href="#!" data-target="admin-dropdown">
+                  <span id="string-name" class="white-text name"></span>
+                  <i class="material-icons right">arrow_drop_down</i>
+                </a>
+              </li>
+              <li class="right"></li>
+              <!-- <li><a href="#" id="search-button" class="btn btn-flat white-text"><i class="material-icons">search</i></a></li> -->
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
     <div id="admin-wrap" class="admin container">
-    <div class="row">
-        <div id="admin-sidebar" class="card col s3">
-          <div class="input-field">
-            <select id="run-button-type">
-              <option value="trainer">Trainer</option>
-              <option value="admin">Administrator</option>
-            </select>
-            <label>Select Role</label>
+      <!-- building select so they can swap here if necessary-->
+      <div id="user-building-splash" class="col s12 input-field hidden">
+        <span id="user-building-prompt"
+          ><i class="material-icons large">school</i>Pick your location</span
+        >
+        <select id="user-building-select"></select>
+        <button
+          class="btn btn-large waves-effect waves-light blue"
+          id="user-building-splash-submit"
+        >
+          Submit<i class="material-icons right large">check</i>
+        </button>
+      </div>
+      <main class="admin col s8">
+        <div class="admin-tabs">
+          <div id="trainer-button" class="active">Trainer</div>
+          <div id="admin-button">Administrator</div>
+        </div>
+        <div id="placeholder">
+          <div class="row containers">
+            <div id="trainer-container"></div>
+            <div id="admin-container" class="hidden"></div>
           </div>
-          <div class="input-field">
-            <select name="" id="range-select">
-              <option value="past">Past</option>
-              <option value="future">Upcoming</option>
-            </select>
-            <label>Date Range</label>
-          </div>
-          <div class="input-field">
-            <input type="text" value="" placeholder="MM/DD/YYYY" class="active datepicker" id="date-select"/>
-            <label>Specific date</label>
-          </div>
-          <button id="run-button" class="btn btn-primary">Find Courses</button>
-          <div class="back"><i class="material-icons blue-text inline-icon">arrow_left</i><a href="/">Back</a></div>
-        </div> <!-- /#admin-sidebar -->
-      <main class="admin col s8 push right">
-        <div id="course-update"></div>
-        <div id="placeholder"></div>
+        </div>
       </main>
     </div>
-  </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-app.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-database.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-functions.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.3.1/firebase-auth.js"></script>
 
     <script src="/__/firebase/init.js"></script>
     <script src="scripts/filters.js"></script>
@@ -74,25 +143,27 @@
         today: 'Today',
         autoClose: false,
         showClearBtn: true,
-        i8n: [{
-          clear: 'Clear'
-        }]
+        i8n: [
+          {
+            clear: 'Clear',
+          },
+        ],
       });
       $('select').formSelect();
 
-      $("#date-select").on('click', function() {
-        $("#placeholder").empty();
-      })
-      $('#date-select').on('change', function() {
-        console.log($("#date-select").val())
-        if($("#date-select").val()) {
+      $('#date-select').on('click', function () {
+        $('#placeholder').empty();
+      });
+      $('#date-select').on('change', function () {
+        console.log($('#date-select').val());
+        if ($('#date-select').val()) {
           $('#range-select').prop('disabled', true);
         } else {
-          $("#range-select").prop('disabled', false)
+          $('#range-select').prop('disabled', false);
         }
-        
+
         $('select').formSelect();
-      })
+      });
     </script>
   </body>
 </html>

@@ -10,7 +10,8 @@
       ".read": "(auth != null && auth.token.email.matches(/.*@elkhart.k12.in.us$/))",
       ".indexOn": [
         "type",
-        "start"
+        "start",
+        "pocEmail"
       ],
       "$courseId": {
         ".write": "((auth != null && root.child('courses').child($courseId).child('pocEmail').val() == auth.token.email) || (auth != null && root.child('courses').child($courseId).child('subittedBy').val() == auth.token.email))",

@@ -14,95 +14,88 @@
  * limitations under the License.
  */
 html, body {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+  font-family: "Roboto", "Helvetica", sans-serif;
   margin: 0;
   padding: 0;
   height: 100%;
-  width: 100%; }
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.01); }
   html #admin-sidebar, body #admin-sidebar {
     margin-top: 15px;
-    padding: 25px;
-    background-color: rgba(0, 0, 0, 0.01); }
-    html #admin-sidebar > .input-field, body #admin-sidebar > .input-field {
-      margin-bottom: 30px; }
-      html #admin-sidebar > .input-field input, body #admin-sidebar > .input-field input {
-        cursor: pointer; }
-    html #admin-sidebar .back, body #admin-sidebar .back {
-      display: block;
-      padding: 10px 0;
+    padding: 25px; }
+    html #admin-sidebar a, body #admin-sidebar a {
       font-size: 18px;
       line-height: 2.2;
       vertical-align: middle; }
-      html #admin-sidebar .back i, body #admin-sidebar .back i {
+      html #admin-sidebar a i, body #admin-sidebar a i {
         vertical-align: middle;
         padding-bottom: 5px; }
-  html .datepicker-controls .select-month input, body .datepicker-controls .select-month input {
-    width: 90px !important; }
   html #placeholder, body #placeholder {
-    margin-top: 35px;
     position: relative;
     display: block;
-    height: auto; }
-  html #placeholder > .course, body #placeholder > .course {
-    display: grid;
-    width: 90%;
-    grid-template-columns: auto 25%;
-    grid-template-rows: auto auto auto;
-    grid-template-areas: "title admin" "date ." "names .";
-    align-items: center;
-    margin-bottom: 35px;
-    position: relative; }
-    html #placeholder > .course i, body #placeholder > .course i {
+    height: auto;
+    background-color: #fff; }
+    html #placeholder .course, body #placeholder .course {
+      display: grid;
+      width: 90%;
+      grid-template-columns: auto 25%;
+      grid-template-rows: auto auto auto;
+      grid-template-areas: "title admin" "date ." "names .";
+      align-items: center;
+      margin: 0 auto 35px auto;
+      position: relative; }
+    html #placeholder i, body #placeholder i {
       vertical-align: middle; }
-    html #placeholder > .course .admin-actions, body #placeholder > .course .admin-actions {
+    html #placeholder .admin-actions, body #placeholder .admin-actions {
       grid-area: admin; }
-      html #placeholder > .course .admin-actions > li, body #placeholder > .course .admin-actions > li {
+      html #placeholder .admin-actions > li, body #placeholder .admin-actions > li {
         display: inline;
         margin-right: 15px; }
-        html #placeholder > .course .admin-actions > li > a, body #placeholder > .course .admin-actions > li > a {
+        html #placeholder .admin-actions > li > a, body #placeholder .admin-actions > li > a {
           color: #000; }
-      html #placeholder > .course .admin-actions:hover, body #placeholder > .course .admin-actions:hover {
+      html #placeholder .admin-actions:hover, body #placeholder .admin-actions:hover {
         cursor: pointer; }
-    html #placeholder > .course .teachers, body #placeholder > .course .teachers {
+    html #placeholder .teachers, body #placeholder .teachers {
       grid-area: names; }
-    html #placeholder > .course .list, body #placeholder > .course .list {
+    html #placeholder .list, body #placeholder .list {
       display: table;
       table-layout: fixed; }
-    html #placeholder > .course .list > div, body #placeholder > .course .list > div {
+    html #placeholder .list > div, body #placeholder .list > div {
       display: table-row;
       margin-left: 10%; }
-    html #placeholder > .course .teacher--name, html #placeholder > .course teacher--building, body #placeholder > .course .teacher--name, body #placeholder > .course teacher--building {
+    html #placeholder .teacher--name, html #placeholder teacher--building, body #placeholder .teacher--name, body #placeholder teacher--building {
       display: table-cell; }
-    html #placeholder > .course .teacher--name, body #placeholder > .course .teacher--name {
+    html #placeholder .teacher--name, body #placeholder .teacher--name {
       font-weight: 700; }
-    html #placeholder > .course .teacher--building, body #placeholder > .course .teacher--building {
+    html #placeholder .teacher--building, body #placeholder .teacher--building {
       margin-left: 15px; }
   html .user-view, body .user-view {
     padding: 32px; }
 
-#sorting p {
-  text-align: center; }
-
-#sorting #title, #sorting #date {
-  display: block;
-  margin: 10px 0 10px 0; }
-
-#sorting .btn i {
-  vertical-align: middle;
-  margin-right: 10px; }
-
-#sorting .sort {
-  text-align: center; }
-  #sorting .sort a {
-    display: inline-block;
-    width: 30%; }
-  #sorting .sort i {
-    color: rgba(250, 250, 250, 0.85) !important; }
-  #sorting .sort .cancel {
-    cursor: pointer; }
-    #sorting .sort .cancel label {
-      vertical-align: middle;
-      float: none; }
+#sorting {
+  position: relative; }
+  #sorting .btn {
+    position: fixed; }
+  #sorting p {
+    text-align: center; }
+  #sorting #title, #sorting #date {
+    display: block;
+    margin: 10px 0 10px 0; }
+  #sorting .btn i {
+    vertical-align: middle;
+    margin-right: 10px; }
+  #sorting .sort {
+    text-align: center; }
+    #sorting .sort a {
+      display: inline-block;
+      width: 30%; }
+    #sorting .sort i {
+      color: rgba(250, 250, 250, 0.85) !important; }
+    #sorting .sort .cancel {
+      cursor: pointer; }
+      #sorting .sort .cancel label {
+        vertical-align: middle;
+        float: none; }
 
 #change-school-button i {
   vertical-align: middle; }
@@ -142,7 +135,8 @@ html, body {
   overflow: scroll; }
   #user-courses #user-courses-head {
     display: block;
-    padding: 0 0 0 20px; }
+    font-size: 2rem;
+    line-height: 1; }
   #user-courses #user-courses-list .collection-item {
     display: block;
     position: relative;
@@ -174,13 +168,13 @@ html, body {
   font-family: sans-serif;
   text-align: center; }
 
-#login-splash {
+#login-splash .dropdown-content {
   backface-visibility: hidden; }
-  #login-splash img {
-    width: 50%; }
-  #login-splash #sign-in-button i {
-    vertical-align: middle;
-    margin-right: 25px; }
+#login-splash img {
+  width: 50%; }
+#login-splash #sign-in-button i {
+  vertical-align: middle;
+  margin-right: 25px; }
 
 #user-building-splash {
   grid-row: 2; }
@@ -202,110 +196,191 @@ html, body {
       font-size: 2.2rem;
       margin-right: 1rem; }
 
-main.admin .wkshp-title i {
-  vertical-align: top; }
+.admin {
+  margin-top: 35px; }
 
-main.admin .wkshp-title:hover {
-  cursor: pointer; }
+.active {
+  background-color: #fff !important; }
 
-main.admin .course-update {
+.admin-tabs {
   display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  background: #fff;
-  margin-bottom: 20px;
-  /* Position tooltip above the element */
-  /* Show tooltip content on hover */ }
-  main.admin .course-update #destroy-course {
+  position: relative;
+  font-size: 1.2rem;
+  padding-bottom: 0; }
+  .admin-tabs div {
+    display: inline-block;
+    border-radius: 2px;
+    padding: 15px; }
+  .admin-tabs.active {
+    background-color: #fff; }
+  .admin-tabs:hover {
+    cursor: pointer; }
+
+.containers {
+  display: block;
+  position: relative; }
+  .containers .course-update {
     display: block;
     position: absolute;
-    right: 0;
-    bottom: 0; }
-  main.admin .course-update [data-tooltip] {
-    position: relative;
-    z-index: 2;
-    cursor: pointer; }
-  main.admin .course-update [data-tooltip]:before,
-  main.admin .course-update [data-tooltip]:after {
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none; }
-  main.admin .course-update [data-tooltip]:before {
-    position: absolute;
-    bottom: 110%;
-    left: 50%;
-    margin-bottom: 5px;
-    margin-left: -80px;
-    padding: 7px;
-    width: 160px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    background-color: #ff0000;
-    color: #fff;
-    content: attr(data-tooltip);
-    text-align: center;
-    font-size: 14px;
-    line-height: 1.2; }
-  main.admin .course-update [data-tooltip]:after {
-    position: absolute;
-    bottom: 110%;
-    left: 50%;
-    margin-left: -5px;
-    width: 0;
-    border-top: 5px solid #ff0000;
-    border-top: 5px solid #ff0000;
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
-    content: " ";
-    font-size: 0;
-    line-height: 0; }
-  main.admin .course-update [data-tooltip]:hover:before,
-  main.admin .course-update [data-tooltip]:hover:after {
-    visibility: visible;
-    opacity: 1; }
-  main.admin .course-update .date {
-    margin-right: 10%; }
-  main.admin .course-update .date, main.admin .course-update .time {
-    width: 40%;
-    display: inline-block; }
-  main.admin .course-update #seats {
-    width: 40%; }
-    main.admin .course-update #seats .time {
-      float: right; }
-  main.admin .course-update #update-submit {
-    margin-right: 25px; }
-
-main #allCourses {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-left: -15px; }
-  main #allCourses .class-container {
-    flex-grow: 1;
-    border: 1px solid #f3f3f3;
-    box-sizing: border-box;
-    margin: 7.5px 0 7.5px 15px; }
-    main #allCourses .class-container .code .prefix {
-      vertical-align: middle; }
-    main #allCourses .class-container .code input {
-      height: 1.5em;
-      padding: 5px 0 5px 5px;
-      border-radius: 2px; }
-      main #allCourses .class-container .code input .prefix {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    margin: 0 auto 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 20px;
+    box-sizing: border-box; }
+    .containers .course-update i {
+      vertical-align: top; }
+    .containers .course-update:hover {
+      cursor: pointer; }
+    .containers .course-update button {
+      margin-right: 20px; }
+      .containers .course-update button #destroy-course [data-tooltip] {
+        position: relative;
+        z-index: 2;
+        cursor: pointer; }
+      .containers .course-update button #destroy-course [data-tooltip]:before, .containers .course-update button #destroy-course [data-tooltip]:after {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+        /* Position tooltip above the element */ }
+      .containers .course-update button #destroy-course [data-tooltip]:before {
+        position: absolute;
+        bottom: 110%;
+        left: 50%;
+        margin-bottom: 5px;
+        margin-left: -80px;
+        padding: 7px;
+        width: 160px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        background-color: #ff0000;
+        color: #fff;
+        content: attr(data-tooltip);
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.2; }
+      .containers .course-update button #destroy-course [data-tooltip]:after {
+        position: absolute;
+        bottom: 110%;
+        left: 50%;
+        margin-left: -5px;
+        width: 0;
+        border-top: 5px solid #ff0000;
+        border-top: 5px solid #ff0000;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        content: " ";
+        font-size: 0;
+        line-height: 0;
+        /* Show tooltip content on hover */
+         * &:hover 
+         *   visibility: visible
+         *   opacity: 1 */ }
+      .containers .course-update button #destroy-course .date {
+        margin-right: 10%; }
+      .containers .course-update button #destroy-course .date, .containers .course-update button #destroy-course .time {
+        width: 40%;
+        display: inline-block; }
+      .containers .course-update button #destroy-course #seats {
+        width: 40%; }
+        .containers .course-update button #destroy-course #seats .time {
+          float: right; }
+      .containers .course-update button #destroy-course #update-submit {
+        margin-right: 25px; }
+  .containers #allCourses {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-left: -15px; }
+    .containers #allCourses .class-container {
+      flex-grow: 1;
+      border: 1px solid #f3f3f3;
+      box-sizing: border-box;
+      margin: 7.5px 0 7.5px 15px; }
+      .containers #allCourses .class-container .code .prefix {
         vertical-align: middle; }
-  main #allCourses h2 {
-    position: relative; }
+      .containers #allCourses .class-container .code input {
+        height: 1.5em;
+        padding: 5px 0 5px 5px;
+        border-radius: 2px; }
+        .containers #allCourses .class-container .code input .prefix {
+          vertical-align: middle; }
+    .containers #allCourses h2 {
+      position: relative; }
 
 .active:not(label) {
   background-color: rgba(0, 0, 0, 0.05); }
 
 .fixed-action-btn {
   display: none; }
+
+#submit > i {
+  vertical-align: middle;
+  height: inherit;
+  line-height: inherit; }
+#submit > #submit-badge-wrap {
+  display: inline-block;
+  min-width: 3rem;
+  margin-left: 10px; }
+  #submit > #submit-badge-wrap #submit-badge {
+    display: block;
+    line-height: 22px;
+    border-radius: 2px; }
+
+[data-tooltip] {
+  position: relative;
+  z-index: 2;
+  cursor: pointer; }
+
+[data-tooltip]:before,
+[data-tooltip]:after {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none; }
+
+/* Position tooltip below the element */
+[data-tooltip]:before {
+  position: absolute;
+  bottom: -110%;
+  left: 50%;
+  margin-bottom: 5px;
+  margin-left: -80px;
+  padding: 7px;
+  width: 160px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #90CAF9;
+  color: #444;
+  content: attr(data-tooltip);
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.2; }
+
+[data-tooltip]:after {
+  position: absolute;
+  bottom: -15%;
+  left: 50%;
+  margin-left: -5px;
+  width: 0;
+  border-bottom: 5px solid #90CAF9;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  content: " ";
+  font-size: 0;
+  line-height: 0; }
+
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+  visibility: visible;
+  opacity: 1; }
 
 #mobile-submit {
   display: block;
@@ -321,69 +396,58 @@ h1, h2, h3, p {
 .hidden {
   display: none !important; }
 
-.class-container {
-  margin: 10px;
-  flex-grow: 1;
-  border: 1px solid #f3f3f3; }
-
-.card .card-action a:hover {
-  background-color: rgba(0, 0, 0, 0.1) !important; }
-
-.card .card-action .course-share-link:hover {
-  background-color: transparent !important; }
-
-.card .card-image {
-  max-height: 40% !important; }
-
-.card .card-content .card-title {
-  font-size: 1.6rem;
-  line-height: 1.6rem; }
-
-.card .card-content .blink {
-  animation: blink-1 0.6s 1s both; }
-
+.card {
+  padding: 15px 0; }
+  .card .card-action a:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important; }
+  .card .card-action .course-share-link:hover {
+    background-color: transparent !important; }
+  .card .card-image {
+    max-height: 40% !important; }
+  .card .card-content .card-title {
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+    height: auto;
+    margin-bottom: 10px; }
+  .card .card-content .date {
+    display: block; }
+  .card .card-content .card-desc {
+    display: block;
+    margin-top: 10px; }
+  .card .card-content .blink {
+    animation: blink-1 0.6s 1s both; }
 @keyframes blink-1 {
   0%,
-  50%,
-  100% {
+50%,
+100% {
     opacity: 1; }
   25%,
-  75% {
+75% {
     opacity: 0; } }
-
-.card .content {
-  max-height: 60%; }
-
-.card .card-image {
-  max-height: 40%; }
-
-.card .details > span {
-  display: block; }
+  .card .content {
+    max-height: 60%; }
+  .card .details > span {
+    display: block; }
 
 .nav-wrapper {
   background-color: #1a73e8; }
 
-nav ul #submit > i {
-  vertical-align: middle;
-  height: inherit;
-  line-height: inherit; }
-
-nav ul #submit > #submit-badge-wrap {
-  display: inline-block;
-  min-width: 3rem;
-  margin-left: 10px; }
-  nav ul #submit > #submit-badge-wrap #submit-badge {
-    display: block;
-    line-height: 22px;
-    border-radius: 2px; }
-
+nav ul a span.badge {
+  margin-right: 10px;
+  border-radius: 2px; }
 nav ul .btn, nav ul .btn-large {
   box-shadow: none !important; }
   nav ul .btn:hover, nav ul .btn-large:hover {
     background-color: rgba(0, 0, 0, 0.1) !important; }
 
+.nav-wrapper ul#main-dropdown, .nav-wrapper ul#admin-dropdown {
+  width: 250px; }
+  .nav-wrapper ul#main-dropdown i, .nav-wrapper ul#admin-dropdown i {
+    display: inline-block;
+    height: 24px;
+    line-height: 24px; }
 .nav-wrapper #nav-search-wrapper {
-  width: 400px; }
+  width: 600px; }
   .nav-wrapper #nav-search-wrapper .input-field {
     width: inherit; }
     .nav-wrapper #nav-search-wrapper .input-field input[type=search] {
@@ -391,7 +455,10 @@ nav ul .btn, nav ul .btn-large {
       line-height: 32px;
       display: inline-block;
       border-radius: 2px;
-      background-color: rgba(255, 255, 255, 0.12); }
+      background-color: rgba(255, 255, 255, 0.12);
+      padding-left: 1rem; }
+      .nav-wrapper #nav-search-wrapper .input-field input[type=search] ~ .material-icons {
+        right: 3rem; }
       .nav-wrapper #nav-search-wrapper .input-field input[type=search]:focus {
         background-color: #FFF !important; }
 
@@ -420,25 +487,25 @@ nav ul .btn, nav ul .btn-large {
 
 @media screen and (max-width: 1166px) {
   main {
-    grid-column: 1 / span 12;
+    grid-column: 1/span 12;
     margin-left: 0; } }
-
 @media screen and (max-width: 610px) {
   header {
     height: 113px;
     padding-bottom: 80px !important; }
+
   #user-container {
     top: 72px;
     background-color: #039be5;
     height: 38px;
     padding-top: 3px;
     padding-right: 2px; }
+
   #user-container #user-pic {
     top: 2px;
     width: 33px;
     height: 33px;
     background-size: 33px; } }
-
 .mdl-textfield__label:after {
   background-color: #fff; }
 
@@ -460,7 +527,11 @@ nav ul .btn, nav ul .btn-large {
 @media only screen and (min-width: 601px) {
   .container {
     width: 85%; } }
-
-@media only screen and (min-width: 993px) {
+@media only screen and (min-width: 1128) {
   .container {
-    width: 90%; } }
+    width: 90%; }
+
+  .nav-search-wrapper {
+    display: none; } }
+
+/*# sourceMappingURL=main.min.css.map */

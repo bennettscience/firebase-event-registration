@@ -23,23 +23,13 @@ html, body
   padding: 0
   height: 100%
   width: 100%
+  background-color: rgba(0,0,0,0.01)
 
   #admin-sidebar
     margin-top: 15px
     padding: 25px
-    background-color: rgba(0,0,0,0.01)
 
-    > .input-field
-      margin-bottom: 30px
-
-      input
-        cursor: pointer
-
-    .back
-      display: block
-      padding: 10px 0
-
-      a
+    a
       font-size: 18px
       line-height: 2.2
       vertical-align: middle
@@ -48,24 +38,21 @@ html, body
         vertical-align: middle
         padding-bottom: 5px
 
-  .datepicker-controls .select-month input
-    width: 90px !important
-
   #placeholder
-    margin-top: 35px
     position: relative
     display: block
-    height: auto;
-
-  #placeholder > .course
-    display: grid
-    width: 90%
-    grid-template-columns: auto 25%
-    grid-template-rows: auto auto auto
-    grid-template-areas: "title admin" "date ." "names ."
-    align-items: center
-    margin-bottom: 35px
-    position: relative
+    height: auto
+    background-color: #fff
+    
+    .course
+      display: grid
+      width: 90%
+      grid-template-columns: auto 25%
+      grid-template-rows: auto auto auto
+      grid-template-areas: "title admin" "date ." "names ."
+      align-items: center
+      margin: 0 auto 35px auto
+      position: relative
     // overflow: auto
 
     i 
@@ -108,6 +95,11 @@ html, body
     padding: 32px
 
 #sorting 
+  position: relative
+
+  .btn
+    position: fixed
+
   p
     text-align: center
 
@@ -177,7 +169,8 @@ html, body
 
   #user-courses-head
     display: block
-    padding: 0 0 0 20px
+    font-size: 2rem
+    line-height: 1
 
   #user-courses-list .collection-item
     display: block
@@ -218,7 +211,7 @@ html, body
 #login-splash
 
   .dropdown-content
-  backface-visibility: hidden
+    backface-visibility: hidden
 
   img
     width: 50%
@@ -252,99 +245,123 @@ html, body
       font-size: 2.2rem
       margin-right: 1rem
 
-main
 
-  &.admin
+.admin
+  margin-top: 35px
 
-    .wkshp-title
+.active
+  background-color: #fff !important
 
-      i 
-        vertical-align: top
+.admin-tabs
+  display: block
+  position: relative
+  font-size: 1.2rem
+  padding-bottom: 0
 
-      &:hover
-        cursor: pointer
+  div
+    display: inline-block
+    border-radius: 2px
+    padding: 15px
 
-    .course-update
-      display: block
-      position: absolute
-      top: 0
-      left: 0
-      width: 100%
-      height: auto
-      background: #fff
-      margin-bottom: 20px
+  &.active 
+    background-color: #fff
 
-      #destroy-course
-        display: block
-        position: absolute
-        right: 0
-        bottom: 0
+  &:hover
+    cursor: pointer
+    
+.containers 
+  display: block
+  position: relative
 
-      [data-tooltip]
-        position: relative
-        z-index: 2
-        cursor: pointer
 
-      [data-tooltip]:before,
-      [data-tooltip]:after 
-        visibility: hidden
-        opacity: 0
-        pointer-events: none
+  .course-update
+    display: block
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: #fff
+    margin: 0 auto 20px auto
+    border: 1px solid #ddd
+    border-radius: 2px
+    padding: 20px
+    box-sizing: border-box
 
-      /* Position tooltip above the element */
-      [data-tooltip]:before 
-        position: absolute
-        bottom: 110%
-        left: 50%
-        margin-bottom: 5px
-        margin-left: -80px
-        padding: 7px
-        width: 160px
-        -webkit-border-radius: 3px
-        -moz-border-radius: 3px
-        border-radius: 3px
-        background-color: #ff0000
-        color: #fff
-        content: attr(data-tooltip)
-        text-align: center
-        font-size: 14px
-        line-height: 1.2
+    i 
+      vertical-align: top
 
-      [data-tooltip]:after 
-        position: absolute
-        bottom: 110%
-        left: 50%
-        margin-left: -5px
-        width: 0
-        border-top: 5px solid #ff0000
-        border-top: 5px solid #ff0000
-        border-right: 5px solid transparent
-        border-left: 5px solid transparent
-        content: " "
-        font-size: 0
-        line-height: 0
+    &:hover
+      cursor: pointer
 
-      /* Show tooltip content on hover */
-      [data-tooltip]:hover:before,
-      [data-tooltip]:hover:after 
-        visibility: visible
-        opacity: 1
+    button
+      margin-right: 20px
 
-      .date
-        margin-right: 10%
-
-      .date, .time
-        width: 40%
-        display: inline-block
+      & #destroy-course
       
-      #seats
-        width: 40%
+        [data-tooltip]
+          position: relative
+          z-index: 2
+          cursor: pointer
 
-        .time
-          float: right
+        [data-tooltip]:before, [data-tooltip]:after 
+          visibility: hidden
+          opacity: 0
+          pointer-events: none
 
-      #update-submit
-        margin-right: 25px
+          /* Position tooltip above the element */
+        [data-tooltip]:before 
+          position: absolute
+          bottom: 110%
+          left: 50%
+          margin-bottom: 5px
+          margin-left: -80px
+          padding: 7px
+          width: 160px
+          -webkit-border-radius: 3px
+          -moz-border-radius: 3px
+          border-radius: 3px
+          background-color: #ff0000
+          color: #fff
+          content: attr(data-tooltip)
+          text-align: center
+          font-size: 14px
+          line-height: 1.2
+
+        [data-tooltip]:after 
+          position: absolute
+          bottom: 110%
+          left: 50%
+          margin-left: -5px
+          width: 0
+          border-top: 5px solid #ff0000
+          border-top: 5px solid #ff0000
+          border-right: 5px solid transparent
+          border-left: 5px solid transparent
+          content: " "
+          font-size: 0
+          line-height: 0
+
+          /* Show tooltip content on hover */
+            &:hover 
+              visibility: visible
+              opacity: 1
+
+        .date
+          margin-right: 10%
+
+        .date, .time
+          width: 40%
+          display: inline-block
+        
+        #seats
+          width: 40%
+
+          .time
+            float: right
+
+        #update-submit
+          margin-right: 25px
 
   #allCourses
     display: flex
@@ -379,6 +396,72 @@ main
 .fixed-action-btn
   display: none
 
+#submit
+
+  > i 
+    vertical-align: middle
+    height: inherit
+    line-height: inherit
+
+  > #submit-badge-wrap
+    display: inline-block
+    min-width: 3rem
+    margin-left: 10px
+
+    #submit-badge
+      display: block
+      line-height: 22px
+      border-radius: 2px
+
+[data-tooltip]
+  position: relative
+  z-index: 2
+  cursor: pointer
+
+[data-tooltip]:before,
+[data-tooltip]:after 
+  visibility: hidden
+  opacity: 0
+  pointer-events: none
+
+/* Position tooltip below the element */
+[data-tooltip]:before 
+  position: absolute
+  bottom: -110%
+  left: 50%
+  margin-bottom: 5px
+  margin-left: -80px
+  padding: 7px
+  width: 160px
+  -webkit-border-radius: 3px
+  -moz-border-radius: 3px
+  border-radius: 3px
+  background-color: #90CAF9
+  color: #444
+  content: attr(data-tooltip)
+  text-align: center
+  font-size: 14px
+  line-height: 1.2
+
+[data-tooltip]:after 
+  position: absolute
+  bottom: -15%
+  left: 50%
+  margin-left: -5px
+  width: 0
+  border-bottom: 5px solid #90CAF9
+  border-right: 5px solid transparent
+  border-left: 5px solid transparent
+  content: " "
+  font-size: 0
+  line-height: 0
+
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after 
+  visibility: visible
+  opacity: 1
+
 #mobile-submit
   display: block
   position: fixed
@@ -393,12 +476,9 @@ h1, h2, h3, p
 .hidden
   display: none !important
 
-.class-container
-  margin: 10px
-  flex-grow: 1
-  border: 1px solid #f3f3f3
-
 .card
+
+  padding: 15px 0
 
   .card-action
 
@@ -416,6 +496,15 @@ h1, h2, h3, p
     .card-title
       font-size: 1.6rem
       line-height: 1.6rem
+      height: auto
+      margin-bottom: 10px
+    
+    .date
+      display: block
+
+    .card-desc
+      display: block
+      margin-top: 10px
 
     .blink
       animation: blink-1 0.6s 1s both
@@ -424,17 +513,14 @@ h1, h2, h3, p
       0%,
       50%,
       100%
-        opacity: 1;
+        opacity: 1
       
       25%,
       75%
-        opacity: 0;
+        opacity: 0
 
   .content
     max-height: 60%
-
-  .card-image
-    max-height: 40%
 
   .details > span
     display: block
@@ -445,24 +531,11 @@ h1, h2, h3, p
 nav
 
   ul 
+    a 
+      span.badge 
+        margin-right: 10px
+        border-radius: 2px
 
-    #submit
-
-      > i 
-        vertical-align: middle;
-        height: inherit;
-        line-height: inherit;
-
-      > #submit-badge-wrap
-        display: inline-block
-        min-width: 3rem
-        margin-left: 10px
-
-        #submit-badge
-          display: block
-          line-height: 22px
-          border-radius: 2px
-    
     .btn, .btn-large
       box-shadow: none !important
 
@@ -471,8 +544,16 @@ nav
 
 .nav-wrapper 
 
+  ul#main-dropdown, ul#admin-dropdown
+    width: 250px
+
+    i 
+      display: inline-block
+      height: 24px
+      line-height: 24px
+
   #nav-search-wrapper
-    width: 400px
+    width: 600px
 
     .input-field 
       width: inherit
@@ -483,6 +564,10 @@ nav
         display: inline-block
         border-radius: 2px
         background-color: rgba(255,255,255,0.12)
+        padding-left: 1rem
+
+        ~ .material-icons
+            right: 3rem
 
         &:focus 
           background-color: #FFF !important
@@ -544,7 +629,7 @@ nav
   background-color: #fff
 
 .mdl-color--grey-100
-  background-color:#fff !important
+  background-color: #fff !important
 
 .mdl-textfield--floating-label.is-focused .mdl-textfield__label
   color: #0288D1
@@ -564,6 +649,8 @@ nav
   .container
     width: 85%
 
-@media only screen and (min-width: 993px)
+@media only screen and (min-width: 1128)
   .container
     width: 90%
+  .nav-search-wrapper
+    display: none

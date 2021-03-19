@@ -1,20 +1,38 @@
+'use strict';
+
 function Admin() {
-	this.teachers = document.querySelector('teachers');
-	this.runButton = document.getElementById('run-button');
+	this.teachers = document.querySelector('.teachers');
+	this.trainerButton = document.querySelector('#trainer-button');
+	this.adminButton = document.querySelector('#admin-button');
 	this.course = document.querySelectorAll('.wkshp-title');
+	this.userName = document.querySelector('#string-name');
+	this.userLocation = document.querySelector('#user-location');
+	this.trainerContainer = document.querySelector('#trainer-container');
+	this.adminContainer = document.querySelector('#admin-container');
 
-	// Listen for the loading call and return the appropriate function
-	this.runButton.addEventListener('click', function() {
-		var runType = document.getElementById('run-button-type');
-		var filter = document.getElementById('range-select').value;
-		let filterDate = document.getElementById('date-select').value;
+	// Listen for tab button clicks
+	this.trainerButton.addEventListener('click', () => {
+		this.trainerContainer.classList.toggle('hidden');
+		this.adminContainer.classList.toggle('hidden');
+		this.trainerButton.classList.toggle('active');
+		this.adminButton.classList.toggle('active');
+	});
+	this.adminButton.addEventListener('click', () => {
+		this.trainerContainer.classList.toggle('hidden');
+		this.adminContainer.classList.toggle('hidden');
+		this.adminButton.classList.toggle('active');
+		this.trainerButton.classList.toggle('active');
+	});
+	// var runType = document.getElementById('run-button-type');
+	// var filter = document.getElementById('range-select').value;
+	// let filterDate = document.getElementById('date-select').value;
 
-		if(runType.options[runType.selectedIndex].value == 'admin') {
-			this.findAdminCourses(filter, filterDate);
-		} else {
-			this.findTrainerCourses(filter, filterDate);
-		}
-	}.bind(this));
+	// if(runType.options[runType.selectedIndex].value == 'admin') {
+	// 	this.findAdminCourses(filter, filterDate);
+	// } else {
+	// 	this.findTrainerCourses(filter, filterDate);
+	// }
+	// }.bind(this));
 
 	this.initFirebase();
 }
@@ -31,31 +49,57 @@ Admin.prototype.initFirebase = function() {
 Admin.prototype.onAuthStateChanged = function(user) {
 	if(!user) {
 		this.signIn().bind(this);
+	} else {
+		this.userName.textContent = user.displayName;
+		// Get the userdata from the database
+		return firebase
+			.database()
+			.ref('users/' + user.uid)
+			.once('value')
+			.then(
+				function(snap) {
+					let userData = snap.val();
+					this.userLocation.textContent = userData.building;
+	
+					Promise.all([
+						this.database
+							.ref('admins')
+							.orderByKey()
+							.equalTo(user.email.split('@')[0])
+							.once('value'),
+						this.database
+							.ref('trainers')
+							.orderByKey()
+							.equalTo(user.email.split('@')[0])
+							.once('value'),
+					]).then(
+						function(snaps) {
+							var admins = snaps[0];
+							var trainers = snaps[1];
+							if (admins.exists()) {
+								this.findAdminCourses();
+							}
+							if(trainers.exists()) {
+								this.findTrainerCourses();
+							}
+						}.bind(this)
+					);
+				}.bind(this)
+			);
 	}
+
 };
 
 // List all participants for a course if you're a trainer
-Admin.prototype.findTrainerCourses = function(filter, filterDate) {
+Admin.prototype.findTrainerCourses = function() {
+	// console.log('get trainer courses');
 	let courseDb = this.database.ref('courses/');
-	const parent = document.getElementById('placeholder');
-	let dateInput = document.getElementById('date-select').value;
+	const parent = document.getElementById('trainer-container');
 	let promise;
 	let html;
 	let currentUser = firebase.auth().currentUser.email;
 
-	let today = new Date().toISOString();
-
-	if(!filterDate) {
-		if (filter === 'past') {
-			promise = courseDb.orderByChild('start').endAt(today).once('value');
-		} else if (filter === 'future') {
-			promise = courseDb.orderByChild('start').startAt(today).once('value');
-		} else {
-			M.toast({ html: 'Something strange happened.', classes: 'red' });
-		}
-	} else {
-		promise = courseDb.orderByKey().startAt(dateInput).once('value');
-	}
+	promise = courseDb.orderByChild('pocEmail').equalTo(currentUser).once('value');
 
 	parent.innerHTML = '';
 
@@ -93,11 +137,7 @@ Admin.prototype.findTrainerCourses = function(filter, filterDate) {
 		});
 
 		if(courses.length === 0) {
-			if(filter === 'past') {
-				html = 'No past courses found under your name. Try searching upcoming courses.';
-			} else if(filter === 'future') {
-				html = 'No upcoming courses found under your name. Try searching past courses.';
-			}
+			html = 'No courses found under your name.';
 			M.toast({html: html, classes: 'red'});
 			return;
 		}
@@ -107,12 +147,13 @@ Admin.prototype.findTrainerCourses = function(filter, filterDate) {
 	}).then(async function(courses) {
     
 		if(!courses) return;
-		let course;
+		// sort the courses by start date
+		courses.sort((a, b) => (a.start < b.start) ? 1 : -1);
     
 		currentUser = firebase.auth().currentUser.email;
     
 		// For each course...
-		for(course of courses) {
+		for(let course of courses) {
 			let status;
 
 			// Destructure the course object for easier handling
@@ -172,7 +213,7 @@ Admin.prototype.findTrainerCourses = function(filter, filterDate) {
 			container.classList.add('course');
 			container.setAttribute('data-id', id);
 
-			console.log(id);
+			// console.log(id);
 
 			status = (active) ? 'Active' : 'Cancelled';
 
@@ -184,13 +225,13 @@ Admin.prototype.findTrainerCourses = function(filter, filterDate) {
 			<span class="wkshp-date"><h6>${ smallFormat(start) }</h6></span>
 			<ul class="admin-actions">
 				<li>
-					<a class="edit" data-id="${id}" href="#" onclick="Admin.prototype.updateSession('${id}');"><i class="material-icons">edit</i></a>
+					<a class="edit" alt="Edit session details" title="Edit session details" data-id="${id}" href="#" onclick="Admin.prototype.updateSession('${id}');"><i class="material-icons">edit</i></a>
 				</li>
 				<li>
-					<a data-name="Send email" class="email" href="${emailString}" title="Send email"><i class="small material-icons">email</i></a>
+					<a data-name="Send email" alt="Email all attendees" title="Email all attendees" class="email" href="${emailString}" title="Send email"><i class="small material-icons">email</i></a>
 				</li>
 				<li>
-					<i data-name="Download registrations" onclick="download_csv('users-${id}')" class="download small material-icons">cloud_download</i>
+					<i data-name="Download registrations" alt="Export registrations" title="Export registrations" onclick="download_csv('users-${id}')" class="download small material-icons">cloud_download</i>
 				</li>
 			</ul>
             <div class="teachers">
@@ -208,24 +249,21 @@ Admin.prototype.findTrainerCourses = function(filter, filterDate) {
 	});
 };
 
-Admin.prototype.findAdminCourses = function(filter) {
-	const parent = document.getElementById('placeholder');
+Admin.prototype.findAdminCourses = function() {
+	const parent = document.getElementById('admin-container');
 	let userDb = this.database.ref('users/');
 	let courseDb = this.database.ref('courses/');
-	let adminId = this.auth.currentUser.uid;
-	let adminLocation;
-	let today;
+	let adminId = this.auth.currentUser.email.split('@')[0];
+	let currentUser = this.auth.currentUser.email;
+	
+	let adminLocation = this.database.ref(`admins/${adminId}/building`).once('value', function(snap) {
+		adminLocation = snap.val();
+	});
+
 	let promise;
+	
+	promise = Promise.all([userDb.once('value'), courseDb.orderByChild('start').once('value')]);
 
-	today = new Date().toISOString();
-
-	if(filter === 'past') {
-		promise = Promise.all([userDb.once('value'), courseDb.orderByChild('start').endAt(today).once('value')]);
-	} else if (filter === 'future') {
-		promise = Promise.all([userDb.once('value'), courseDb.orderByChild('start').startAt(today).once('value')]);
-	} else {
-		M.toast({html: 'Something strange happened.', classes: 'red'});
-	}
 	// Empty anything in the parent div
 	parent.innerHTML = '';
 
@@ -236,9 +274,9 @@ Admin.prototype.findAdminCourses = function(filter) {
 		var users = snaps[0].val();
 		var courses = snaps[1].val();
 
-		// check for the admin location and set a variable
-		if(users.hasOwnProperty(adminId)) {
-			adminLocation = users[adminId]['building'];
+		if(courses.length === 0) {
+			parent.innerHTML = 'You do not have access to administrator reports.';
+			return;
 		}
 
 		// Loop through all of the courses.
@@ -260,8 +298,8 @@ Admin.prototype.findAdminCourses = function(filter) {
 				// Compare the user building with the admin building. If it exists, push the teacher.
 				regsArr.forEach(function(u) {
 					if(users.hasOwnProperty(u)) {
-						if(users[u]['building'] == adminLocation || adminLocation === 'all') {
-							teachers.push({'name': users[u]['name'], 'email': users[u]['email']});
+						if(users[u]['building'] == adminLocation || adminLocation === 'Super') {
+							teachers.push({'name': users[u]['name'], 'email': users[u]['email'], 'building': users[u]['building']});
 						}
 					}
 				});
@@ -288,14 +326,30 @@ Admin.prototype.findAdminCourses = function(filter) {
 				// If the registrations length is > 0, write a new child to the doc.
 				if(teachers.length > 0) {
 
-					container.innerHTML =`
-						<span class="wkshp-title"><h5>${ course.title } - (${teachers.length})</h5></span>
-						<span class="wkshp-date"><h6>${ smallFormat(course.start) }</h6></span>
-						<span class="email"></span>
+					var emailString = 'mailto:' + currentUser + '?bcc=';
+
+					teachers.forEach(function (user) {
+						emailString += user.email + ', ';
+					});
+
+					sessionStorage.setItem(`users-${course.id}`, JSON.stringify(teachers));
+
+					container.innerHTML =
+					`
+						<span class="wkshp-title" data-id="${course.id}"><h5>${course.title} - (${teachers.length})</h5></span>
+						<span class="wkshp-date"><h6>${ smallFormat(course.start)}</h6></span>
+						<ul class="admin-actions">
+							<li>
+								<a data-name="Send email" class="email" href="${emailString}" title="Email attendees" alt="Send email to all registered users."><i class="small material-icons">email</i></a>
+							</li>
+							<li>
+								<i data-name="Download registrations" title="Export registrations" alt="Download a CSV of registered users." onclick="download_csv('users-${course.id}')" class="download small material-icons">cloud_download</i>
+							</li>
+						</ul>
 						<div class="teachers">
 						<div class="list">
-						${teachers.map((item) =>
-		`<li><a href="mailto:${item.email}">${item.name}</a></li>`
+						${ teachers.map((item) =>
+		`<div class="list-item"><span class="teacher--name"><a href="mailto:${item.email}">${item.name}</a></span><span class="teacher--building">${item.building}</span></div>`
 	).join('')}
 						</div>
 						</div>
@@ -304,6 +358,8 @@ Admin.prototype.findAdminCourses = function(filter) {
 				}
 			}
 		});
+	}).catch(e => {
+		M.toast({html: `${e.message}`, classes: 'red'});
 	});
 };
 
@@ -437,7 +493,7 @@ Admin.prototype.updateSession = function(id) {
 		form.appendChild(destroy);
 
 	});
-	document.querySelector('#placeholder').appendChild(form);
+	document.querySelector('.containers').appendChild(form);
 	form.addEventListener('submit', postSessionUpdate);
 }.bind(this);
 
@@ -446,8 +502,7 @@ const destroyCourse = function(e) {
 	const title = e.target.dataset.coursetitle;
 	const courseId = e.target.dataset.courseid;
 	let form = document.querySelector('.course-update');
-	let req = prompt('Type the exact name of the course you wish to delete. This cannot be undone.');
-	console.log(req);
+	let req = prompt(`Type the exact name of the course you wish to delete. This cannot be undone.\n\n${title}`);
 	if (req.toLowerCase() === title.toLowerCase()) {
 
 		this.firebase.database().ref(`courses/${courseId}`).update({'active': false}, function(error) {
@@ -512,7 +567,7 @@ const formToJSON = elements => {
 
 	const reduceInitialVal = {};
 
-	console.log('Initial `data` value:', JSON.stringify(reduceInitialVal));
+	// console.log('Initial `data` value:', JSON.stringify(reduceInitialVal));
 
 	const formData = [].reduce.call(elements, reducerFunction, reduceInitialVal);
 
@@ -521,7 +576,7 @@ const formToJSON = elements => {
 };
 
 const download_csv = function(obj) {
-	console.log(obj);
+	// console.log(obj);
 	var data = JSON.parse(sessionStorage.getItem(obj));
 
 	var headers = {
@@ -533,7 +588,7 @@ const download_csv = function(obj) {
 	var itemsFormatted = [];
 
 	data.forEach((item) => {
-		console.log(item);
+		// console.log(item);
 		itemsFormatted.push({
 			name: item.name.replace(/,/g, ''), // remove commas to avoid errors,
 			email: item.email,

@@ -6,11 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <!-- Sentry error tracking -->
-  <script src="https://browser.sentry-cdn.com/5.6.0/bundle.min.js" integrity="sha384-9aGOmRDrtIQRcZmYbrNQmfS1dW44OCMtOlQ3JFUYCdCpxTJQ8vK+//K35AKgZh96" crossorigin="anonymous"></script>
-    <script>
+  <script
+  src="https://browser.sentry-cdn.com/6.2.2/bundle.min.js"
+  integrity="sha384-SEu4bJkpht31dkOz4nRcKDxnisSU+Jc8WRSOnBSZJ2yVMlbk4sAKQSrBw6qBVzKR"
+  crossorigin="anonymous"></script>
+  <script>
       Sentry.init({ 
         dsn: 'https://cac7ad3274cc41ac85089a7aba47d291@sentry.io/1526392',
-        release: "ecs-pd@2.1"
+        release: "ecs-pd@3.0"
       });
     </script>
     <!-- End Sentry -->
@@ -46,19 +49,19 @@
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- End Google Tag Manager (noscript) -->
       <!-- Dropdown menu items -->
-      <ul id="user-dropdown" class="dropdown-content">
-        <li><span id="user-email" class="email"></span></li>
+      <ul id="main-dropdown" class="dropdown-content">
         <li>
           <a id="change-school-button" href="#">
+            <i class="material-icons">location_on</i>
             <span id="user-building">
               <span id="user-location"></span>
             </span>
           </a>
         </li>
         <li class="divider"></li>
-        <li><a id="collection" href="#">My Sessions <span id="user-courses-badge" class="badge blue white-text right"></span></a></li>
-        <li><a id="admin-button" class="hidden" href="/dashboard.html">Session Manager</a></li>
-        <li><a href="#" id="sign-out-button" class="red white-text">Sign out</a></li>
+        <li><a id="collection" href="#"><i class="material-icons">bookmark</i>My Sessions</span></a></li>
+        <li><a id="admin-button" class="hidden" href="/dashboard.html"><i class="material-icons">dashboard</i>Session Manager</a></li>
+        <li><a href="#" id="sign-out-button" class="red white-text"><i class="material-icons">logout</i>Log out</a></li>
       </ul>
       <!-- end nav drodown -->
       <div class="navbar-fixed hidden">
@@ -68,8 +71,9 @@
               <!-- <a href="#" class="brand-logo">ECS PD</a> -->
               <ul class="s12">
                 <li class="m12 l5">
-                  <a class="dropdown-trigger" href="#!" data-target="user-dropdown">
-                    <span id="user-pic" class="circle"></span>
+                  <a class="dropdown-trigger" href="#!" data-target="main-dropdown">
+                    <!-- <span id="user-pic" class="circle"></span> -->
+                    <span id="user-courses-badge" class="badge white blue-text circle"></span>
                     <span id="string-name" class="white-text name"></span>
                     <i class="material-icons right">arrow_drop_down</i>
                   </a>
@@ -80,22 +84,12 @@
                       <div id="nav-search-wrapper" class="valign-wrapper">
                         <div class="input-field hide-on-med-and-down">
                           <input id="search" type="search" placeholder="Search by title..." required />
-                          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                           <i class="material-icons" id="search-clear">close</i>
                         </div>
                       </div>
                     </form>
                   </li>
                 </ul>
-                <li class="right">
-                  <button class="blue darken-2 btn btn-large" type="submit" id="submit" name="action" form="course-form">Register
-                    <div id="submit-badge-wrap" class="valign-wrapper">
-                      <span class="white blue-text" data-badge-caption="" id="submit-badge"></span> 
-                    </div>
-                    <i class="material-icons right">send</i>
-                  </button>
-                </li>
-                <!-- <li><a href="#" id="search-button" class="btn btn-flat white-text"><i class="material-icons">search</i></a></li> -->
               </ul>
             </div>
           </div>
@@ -106,10 +100,14 @@
         <div id="logged-in" class="row hidden">
           <div id="sorting" class="col l3 hide-on-med-and-down hidden">
             <div class="section">
-              <a id="date" class="sort btn blue darken-2"><i class="material-icons white-text prefix">date_range</i>Sort by Date</a>
-              <a id="title" class="sort btn blue darken-2"><i class="material-icons white-text prefix">sort_by_alpha</i>Sort by Title</a>
+              <button class="blue darken-2 btn btn-large" type="submit" id="submit" name="action" form="course-form">Register
+                <!-- <div id="submit-badge-wrap" class="valign-wrapper">
+                  <span class="white blue-text" data-badge-caption="" id="submit-badge"></span> 
+                </div> -->
+                <i class="material-icons right">send</i>
+              </button>
+              
             </div>
-            <div class="divider"></div>
             <div class="section">
             </div>
           </div>
